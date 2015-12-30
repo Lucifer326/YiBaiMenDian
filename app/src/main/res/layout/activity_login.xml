@@ -1,3 +1,4 @@
+<!--
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
@@ -6,9 +7,6 @@
     android:background="#fff"
     tools:context="com.yeebob.yibaimendian.LoginActivity">
 
-    <!-- The primary full-screen view. This can be replaced with whatever view
-         is needed to present your content, e.g. VideoView, SurfaceView,
-         TextureView, etc. -->
     <EditText
         android:id="@+id/login_username"
         android:layout_width="match_parent"
@@ -33,3 +31,35 @@
         android:layout_height="wrap_content" />
 
 </LinearLayout>
+-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_overlay"
+    tools:context=".mainactivity.LoginActivity">
+
+
+    <EditText
+        android:id="@+id/editText"
+        android:hint="请输入用户名"
+        android:paddingLeft="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <ImageView
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/edit"
+        android:layout_alignBottom="@+id/editText"
+        android:layout_alignStart="@+id/editText"
+        android:layout_alignTop="@+id/editText"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content" />
+
+
+
+
+
+
+
+</RelativeLayout>
