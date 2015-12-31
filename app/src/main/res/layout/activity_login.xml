@@ -1,65 +1,59 @@
-<!--
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
     tools:context="com.yeebob.yibaimendian.LoginActivity">
 
-    <EditText
-        android:id="@+id/login_username"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/black_overlay"
-        android:keepScreenOn="true"
-        android:text="@string/login_username"
-        android:textSize="15sp" />
-    <EditText
-        android:id="@+id/login_password"
-        android:text="@string/login_password"
-        android:textColor="@color/black_overlay"
-        android:textSize="15sp"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/login_submit"
-        android:text="登录"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:background="@color/black_overlay"
+        tools:context=".mainactivity.LoginActivity">
+
+
+        <EditText
+            android:id="@+id/login_username"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:hint="请输入用户名"
+            android:paddingLeft="20dp" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/login_username"
+            android:layout_alignStart="@+id/login_username"
+            android:layout_alignTop="@+id/login_username"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/edit" />
+        <EditText
+            android:id="@+id/login_password"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:hint="请输入密码"
+            android:password="true"
+            android:layout_below="@+id/login_username"
+            android:paddingLeft="20dp" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/login_password"
+            android:layout_alignStart="@+id/login_password"
+            android:layout_alignTop="@+id/login_password"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/btnserach" />
+        <Button
+            android:id="@+id/login_submit"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:text="登录"
+            android:textSize="35dp"
+            android:layout_below="@+id/login_password" />
+    </RelativeLayout>
 
 </LinearLayout>
--->
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/black_overlay"
-    tools:context=".mainactivity.LoginActivity">
-
-
-    <EditText
-        android:id="@+id/editText"
-        android:hint="请输入用户名"
-        android:paddingLeft="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <ImageView
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/edit"
-        android:layout_alignBottom="@+id/editText"
-        android:layout_alignStart="@+id/editText"
-        android:layout_alignTop="@+id/editText"
-        android:layout_width="20dp"
-        android:layout_height="wrap_content" />
-
-
-
-
-
-
-
-</RelativeLayout>
