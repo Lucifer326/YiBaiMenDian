@@ -18,7 +18,7 @@ import org.xutils.x;
  * 首页 IndexActivity
  * Created by WGL on 2015-12-29.
  */
-@ContentView(R.layout.indexactivity)
+@ContentView(R.layout.activity_index)
 public class IndexActivity extends AppCompatActivity {
 
     @ViewInject(R.id.tool_bar)
@@ -31,15 +31,12 @@ public class IndexActivity extends AppCompatActivity {
 
         // App Logo
         mToolbar.setLogo(R.mipmap.ic_launcher);
-        // Title
-        mToolbar.setTitle("翼百门店");
-        // Sub Title
-        mToolbar.setSubtitle("go go go");
-        setSupportActionBar(mToolbar);
-        // 设置导航栏图标
-        mToolbar.setNavigationIcon(R.mipmap.ic_launcher);
-        // 菜单事件监听
-        // Menu item click 的監聽事件一樣要設定在 setSupportActionBar 才有作用
+        // 清空标题文字
+        mToolbar.setTitle("");
+
+        this.setSupportActionBar(mToolbar);
+
+        // Menu item click 的监听事件 setSupportActionBar 后才有作用
         mToolbar.setOnMenuItemClickListener(onMenuItemClick);
         //返回按钮
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -55,14 +52,11 @@ public class IndexActivity extends AppCompatActivity {
         public boolean onMenuItemClick(MenuItem menuItem) {
             String msg = "";
             switch (menuItem.getItemId()) {
-                case R.id.action_edit:
+                case R.id.shop_qrcode:
                     msg += "Click edit";
                     break;
                 case R.id.action_share:
                     msg += "Click share";
-                    break;
-                case R.id.action_settings:
-                    msg += "Click setting";
                     break;
             }
 
@@ -75,9 +69,8 @@ public class IndexActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // 為了讓 Toolbar 的 Menu 有作用，這邊的程式不可以拿掉
+        // init toolbar menu layout
         getMenuInflater().inflate(R.menu.menu_index, menu);
         return true;
-       // return super.onCreateOptionsMenu(menu);
     }
 }

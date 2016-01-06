@@ -3,20 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".mainactivity.IndexActivity">
 
-    <item android:id="@+id/action_edit"
-        android:title="action_edit"
-        android:orderInCategory="80"
+    <item
+        android:id="@+id/shop_qrcode"
         android:icon="@drawable/edit"
-        app:showAsAction="ifRoom" />
+        android:orderInCategory="80"
+        android:title="访问微信商城"
+        app:showAsAction="always|withText" />
 
-    <item android:id="@+id/action_share"
-        android:title="action_edit"
-        android:orderInCategory="90"
+    <item
+        android:id="@+id/action_share"
         android:icon="@drawable/btnserach"
-        app:showAsAction="ifRoom" />
-
-    <item android:id="@+id/action_settings"
-        android:title="action_settings"
-        android:orderInCategory="100"
-        app:showAsAction="never"/>
+        android:orderInCategory="90"
+        android:title="商品类别搜索"
+        app:showAsAction="always|withText" />
 </menu>
