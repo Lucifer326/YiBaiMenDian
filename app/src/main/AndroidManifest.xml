@@ -27,6 +27,14 @@
             android:name=".mainactivity.IndexActivity"
             android:screenOrientation="landscape"/>
         <!--首页-->
+        <!--商城二维码页-->
+        <activity android:name=".mainactivity.ShowShopQrcode"
+            android:screenOrientation="landscape"/>
+        <!--商城二维码页-->
+        <!--商品品牌分类页面-->
+        <activity android:name=".mainactivity.ProductsCategoryActivity"
+            android:screenOrientation="landscape"/>
+        <!--商品品牌分类页面-->
     </application>
 
 </manifest>

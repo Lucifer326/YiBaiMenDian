@@ -1,5 +1,6 @@
 package com.yeebob.yibaimendian.mainactivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -53,10 +54,10 @@ public class IndexActivity extends AppCompatActivity {
             String msg = "";
             switch (menuItem.getItemId()) {
                 case R.id.shop_qrcode:
-                    msg += "Click edit";
+                    startQrcodeActivity();  //打开商城二维码页
                     break;
                 case R.id.action_share:
-                    msg += "Click share";
+                    startProductCategory();  //打开商品品牌分类页
                     break;
             }
 
@@ -66,6 +67,18 @@ public class IndexActivity extends AppCompatActivity {
             return true;
         }
     };
+
+    private void startProductCategory() {
+        // 打开商品品牌分类页
+        Intent intent = new Intent(IndexActivity.this, ProductsCategoryActivity.class);
+        startActivity(intent);
+    }
+
+    private void startQrcodeActivity() {
+        // 打开微信商城二维码
+        Intent intent = new Intent(IndexActivity.this, ShowShopQrcode.class);
+        startActivity(intent);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
