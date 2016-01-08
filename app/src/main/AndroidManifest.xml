@@ -35,6 +35,10 @@
         <activity android:name=".mainactivity.ProductsCategoryActivity"
             android:screenOrientation="landscape"/>
         <!--商品品牌分类页面-->
+        <!--商品详情页面-->
+        <activity android:name=".mainactivity.ProductDetailActivity"
+            android:screenOrientation="landscape"/>
+        <!--商品详情页面-->
     </application>
 
 </manifest>

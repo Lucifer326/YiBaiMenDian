@@ -5,11 +5,11 @@
     android:background="#162796"
     tools:context=".fragment.ProductTagFragment">
 
-    <TextView
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/product_tag_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="50sp"
-        android:gravity="center"
-        android:text="商品自定义分类" />
+        android:layout_height="match_parent" />
+
 
 </LinearLayout>

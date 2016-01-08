@@ -26,7 +26,6 @@
             android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/login_username"
-            android:layout_alignStart="@+id/login_username"
             android:layout_alignTop="@+id/login_username"
             android:contentDescription="@string/app_name"
             android:src="@drawable/edit" />
@@ -43,7 +42,6 @@
             android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/login_password"
-            android:layout_alignStart="@+id/login_password"
             android:layout_alignTop="@+id/login_password"
             android:contentDescription="@string/app_name"
             android:src="@drawable/btnserach" />

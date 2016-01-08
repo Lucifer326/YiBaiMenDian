@@ -5,4 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="black_overlay">#66000000</color>
+    <!--item点击效果-->
+    <color name="state_item_pressed">#AAFF0000</color>
+    <color name="state_item_normal">#44FF0000</color>
 </resources>
