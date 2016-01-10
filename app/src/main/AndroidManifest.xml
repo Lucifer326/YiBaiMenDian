@@ -10,7 +10,6 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".mainactivity.LoginActivity"
@@ -39,6 +38,8 @@
         <activity android:name=".mainactivity.ProductDetailActivity"
             android:screenOrientation="landscape"/>
         <!--商品详情页面-->
+        <activity android:name=".mainactivity.ProductsListActivity"
+            android:screenOrientation="landscape"/>
     </application>
 
 </manifest>

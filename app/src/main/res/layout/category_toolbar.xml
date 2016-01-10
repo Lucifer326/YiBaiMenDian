@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/index_toolbar"
+    android:id="@+id/category_toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:background="?attr/colorPrimary"
@@ -8,35 +8,37 @@
 
 
 
-    <!-- 商城 logo-->
-    <ImageView
+    <!-- 返回按钮-->
+    <TextView
+        android:id="@+id/id_arrow_back"
+        android:drawableLeft="@mipmap/arrowleft"
+        android:text="@string/arrow_back"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:drawablePadding="5dp"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:contentDescription="@string/app_name"
-        android:src="@mipmap/ic_launcher" />
-
+        android:layout_height="match_parent" />
     <!-- 商品分类 -->
     <TextView
-        android:id="@+id/id_product_category"
+        android:id="@+id/product_category"
         android:layout_gravity="end"
         android:layout_marginEnd="18dp"
         android:drawablePadding="5dp"
         android:textColor="@color/white"
+        android:gravity="center"
         android:drawableStart="@mipmap/fenlei"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:text="@string/product_category" />
 
     <!-- 商城二维码分享 -->
     <TextView
         android:textColor="@color/white"
-        android:id="@+id/id_shop_qrcode"
+        android:id="@+id/shop_qrcode"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:drawableStart="@mipmap/qrcode"
         android:gravity="center"
+        android:drawableStart="@mipmap/qrcode"
         android:layout_gravity="end"
         android:drawablePadding="5dp"
         android:layout_marginEnd="15dp"

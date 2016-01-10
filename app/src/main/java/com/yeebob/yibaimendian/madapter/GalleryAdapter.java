@@ -15,7 +15,7 @@ import java.util.List;
  * 商品详情图片适配器 GalleryAdapter
  * Created by WGl on 2016-1-8.
  */
-public class GalleryAdapter extends RecyclerView.Adapter<GalleryViewHolder> {
+public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryViewHolder> {
 
     private LayoutInflater mInflate;
     private List<Integer> mDatas;
@@ -38,18 +38,15 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryViewHolder> {
 
     @Override
     public GalleryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflate.inflate(R.layout.activity_detail_gallery_item, parent, false);
-        GalleryViewHolder viewHolder = new GalleryViewHolder(view);
+        View mView = mInflate.inflate(R.layout.activity_detail_gallery_item, parent, false);
 
-        viewHolder.imageView = (ImageView) view
-                .findViewById(R.id.id_index_gallery_item_image);
-        return viewHolder;
+        return new GalleryViewHolder(mView);
     }
 
 
     @Override
     public void onBindViewHolder(final GalleryViewHolder holder, final int position) {
-        holder.imageView.setImageResource(mDatas.get(position));
+        holder.mImageView.setImageResource(mDatas.get(position));
         // 如果设置了回调，则设置点击事件
         if (mOnItemClickLitener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -66,8 +63,18 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryViewHolder> {
     public int getItemCount() {
         return mDatas.size();
     }
+
+    public static class GalleryViewHolder extends RecyclerView.ViewHolder {
+        public ImageView mImageView;
+
+        public GalleryViewHolder(View v) {
+            super(v);
+            mImageView = (ImageView) v.findViewById(R.id.id_index_gallery_item_image);
+        }
+    }
 }
 
+/*
 class GalleryViewHolder extends RecyclerView.ViewHolder {
 
     ImageView imageView;
@@ -76,3 +83,4 @@ class GalleryViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
     }
 }
+*/

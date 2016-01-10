@@ -30,7 +30,7 @@ import java.util.List;
 @ContentView(R.layout.activity_product_detail)
 public class ProductDetailActivity extends AppCompatActivity {
 
-    @ViewInject(R.id.tool_bar)
+    @ViewInject(R.id.id_product_category)
     private Toolbar mToolbar;
 
     private List<Integer> mDatas;
@@ -72,7 +72,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private void initToolBar() {
         // 点击返回按钮
-        mToolbar.setNavigationIcon(R.drawable.arrowleft);
+        mToolbar.setNavigationIcon(R.mipmap.ic_launcher);
         // 清空标题文字
         mToolbar.setTitle("");
 

@@ -8,18 +8,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.yeebob.yibaimendian.R;
-import com.yeebob.yibaimendian.jsonbean.CateBean;
+import com.yeebob.yibaimendian.jsonbean.TagBean;
 
 import java.util.List;
 
 /**
- * 商品列表适配器 CategoryAdapter
+ * 自定义推广商品列表适配器 CategoryAdapter
  * Created by WGL on 2016-1-6.
  */
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyViewHolder> {
+public class TagCateAdapter extends RecyclerView.Adapter<TagCateAdapter.MyViewHolder> {
 
     private LayoutInflater mInflate;
-    private List<CateBean> mDatas;
+    private List<TagBean> mDatas;
     private OnItemClickLitener mOnItemClickLitener;
 
 
@@ -36,20 +36,20 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     }
 
     // 构造方法赋初始值
-    public CategoryAdapter(Context context, List<CateBean> datas) {
+    public TagCateAdapter(Context context, List<TagBean> datas) {
         this.mDatas = datas;
         this.mInflate = LayoutInflater.from(context);
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflate.inflate(R.layout.item_list_product, parent, false);
+        View view = mInflate.inflate(R.layout.item_list_tag, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.mImageView.setImageResource(mDatas.get(position).getCatImg());
+        holder.mImageView.setImageResource(mDatas.get(position).getTagImage());
         // 如果设置了回调，则设置点击事件
         if (mOnItemClickLitener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +82,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            mImageView = (ImageView) itemView.findViewById(R.id.id_cate_image);
+            mImageView = (ImageView) itemView.findViewById(R.id.id_tag_image);
         }
     }
 }

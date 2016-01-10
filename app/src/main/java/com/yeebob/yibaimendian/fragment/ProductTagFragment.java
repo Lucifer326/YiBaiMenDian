@@ -1,5 +1,6 @@
 package com.yeebob.yibaimendian.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -7,17 +8,18 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.yeebob.yibaimendian.R;
-import com.yeebob.yibaimendian.madapter.CategoryAdapter;
+import com.yeebob.yibaimendian.jsonbean.TagBean;
+import com.yeebob.yibaimendian.madapter.TagCateAdapter;
+import com.yeebob.yibaimendian.mainactivity.ProductsListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductTagFragment extends Fragment {
 
-    private List<String> mDatas;
+    private List<TagBean> mDatas;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,16 +32,18 @@ public class ProductTagFragment extends Fragment {
         // set layoutManger 水平滚动
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
         // init adapter
-        CategoryAdapter mTagAdapter = new CategoryAdapter(getActivity(), mDatas);
+        TagCateAdapter mTagAdapter = new TagCateAdapter(getActivity(), mDatas);
         // set adpater recyclerview
         mRecyclerView.setAdapter(mTagAdapter);
 
         // 事件监听
-        mTagAdapter.setOnItemClickLitener(new CategoryAdapter.OnItemClickLitener() {
+        mTagAdapter.setOnItemClickLitener(new TagCateAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getActivity(), position + " click",
-                        Toast.LENGTH_SHORT).show();
+               /* Toast.makeText(getActivity(), mDatas.get(position).getTagName() + " click",
+                        Toast.LENGTH_SHORT).show();*/
+                Intent intent = new Intent(getActivity(), ProductsListActivity.class);
+                startActivity(intent);  // 打开自定义推广商品列表
             }
 
             @Override
@@ -54,15 +58,21 @@ public class ProductTagFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // 初始化商品分类数据
-        initTagDates();
+        // 获取自定义推广商品
+        getTagDates();
     }
 
-    private void initTagDates() {
+    private void getTagDates() {
         mDatas = new ArrayList<>();
 
-        for (int i = 'A'; i < 'c'; i++) {
-            mDatas.add("" + (char) i);
+        for (int i = 0; i < 10; i++) {
+
+            TagBean tagBean = new TagBean();
+            tagBean.setTagId(i);
+            tagBean.setTagName("tagname: " + i);
+            tagBean.setTagImage(R.drawable.c);
+
+            mDatas.add(tagBean);
         }
     }
 

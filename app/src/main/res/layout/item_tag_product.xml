@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@drawable/itempress"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/id_tag_image"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/a" />
+
+    <TextView
+        android:id="@+id/id_tag_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="小米 红色NOTE3 双网通版" />
+
+    <TextView
+        android:id="@+id/id_price"
+        android:text="¥ 1099"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

@@ -10,8 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yeebob.yibaimendian.R;
-import com.yeebob.yibaimendian.jsonbean.CateBean;
-import com.yeebob.yibaimendian.madapter.CategoryAdapter;
+import com.yeebob.yibaimendian.jsonbean.ProductList;
+import com.yeebob.yibaimendian.madapter.ProductListAdapter;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
@@ -21,13 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 商品分类页 ProductsCategoryActivity
+ * 商品自定义推广分类页 ProductsListActivity
  * Created by WGl on 2016-1-6.
  */
-@ContentView(R.layout.activity_product_category)
-public class ProductsCategoryActivity extends AppCompatActivity {
+@ContentView(R.layout.activity_category_tag)
+public class ProductsListActivity extends AppCompatActivity {
 
-    @ViewInject(R.id.product_category_recyclerview)
+    @ViewInject(R.id.tag_category_recyclerview)
     private RecyclerView mRecyclerView;
 
     @ViewInject(R.id.shop_qrcode)
@@ -36,7 +36,10 @@ public class ProductsCategoryActivity extends AppCompatActivity {
     @ViewInject(R.id.id_arrow_back)
     private TextView arrowBack;
 
-    private List<CateBean> mDatas;
+    @ViewInject(R.id.product_category)
+    private TextView productCate;
+
+    private List<ProductList> mDatas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,28 +48,26 @@ public class ProductsCategoryActivity extends AppCompatActivity {
 
         // 初始化商品分类数据
         getDates();
-        CategoryAdapter mCategoryAdapter = new CategoryAdapter(this, mDatas);
+        ProductListAdapter mCategoryAdapter = new ProductListAdapter(this, mDatas);
         mRecyclerView.setAdapter(mCategoryAdapter);
-        // LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        // mRecyclerView.setLayoutManager(linearLayoutManager);
         // 垂直gridview
-       mRecyclerView.setLayoutManager(new GridLayoutManager(this, 5));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 5));
         // 水平滚动gridview;
         //mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL));
         //item事件点击
-        mCategoryAdapter.setOnItemClickLitener(new CategoryAdapter.OnItemClickLitener() {
+        mCategoryAdapter.setOnItemClickLitener(new ProductListAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(ProductsCategoryActivity.this, mDatas.get(position).getCatName() + " click",
-                        Toast.LENGTH_SHORT).show();
+               /* Toast.makeText(ProductsListActivity.this, mDatas.get(position).getProductName() + " click",
+                        Toast.LENGTH_SHORT).show();*/
                 //打开商品详情 临时
-               /* Intent intent = new Intent(ProductsCategoryActivity.this, ProductDetailActivity.class);
+               /* Intent intent = new Intent(ProductsListActivity.this, );
                 startActivity(intent);*/
             }
 
             @Override
             public void onItemLongClick(View view, int position) {
-                Toast.makeText(ProductsCategoryActivity.this, position + " long click",
+                Toast.makeText(ProductsListActivity.this, position + " long click",
                         Toast.LENGTH_SHORT).show();
             }
         });
@@ -83,7 +84,14 @@ public class ProductsCategoryActivity extends AppCompatActivity {
         shopQrcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ProductsCategoryActivity.this, ShowShopQrcode.class);
+                Intent intent = new Intent(ProductsListActivity.this, ShowShopQrcode.class);
+                startActivity(intent);
+            }
+        });
+        productCate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProductsListActivity.this, ProductsCategoryActivity.class);
                 startActivity(intent);
             }
         });
@@ -95,12 +103,13 @@ public class ProductsCategoryActivity extends AppCompatActivity {
         mDatas = new ArrayList<>();
 
         for (int i = 0; i < 21; i++) {
-            CateBean cateBean = new CateBean();
-            cateBean.setCatId(i);
-            cateBean.setCatName("catename" + i);
-            cateBean.setCatImg(R.drawable.b);
+            ProductList productList = new ProductList();
+            productList.setProductId(i);
+            productList.setProductName("小米 红色NOTE3 双网通版");
+            productList.setProductPrice("¥ 1099.00");
+            productList.setCatImg(R.drawable.l);
 
-            mDatas.add(cateBean);
+            mDatas.add(productList);
         }
     }
 

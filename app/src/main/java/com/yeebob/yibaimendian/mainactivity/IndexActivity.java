@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.yeebob.yibaimendian.R;
 
@@ -22,51 +20,36 @@ import org.xutils.x;
 @ContentView(R.layout.activity_index)
 public class IndexActivity extends AppCompatActivity {
 
-    @ViewInject(R.id.tool_bar)
+    @ViewInject(R.id.index_toolbar)
     private Toolbar mToolbar;
+    @ViewInject(R.id.id_shop_qrcode)
+    private TextView shopQrcode;
+    @ViewInject(R.id.id_product_category)
+    private TextView productCate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
 
-        // App Logo
-        mToolbar.setLogo(R.mipmap.ic_launcher);
-        // 清空标题文字
-        mToolbar.setTitle("");
-
         this.setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        // Menu item click 的监听事件 setSupportActionBar 后才有作用
-        mToolbar.setOnMenuItemClickListener(onMenuItemClick);
-        //返回按钮
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        shopQrcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                startQrcodeActivity(); //商城二维码
             }
         });
+
+        productCate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startProductCategory(); //打开商品分类
+            }
+        });
+
     }
-
-    private Toolbar.OnMenuItemClickListener onMenuItemClick = new Toolbar.OnMenuItemClickListener() {
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-            String msg = "";
-            switch (menuItem.getItemId()) {
-                case R.id.shop_qrcode:
-                    startQrcodeActivity();  //打开商城二维码页
-                    break;
-                case R.id.action_share:
-                    startProductCategory();  //打开商品品牌分类页
-                    break;
-            }
-
-            if (!msg.equals("")) {
-                Toast.makeText(IndexActivity.this, msg, Toast.LENGTH_SHORT).show();
-            }
-            return true;
-        }
-    };
 
     private void startProductCategory() {
         // 打开商品品牌分类页
@@ -80,10 +63,4 @@ public class IndexActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // init toolbar menu layout
-        getMenuInflater().inflate(R.menu.menu_index, menu);
-        return true;
-    }
 }
