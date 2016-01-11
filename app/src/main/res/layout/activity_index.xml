@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
@@ -7,23 +8,31 @@
 
     <include layout="@layout/index_toolbar" />
 
-   <!-- <FrameLayout
-        android:id="@+id/fragment_container"
+    <!-- <FrameLayout
+         android:id="@+id/fragment_container"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"/>-->
+
+    <Gallery
+        android:id="@+id/gallery"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>-->
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fadingEdge="none"
+        android:scrollbars="none" />
+    <!--<fragment
+        android:id="@+id/banner_fragment"
+        android:name="com.yeebob.yibaimendian.fragment.BannerFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />-->
 
-     <fragment
-         android:id="@+id/banner_fragment"
-         android:name="com.yeebob.yibaimendian.fragment.BannerFragment"
-         android:layout_width="match_parent"
-         android:layout_height="0dp"
-         android:layout_weight="1" />
-
-     <fragment
-         android:id="@+id/tag_fragment"
-         android:name="com.yeebob.yibaimendian.fragment.ProductTagFragment"
-         android:layout_width="match_parent"
-         android:layout_height="0dip"
-         android:layout_weight="1" />
+    <fragment
+        android:id="@+id/tag_fragment"
+        android:name="com.yeebob.yibaimendian.fragment.ProductTagFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        tools:layout="@layout/fragment_product_tag" />
 
 </LinearLayout>
