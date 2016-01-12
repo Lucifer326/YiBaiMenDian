@@ -57,11 +57,11 @@ public class ProductsCategoryActivity extends AppCompatActivity {
         mCategoryAdapter.setOnItemClickLitener(new CategoryAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(ProductsCategoryActivity.this, mDatas.get(position).getCatName() + " click",
-                        Toast.LENGTH_SHORT).show();
-                //打开商品详情 临时
-               /* Intent intent = new Intent(ProductsCategoryActivity.this, ProductDetailActivity.class);
-                startActivity(intent);*/
+               /* Toast.makeText(ProductsCategoryActivity.this, mDatas.get(position).getCatName() + " click",
+                        Toast.LENGTH_SHORT).show();*/
+                //商品详情页
+                Intent intent = new Intent(ProductsCategoryActivity.this, ProductDetailActivity.class);
+                startActivity(intent);
             }
 
             @Override

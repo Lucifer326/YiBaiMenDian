@@ -58,8 +58,6 @@ public class ProductsListActivity extends AppCompatActivity {
         mCategoryAdapter.setOnItemClickLitener(new ProductListAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-               /* Toast.makeText(ProductsListActivity.this, mDatas.get(position).getProductName() + " click",
-                        Toast.LENGTH_SHORT).show();*/
                 //打开商品详情 临时
                /* Intent intent = new Intent(ProductsListActivity.this, );
                 startActivity(intent);*/
@@ -88,6 +86,7 @@ public class ProductsListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        // 商品分类
         productCate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

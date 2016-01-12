@@ -40,7 +40,7 @@ public class IndexActivity extends AppCompatActivity {
     private Timer mTimer;
     private TimerTask mTimerTask;
     private Handler mHandler = new Handler();
-    private int[] Pics = {R.drawable.a,R.drawable.b,R.drawable.c,R.drawable.d,R.drawable.e} ;
+    private int[] Pics = {R.drawable.banner1,R.drawable.banner2,R.drawable.banner3,R.drawable.banner4} ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,7 @@ public class IndexActivity extends AppCompatActivity {
         //圖片不漸層，漸層長度為0
         mGallery.setFadingEdgeLength( 0 );
         //圖片不重疊，圖片間距為0
-        mGallery.setSpacing(200);
+        mGallery.setSpacing(50);
         //圖片一開始顯示在第幾張設定在Integer.MAX_VALUE/2的位置(Integer.MAX_VALUE為int的最高值)
         mGallery.setSelection(Integer.MAX_VALUE/2);
         //圖片在切換圖片的速度

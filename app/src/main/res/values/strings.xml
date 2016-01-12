@@ -25,4 +25,5 @@
     <string name="share_qrcdoe">访问微信商城</string>
     <string name="product_category">商品分类</string>
     <string name="arrow_back">返回</string>
+    <string name="scan_qrcode">扫描二维码，即可购买哦 !</string>
 </resources>

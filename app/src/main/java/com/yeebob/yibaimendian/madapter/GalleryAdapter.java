@@ -19,12 +19,12 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
     private LayoutInflater mInflate;
     private List<Integer> mDatas;
+    private OnItemClickLitener mOnItemClickLitener;
 
     public interface OnItemClickLitener {
         void onItemClick(View view, int position);
     }
 
-    private OnItemClickLitener mOnItemClickLitener;
 
     public void setOnItemClickLitener(OnItemClickLitener mOnItemClickLitener) {
         this.mOnItemClickLitener = mOnItemClickLitener;
@@ -73,14 +73,3 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
         }
     }
 }
-
-/*
-class GalleryViewHolder extends RecyclerView.ViewHolder {
-
-    ImageView imageView;
-
-    public GalleryViewHolder(View itemView) {
-        super(itemView);
-    }
-}
-*/

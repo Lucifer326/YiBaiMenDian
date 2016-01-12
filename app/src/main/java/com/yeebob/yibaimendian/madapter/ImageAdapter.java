@@ -47,7 +47,7 @@ public class ImageAdapter extends BaseAdapter {
         //縮放為置中
         img.setScaleType(ImageView.ScaleType.FIT_CENTER);
         //設置圖片長寬
-        img.setLayoutParams(new Gallery.LayoutParams(Gallery.LayoutParams.WRAP_CONTENT, Gallery.LayoutParams.MATCH_PARENT));
+        img.setLayoutParams(new Gallery.LayoutParams(1200, Gallery.LayoutParams.WRAP_CONTENT));
 
         //回傳此建立的圖片
         return img;
