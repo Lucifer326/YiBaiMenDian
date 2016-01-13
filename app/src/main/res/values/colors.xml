@@ -15,4 +15,7 @@
     <!--item点击效果-->
     <color name="state_item_pressed">#AAFF0000</color>
     <color name="state_item_normal">#44FF0000</color>
+
+    // 背景透明色
+    <color name="transparent">#99000000</color>
 </resources>

@@ -7,26 +7,38 @@
     android:orientation="vertical">
 
     <!-- 扫描商品二维码 -->
+    <FrameLayout
+        android:id="@+id/frame"
+        android:background="@drawable/qrcode_border_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <ImageView
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="18dp"
         android:id="@+id/id_qrcode_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/app_name"
         android:src="@drawable/product_qrcode" />
+    </FrameLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:text="@string/scan_qrcode"
         android:textSize="25sp" />
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_marginLeft="70dp"
+        android:layout_below="@+id/detail_holder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <TextView
-            android:layout_marginTop="10dp"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            android:layout_marginTop="20dp"
             android:id="@+id/id_detail_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

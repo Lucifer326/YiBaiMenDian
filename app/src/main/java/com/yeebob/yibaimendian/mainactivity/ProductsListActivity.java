@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +47,10 @@ public class ProductsListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
 
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        Integer integer = bundle.getInt("beanid");
+        Log.d("xxxxxxxxxxxxxxxxx", String.valueOf(integer));
         // 初始化商品分类数据
         getDates();
         ProductListAdapter mCategoryAdapter = new ProductListAdapter(this, mDatas);
@@ -59,8 +64,8 @@ public class ProductsListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 //打开商品详情 临时
-               /* Intent intent = new Intent(ProductsListActivity.this, );
-                startActivity(intent);*/
+                Intent intent = new Intent(ProductsListActivity.this, ProductDetailActivity.class );
+                startActivity(intent);
             }
 
             @Override
@@ -99,7 +104,7 @@ public class ProductsListActivity extends AppCompatActivity {
 
     private void getDates() {
 
-        mDatas = new ArrayList<>();
+       /* mDatas = new ArrayList<>();
 
         for (int i = 0; i < 21; i++) {
             ProductList productList = new ProductList();
@@ -107,6 +112,23 @@ public class ProductsListActivity extends AppCompatActivity {
             productList.setProductName("小米 红色NOTE3 双网通版");
             productList.setProductPrice("¥ 1099.00");
             productList.setCatImg(R.drawable.l);
+
+            mDatas.add(productList);
+        }*/
+
+        mDatas = new ArrayList<>();
+        List<Integer> mImg = new ArrayList<>();
+        mImg.add(R.drawable.brand_1);
+        mImg.add(R.drawable.brand_2);
+        mImg.add(R.drawable.brand_3);
+        mImg.add(R.drawable.brand_4);
+        mImg.add(R.drawable.brand_5);
+        for (int i = 1; i < 22; i++) {
+            ProductList productList = new ProductList();
+            productList.setProductId(i);
+            productList.setProductName("小米 红色NOTE3 双网通版");
+            productList.setProductPrice("¥ 1099.00");
+            productList.setCatImg(mImg.get(i % mImg.size()));
 
             mDatas.add(productList);
         }

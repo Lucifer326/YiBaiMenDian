@@ -43,6 +43,7 @@ public class ProductTagFragment extends Fragment {
                /* Toast.makeText(getActivity(), mDatas.get(position).getTagName() + " click",
                         Toast.LENGTH_SHORT).show();*/
                 Intent intent = new Intent(getActivity(), ProductsListActivity.class);
+                intent.putExtra("beanid", 5);
                 startActivity(intent);  // 打开自定义推广商品列表
             }
 

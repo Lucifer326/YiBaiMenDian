@@ -55,9 +55,8 @@ public class ProductDetailActivity extends AppCompatActivity {
         x.view().inject(this);
 
 
-        mDatas = new ArrayList<>(Arrays.asList(R.drawable.a,
-                R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e,
-                R.drawable.f, R.drawable.g, R.drawable.h, R.drawable.l));
+        mDatas = new ArrayList<>(Arrays.asList(R.drawable.xq1,
+                R.drawable.xq2, R.drawable.xq3, R.drawable.xq4, R.drawable.xq5));
        /* LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);*/
 
