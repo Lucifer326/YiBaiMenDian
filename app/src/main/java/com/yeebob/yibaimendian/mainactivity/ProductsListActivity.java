@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,10 +46,10 @@ public class ProductsListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
 
-        Intent intent = getIntent();
+       /* Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         Integer integer = bundle.getInt("beanid");
-        Log.d("xxxxxxxxxxxxxxxxx", String.valueOf(integer));
+        Log.d("xxxxxxxxxxxxxxxxx", String.valueOf(integer));*/
         // 初始化商品分类数据
         getDates();
         ProductListAdapter mCategoryAdapter = new ProductListAdapter(this, mDatas);

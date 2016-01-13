@@ -71,7 +71,7 @@ public class ProductsCategoryActivity extends AppCompatActivity {
             public void onItemClickListener(View view, int position) {
                /* Toast.makeText(ProductsCategoryActivity.this, "点击："
                         + mDatas.get(position).getCatName(), Toast.LENGTH_SHORT).show();*/
-                Intent intent = new Intent(ProductsCategoryActivity.this, ProductDetailActivity.class);
+                Intent intent = new Intent(ProductsCategoryActivity.this, ProductsListActivity.class);
                 startActivity(intent);
 
             }
