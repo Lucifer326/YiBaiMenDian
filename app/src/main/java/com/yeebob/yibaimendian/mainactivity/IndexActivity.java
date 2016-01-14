@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,7 +15,10 @@ import android.widget.Toast;
 
 import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.madapter.ImageAdapter;
+import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
 
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -46,7 +50,7 @@ public class IndexActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
-
+        getJsonData();
         this.setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         /*********/
@@ -83,6 +87,39 @@ public class IndexActivity extends AppCompatActivity {
 
 
     }
+
+    private void getJsonData() {
+        Integer shopId = (Integer) SharedPreferencesUtil.getData(IndexActivity.this, "shopid", 0);
+        String token = (String) SharedPreferencesUtil.getData(IndexActivity.this,"token","");
+
+        RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/Banner/banner_list");
+        params.addBodyParameter("shop_id", String.valueOf(shopId));
+        params.addBodyParameter("token", token);
+
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.v("result:", result);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+
+    }
+
     private AdapterView.OnItemClickListener click = new AdapterView.OnItemClickListener()
     {
         @Override

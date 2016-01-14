@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,10 @@ import android.widget.TextView;
 import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.jsonbean.CateBean;
 import com.yeebob.yibaimendian.madapter.PageRecyclerView;
+import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
 
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -143,6 +147,35 @@ public class ProductsCategoryActivity extends AppCompatActivity {
 
             mDatas.add(cateBean);
         }
+
+        Integer shopId = (Integer) SharedPreferencesUtil.getData(ProductsCategoryActivity.this, "shopid", 0);
+        String token = (String) SharedPreferencesUtil.getData(ProductsCategoryActivity.this,"token","");
+
+        RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/Brands/get_brand");
+        params.addBodyParameter("shop_id", String.valueOf(shopId));
+        params.addBodyParameter("token", token);
+
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.v("result:", result);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
     }
 
     public class MyHolder extends RecyclerView.ViewHolder {

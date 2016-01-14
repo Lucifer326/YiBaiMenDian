@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,11 @@ import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.jsonbean.TagBean;
 import com.yeebob.yibaimendian.madapter.TagCateAdapter;
 import com.yeebob.yibaimendian.mainactivity.ProductsListActivity;
+import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
+
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,6 +136,34 @@ public class ProductTagFragment extends Fragment {
 
             mDatas.add(tagBean);
         }*/
+        Integer shopId = (Integer) SharedPreferencesUtil.getData(x.app(), "shopid", 0);
+        String token = (String) SharedPreferencesUtil.getData(x.app(),"token","");
+
+        RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/Banner/tag_list");
+        params.addBodyParameter("shop_id", String.valueOf(shopId));
+        params.addBodyParameter("token", token);
+
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.v("result:", result);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
     }
 
 }
