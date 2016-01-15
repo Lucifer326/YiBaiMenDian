@@ -44,6 +44,9 @@
         <!--商品详情页面-->
         <activity android:name=".mainactivity.ProductsListActivity"
             android:screenOrientation="landscape"/>
+        <!-- 锁屏轮播图 -->
+        <activity android:name=".mainactivity.CarouselImg"
+            android:screenOrientation="landscape"/>
     </application>
 
 </manifest>

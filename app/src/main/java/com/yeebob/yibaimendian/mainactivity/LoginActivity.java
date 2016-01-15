@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String result) {
                 Log.i("result: ", result);
-                Toast.makeText(getApplicationContext(), "sucess", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_LONG).show();
                 User user = new Gson().fromJson(result, User.class);
                 if (user.getStatus() == 1) {
                     SharedPreferencesUtil.saveData(LoginActivity.this, "shopid", user.getData().getShop_id());
@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFinished() {
                 /*String token = preferences.getString("tokent","");*/
-                Intent intent = new Intent(LoginActivity.this, IndexActivity.class);
+                Intent intent = new Intent(LoginActivity.this, CarouselImg.class);
                 startActivity(intent);
                /* Toast.makeText(x.app(), token, Toast.LENGTH_LONG).show();*/
             }
