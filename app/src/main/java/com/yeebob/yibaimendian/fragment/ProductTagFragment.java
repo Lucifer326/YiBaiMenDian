@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.yeebob.yibaimendian.R;
+import com.yeebob.yibaimendian.jsonbean.CommonJsonList;
 import com.yeebob.yibaimendian.jsonbean.TagBean;
 import com.yeebob.yibaimendian.madapter.TagCateAdapter;
 import com.yeebob.yibaimendian.mainactivity.ProductsListActivity;
@@ -20,12 +20,13 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductTagFragment extends Fragment {
 
     private List<TagBean> mDatas;
+    private RecyclerView mRecyclerView;
+    private TagCateAdapter mTagAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,12 +34,13 @@ public class ProductTagFragment extends Fragment {
 
         // init fragment
         View view = inflater.inflate(R.layout.fragment_product_tag, container, false);
+        //Log.v("beans", datas.toString());
         //get a reference to recyclerView
-        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.product_tag_recyclerview);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.product_tag_recyclerview);
         // set layoutManger 水平滚动
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
         // init adapter
-        TagCateAdapter mTagAdapter = new TagCateAdapter(getActivity(), mDatas);
+        mTagAdapter = new TagCateAdapter(getActivity(), mDatas);
         // set adpater recyclerview
         mRecyclerView.setAdapter(mTagAdapter);
 
@@ -58,7 +60,6 @@ public class ProductTagFragment extends Fragment {
 
             }
         });
-        // Inflate the layout for this fragment
         return view;
     }
 
@@ -70,7 +71,7 @@ public class ProductTagFragment extends Fragment {
     }
 
     private void getTagDates() {
-        mDatas = new ArrayList<>();
+       /* mDatas = new ArrayList<>();
 
         TagBean tagBean1 = new TagBean();
         tagBean1.setTagId(1);
@@ -126,7 +127,7 @@ public class ProductTagFragment extends Fragment {
         tagBean8.setTagName("女神新衣");
         tagBean8.setTagImage(R.drawable.nvshen);
 
-        mDatas.add(tagBean8);
+        mDatas.add(tagBean8);*/
       /*  for (int i = 0; i < 10; i++) {
 
             TagBean tagBean = new TagBean();
@@ -146,7 +147,11 @@ public class ProductTagFragment extends Fragment {
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                Log.v("result:tag_list", result);
+                //Log.v("result:tag_list", result);
+//                CommonJsonList<TagBean> resultObj = CommonJsonList.fromJson(result, TagBean.class);
+                CommonJsonList mDatas = CommonJsonList.fromJson(result, TagBean.class);
+                //Log.v("bean", resultObj.toString());
+                mTagAdapter.notifyDataSetChanged();
             }
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {

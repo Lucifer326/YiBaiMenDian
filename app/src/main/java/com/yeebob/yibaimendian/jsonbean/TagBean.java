@@ -7,40 +7,40 @@ package com.yeebob.yibaimendian.jsonbean;
  */
 public class TagBean {
 
-    private int tagId;
-    private String tagName;
-    private String tagHref;
-    private int tagImage;
+    private String tag_id;
+    private String tag_name;
+    private String tag_href;
+    private String tag_image;
 
-    public int getTagId() {
-        return tagId;
+    public String getTag_id() {
+        return tag_id;
     }
 
-    public void setTagId(int tagId) {
-        this.tagId = tagId;
+    public void setTag_id(String tag_id) {
+        this.tag_id = tag_id;
     }
 
-    public String getTagName() {
-        return tagName;
+    public String getTag_name() {
+        return tag_name;
     }
 
-    public void setTagName(String tagName) {
-        this.tagName = tagName;
+    public void setTag_name(String tag_name) {
+        this.tag_name = tag_name;
     }
 
-    public String getTagHref() {
-        return tagHref;
+    public String getTag_href() {
+        return tag_href;
     }
 
-    public void setTagHref(String tagHref) {
-        this.tagHref = tagHref;
+    public void setTag_href(String tag_href) {
+        this.tag_href = tag_href;
     }
 
-    public int getTagImage() {
-        return tagImage;
+    public String getTag_image() {
+        return tag_image;
     }
 
-    public void setTagImage(int tagImage) {
-        this.tagImage = tagImage;
+    public void setTag_image(String tag_image) {
+        this.tag_image = tag_image;
     }
 }

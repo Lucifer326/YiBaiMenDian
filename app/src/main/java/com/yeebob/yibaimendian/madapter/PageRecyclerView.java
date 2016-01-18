@@ -150,7 +150,7 @@ public class PageRecyclerView extends RecyclerView {
                     }
                 }
                 // 执行自动滚动
-                //smoothScrollBy((int) ((currentPage - 1) * getWidth() - scrollX), 0);
+                smoothScrollBy((int) ((currentPage - 1) * getWidth() - scrollX), 0);
                 // 修改指示器选中项
                // mIndicatorView.setSelectedPage(currentPage - 1);
                 slideDistance = 0;

@@ -2,11 +2,15 @@ package com.yeebob.yibaimendian.madapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.jsonbean.TagBean;
 
@@ -21,6 +25,8 @@ public class TagCateAdapter extends RecyclerView.Adapter<TagCateAdapter.MyViewHo
     private LayoutInflater mInflate;
     private List<TagBean> mDatas;
     private OnItemClickLitener mOnItemClickLitener;
+    protected DisplayImageOptions options;
+    private ImageLoader imageLoader;
 
 
     public void setOnItemClickLitener(OnItemClickLitener mOnItemClickLitener) {
@@ -39,6 +45,8 @@ public class TagCateAdapter extends RecyclerView.Adapter<TagCateAdapter.MyViewHo
     public TagCateAdapter(Context context, List<TagBean> datas) {
         this.mDatas = datas;
         this.mInflate = LayoutInflater.from(context);
+        options = new DisplayImageOptions.Builder().cacheInMemory(true)
+                .displayer(new RoundedBitmapDisplayer(25)).build();
     }
 
     @Override
@@ -49,7 +57,10 @@ public class TagCateAdapter extends RecyclerView.Adapter<TagCateAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.mImageView.setImageResource(mDatas.get(position).getTagImage());
+      /*  holder.mImageView.setImageResource(mDatas.get(position).getTagImage());*/
+//        ImageLoader.getInstance().displayImage(mDatas.get(position).getTag_image(), holder.mImageView);
+        imageLoader.displayImage(mDatas.get(position).getTag_image(), holder.mImageView,options);
+        Log.v("image", mDatas.get(position).getTag_image());
         // 如果设置了回调，则设置点击事件
         if (mOnItemClickLitener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
