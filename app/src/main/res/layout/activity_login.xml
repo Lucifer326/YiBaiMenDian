@@ -3,56 +3,94 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/repeat_bg"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:gravity="center_vertical"
     tools:context="com.yeebob.yibaimendian.LoginActivity">
 
     <RelativeLayout
-        android:layout_gravity="center"
+        android:layout_marginTop="350dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/black_overlay"
+        android:layout_gravity="center"
         tools:context=".mainactivity.LoginActivity">
 
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:id="@+id/user"
+            android:layout_width="300dp"
+            android:layout_height="65dp"
+            android:background="@drawable/login_focus"
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/login_username"
+            <ImageView
+                android:layout_marginLeft="20dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/user" />
+
+            <EditText
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:textColorHint="#7A7E89"
+                android:textSize="25dp"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/login_username"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@null"
+                android:hint="请输入用户名"
+                android:textColor="@color/white" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/dart_focus"
+            android:id="@+id/passwd"
             android:layout_width="300dp"
             android:layout_height="60dp"
-            android:hint="请输入用户名"
-            android:textColor="@color/white"
-            android:paddingLeft="20dp" />
+            android:layout_below="@+id/user"
+            android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/login_username"
-            android:layout_alignTop="@+id/login_username"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/edit" />
-        <EditText
-            android:id="@+id/login_password"
-            android:layout_width="300dp"
-            android:layout_height="60dp"
-            android:hint="请输入密码"
-            android:password="true"
-            android:layout_below="@+id/login_username"
-            android:paddingLeft="20dp" />
+            <ImageView
+                android:layout_marginLeft="20dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignBottom="@+id/login_password"
+                android:layout_alignTop="@+id/login_password"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/password" />
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/login_password"
-            android:layout_alignTop="@+id/login_password"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/btnserach" />
+            <EditText
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:textColorHint="#7A7E89"
+                android:textSize="25dp"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/login_password"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_below="@+id/login_username"
+                android:background="@null"
+                android:hint="请输入密码"
+                android:password="true" />
+
+
+        </LinearLayout>
+
         <Button
+            android:layout_marginTop="30dp"
             android:id="@+id/login_submit"
             android:layout_width="300dp"
-            android:layout_height="60dp"
+            android:layout_height="65dp"
+            android:layout_below="@+id/passwd"
             android:text="登录"
-            android:textSize="35dp"
-            android:layout_below="@+id/login_password" />
+            android:textColor="#9e9e9e"
+            android:background="@drawable/btn_shape"
+            android:textSize="30dp" />
     </RelativeLayout>
 
 </LinearLayout>
+
+

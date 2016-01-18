@@ -2,8 +2,7 @@
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/index_toolbar"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    android:background="?attr/colorPrimary"
+    android:layout_height="128dp"
     android:minHeight="?attr/actionBarSize">
 
 
@@ -11,7 +10,7 @@
     <!-- 商城 logo-->
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:contentDescription="@string/app_name"
         android:src="@mipmap/ic_launcher" />
@@ -20,27 +19,28 @@
     <TextView
         android:id="@+id/id_product_category"
         android:layout_gravity="end"
-        android:layout_marginEnd="18dp"
-        android:drawablePadding="5dp"
-        android:textColor="@color/white"
+        android:layout_marginEnd="80dp"
+        android:drawablePadding="10dp"
+        android:textColor="#fafafa"
         android:drawableStart="@mipmap/fenlei"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
+        android:textSize="16sp"
         android:text="@string/product_category" />
 
     <!-- 商城二维码分享 -->
     <TextView
-        android:textColor="@color/white"
+        android:textColor="#fafafa"
         android:id="@+id/id_shop_qrcode"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:drawableStart="@mipmap/qrcode"
         android:gravity="center"
         android:layout_gravity="end"
-        android:drawablePadding="5dp"
-        android:layout_marginEnd="15dp"
+        android:drawablePadding="10dp"
+        android:layout_marginEnd="100dp"
+        android:textSize="16sp"
         android:text="@string/share_qrcdoe" />
--->
 
 </android.support.v7.widget.Toolbar>

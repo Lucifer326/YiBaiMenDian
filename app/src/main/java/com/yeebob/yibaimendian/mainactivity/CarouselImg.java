@@ -33,7 +33,7 @@ public class CarouselImg extends AppCompatActivity {
         mRollViewPager.setPlayDelay(5000);
         mRollViewPager.setAnimationDurtion(500);
         mRollViewPager.setAdapter(new LoopAdapter(mRollViewPager));
-        mRollViewPager.setHintPadding(0,0,0,0);
+        mRollViewPager.setHintView(null);
         //mRollViewPager.setAdapter(new TestNomalAdapter());
        // mRollViewPager.setHintView(new IconHintView(this,R.drawable.point_focus,R.drawable.point_normal));
         //mRollViewPager.setHintView(new ColorPointHintView(this, Color.YELLOW,Color.WHITE));

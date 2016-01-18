@@ -38,18 +38,18 @@ public class ImageAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
-        //建立圖片
+        //建立图片
         ImageView img = new ImageView(this.mContext);
-        //將圖片置入img，置入的圖片為目前位置的圖片除以圖片總數取餘數，此餘數為圖片陣列的圖片位置
+        //將图片置入img，置入的圖片為目前位置的圖片除以圖片總數取餘數，此餘數為圖片陣列的圖片位置
         img.setImageResource(mPics[position % mPics.length]);
-        //保持圖片長寬比例
+        //保持图片长宽比例
         img.setAdjustViewBounds(true);
-        //縮放為置中
+        //缩放为置中
         img.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        //設置圖片長寬
-        img.setLayoutParams(new Gallery.LayoutParams(1200, Gallery.LayoutParams.WRAP_CONTENT));
+        //设定图片长宽
+        img.setLayoutParams(new Gallery.LayoutParams(1400, Gallery.LayoutParams.MATCH_PARENT));
 
-        //回傳此建立的圖片
+        //回传建立的图片
         return img;
     }
 }

@@ -53,23 +53,24 @@ public class IndexActivity extends AppCompatActivity {
         getJsonData();
         this.setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        /*********/
+
+        /*商品推荐轮播*/
         mGallery = ((Gallery) findViewById(R.id.gallery));
-        //Pics為要顯示圖片的Resources陣列
+        //Pics图片的Resources阵列
         mGallery.setAdapter(new ImageAdapter(this , Pics));
-        //圖片不透明
+        //图片透明度
         mGallery.setUnselectedAlpha( 255 );
-        //圖片不漸層，漸層長度為0
+        //图片不渐变，渐变长为0
         mGallery.setFadingEdgeLength( 0 );
-        //圖片不重疊，圖片間距為0
+        //图片不重叠，图片间距为0
         mGallery.setSpacing(50);
-        //圖片一開始顯示在第幾張設定在Integer.MAX_VALUE/2的位置(Integer.MAX_VALUE為int的最高值)
+        //图片一开始设定在第几张Integer.MAX_VALUE/2的位置(Integer.MAX_VALUE为int的最高值)
         mGallery.setSelection(Integer.MAX_VALUE/2);
-        //圖片在切換圖片的速度
+        //轮播的速度
         mGallery.setAnimationDuration(2000);
-        //設定點擊圖片時觸發
+        //设定图片点击触发
         mGallery.setOnItemClickListener(click);
-        /*********/
+        /*商品推荐轮播*/
 
         shopQrcode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +100,7 @@ public class IndexActivity extends AppCompatActivity {
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                Log.v("result:", result);
+                Log.v("result:banner", result);
             }
 
             @Override

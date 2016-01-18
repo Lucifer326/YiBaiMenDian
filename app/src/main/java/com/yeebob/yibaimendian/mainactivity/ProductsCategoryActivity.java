@@ -151,14 +151,15 @@ public class ProductsCategoryActivity extends AppCompatActivity {
         Integer shopId = (Integer) SharedPreferencesUtil.getData(ProductsCategoryActivity.this, "shopid", 0);
         String token = (String) SharedPreferencesUtil.getData(ProductsCategoryActivity.this,"token","");
 
-        RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/Brands/get_brand");
+        RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/vProduct/get_cate");
+        params.addBodyParameter("cat_id", "0"); //商品分类 默认0
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
 
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                Log.v("result:", result);
+                Log.v("result:cat", result);
             }
 
             @Override

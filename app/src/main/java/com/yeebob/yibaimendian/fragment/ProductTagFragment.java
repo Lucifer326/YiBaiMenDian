@@ -146,9 +146,8 @@ public class ProductTagFragment extends Fragment {
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                Log.v("result:", result);
+                Log.v("result:tag_list", result);
             }
-
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
 

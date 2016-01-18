@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,7 +13,10 @@ import android.widget.Toast;
 import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.jsonbean.ProductList;
 import com.yeebob.yibaimendian.madapter.ProductListAdapter;
+import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
 
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -63,7 +67,7 @@ public class ProductsListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 //打开商品详情 临时
-                Intent intent = new Intent(ProductsListActivity.this, ProductDetailActivity.class );
+                Intent intent = new Intent(ProductsListActivity.this, ProductDetailActivity.class);
                 startActivity(intent);
             }
 
@@ -131,6 +135,36 @@ public class ProductsListActivity extends AppCompatActivity {
 
             mDatas.add(productList);
         }
+        Integer shopId = (Integer) SharedPreferencesUtil.getData(x.app(), "shopid", 0);
+        String token = (String) SharedPreferencesUtil.getData(x.app(), "token", "");
+
+        RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/vProduct/get_vlist");
+        params.addBodyParameter("shop_id", String.valueOf(shopId));
+        params.addBodyParameter("token", token);
+        params.addBodyParameter("tag_id", "1");
+
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.v("result:get_list", result);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+
     }
 
 }
