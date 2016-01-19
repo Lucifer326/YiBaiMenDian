@@ -8,9 +8,10 @@
     <include layout="@layout/category_toolbar"/>
 
     <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="20dp"
+
         android:id="@+id/tag_category_recyclerview"
-        android:layout_width="match_parent"
+        android:layout_width="1728px"
+        android:layout_gravity="center"
         android:layout_height="match_parent"/>
 
 </LinearLayout>

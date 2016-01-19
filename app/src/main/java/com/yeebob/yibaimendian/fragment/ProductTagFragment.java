@@ -3,11 +3,14 @@ package com.yeebob.yibaimendian.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.jsonbean.CommonJsonList;
@@ -20,31 +23,40 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductTagFragment extends Fragment {
 
-    private List<TagBean> mDatas;
-    private RecyclerView mRecyclerView;
+    private List<TagBean> mDatas = new ArrayList<>();
     private TagCateAdapter mTagAdapter;
+    private LinearLayoutManager mLinearLayoutManager;
+
+
+    private ImageButton mImagebtnLeft;
+    private ImageButton mImagebtnRight;
+    private boolean move = false;
+
+    private int mIndex = 0; //可见item postion
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // init fragment
         View view = inflater.inflate(R.layout.fragment_product_tag, container, false);
-        //Log.v("beans", datas.toString());
-        //get a reference to recyclerView
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.product_tag_recyclerview);
-        // set layoutManger 水平滚动
-        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
-        // init adapter
+
+        mImagebtnLeft = (ImageButton) view.findViewById(R.id.tag_arrow_left);
+        mImagebtnRight = (ImageButton) view.findViewById(R.id.tag_arrow_right);
+
+        final RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.product_tag_recyclerview);
+        mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayout.HORIZONTAL, false);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.setHasFixedSize(true);
         mTagAdapter = new TagCateAdapter(getActivity(), mDatas);
-        // set adpater recyclerview
         mRecyclerView.setAdapter(mTagAdapter);
 
-        // 事件监听
+        // item点击事件监听
         mTagAdapter.setOnItemClickLitener(new TagCateAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -60,14 +72,56 @@ public class ProductTagFragment extends Fragment {
 
             }
         });
+
+        //arrow button 事件
+        mImagebtnRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int firstItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+                int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
+              /*  Log.v("Item", String.valueOf(firstItem));
+                Log.v("Item", String.valueOf(lastItem));*/
+                if (lastItem + 1 < mDatas.size()) {
+                    if ((mDatas.size() - lastItem - 1) > 5) {
+                        mRecyclerView.smoothScrollToPosition(lastItem + 5);
+                        mImagebtnLeft.setVisibility(View.VISIBLE);
+                    } else {
+                        mRecyclerView.smoothScrollToPosition(lastItem + (mDatas.size() - lastItem - 1) + lastItem);
+                        mImagebtnRight.setVisibility(View.INVISIBLE);
+                    }
+                }
+            }
+        });
+        mImagebtnLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int firstItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+                int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
+                Log.v("Item", String.valueOf(firstItem));
+                Log.v("Item", String.valueOf(lastItem));
+                if (firstItem > 0) {
+                    if (firstItem > 5) {
+                        mRecyclerView.smoothScrollToPosition(firstItem - 4);
+                        mImagebtnRight.setVisibility(View.VISIBLE);
+                    } else {
+                        mRecyclerView.smoothScrollToPosition(0);
+                        mImagebtnLeft.setVisibility(View.INVISIBLE);
+                    }
+                }
+            }
+        });
+        //滚动监听
+        mRecyclerView.addOnScrollListener(new RecyclerViewListener());
+        getTagDates();
         return view;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // 获取自定义推广商品
-        getTagDates();
+        //getTagDates();
     }
 
     private void getTagDates() {
@@ -138,7 +192,7 @@ public class ProductTagFragment extends Fragment {
             mDatas.add(tagBean);
         }*/
         Integer shopId = (Integer) SharedPreferencesUtil.getData(x.app(), "shopid", 0);
-        String token = (String) SharedPreferencesUtil.getData(x.app(),"token","");
+        String token = (String) SharedPreferencesUtil.getData(x.app(), "token", "");
 
         RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/Banner/tag_list");
         params.addBodyParameter("shop_id", String.valueOf(shopId));
@@ -147,12 +201,20 @@ public class ProductTagFragment extends Fragment {
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                //Log.v("result:tag_list", result);
+                //  Log.v("result:tag_list", result);
 //                CommonJsonList<TagBean> resultObj = CommonJsonList.fromJson(result, TagBean.class);
-                CommonJsonList mDatas = CommonJsonList.fromJson(result, TagBean.class);
-                //Log.v("bean", resultObj.toString());
+                CommonJsonList resultObj = CommonJsonList.fromJson(result, TagBean.class);
+                Log.v("bean", resultObj.toString());
+                mDatas.clear();
+                mDatas.addAll(resultObj.getData());
                 mTagAdapter.notifyDataSetChanged();
+                int firstItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+                int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
+                if (mDatas.size() > lastItem + 1) {
+                    mImagebtnRight.setVisibility(View.VISIBLE);
+                }
             }
+
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
 
@@ -170,4 +232,33 @@ public class ProductTagFragment extends Fragment {
         });
     }
 
+    private class RecyclerViewListener extends RecyclerView.OnScrollListener {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            if (newState == recyclerView.SCROLL_STATE_IDLE) {
+                int firstItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+                int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
+                if (firstItem > 0) {
+                    mImagebtnLeft.setVisibility(View.VISIBLE);
+                }else{
+                    mImagebtnLeft.setVisibility(View.INVISIBLE);
+                }
+                if (lastItem + 1 < mDatas.size()){
+                    mImagebtnRight.setVisibility(View.VISIBLE);
+                }else{
+                    mImagebtnRight.setVisibility(View.INVISIBLE);
+                }
+            }
+        }
+
+        public RecyclerViewListener() {
+            super();
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+        }
+    }
 }

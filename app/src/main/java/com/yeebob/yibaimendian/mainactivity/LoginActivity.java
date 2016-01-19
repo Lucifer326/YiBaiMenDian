@@ -1,8 +1,10 @@
 package com.yeebob.yibaimendian.mainactivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private String userName;
     private String userPassword;
-
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +60,17 @@ public class LoginActivity extends AppCompatActivity {
                 userPassword = password.getText().toString();
                 //登录成功进入首页
                 if (userName.length() <= 0 && userPassword.length() <= 0) {
-                    Toast.makeText(LoginActivity.this, "用户名或密码为空", Toast.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(x.app(), "用户名或密码不能为空", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 } else if (userName.length() <= 0) {
-                    Toast.makeText(LoginActivity.this, "用户名不能为空", Toast.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(x.app(), "用户名不能为空", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 } else if (userPassword.length() <= 0) {
-                    Toast.makeText(LoginActivity.this, "密码不能为空", Toast.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(x.app(), "密码不能为空", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 } else if (userName != null && userPassword != null) {
                     Login(userName, userPassword); //登录
                 }
@@ -79,7 +87,11 @@ public class LoginActivity extends AppCompatActivity {
         Paramers paramersobj = new Paramers(user, md5password);
         String paramerStr = JSON.toJSONString(paramersobj);
         String signature = MD5.md5(paramerStr + UserParams.SALT);
-
+        /* 显示ProgressDialog */
+//        pd = ProgressDialog.show(LoginActivity.this, "标题", "登录中，请稍后……");
+        pd = new ProgressDialog(this);
+        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pd.show();
         RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/Index/Login");
         // 请求参数
         params.addBodyParameter("uname", user);
@@ -90,6 +102,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String result) {
                 User user = new Gson().fromJson(result, User.class);
+                pd.dismiss();
                 if (user.getStatus() == 1) {
                     SharedPreferencesUtil.saveData(LoginActivity.this, "shopid", user.getData().getShop_id());
                     SharedPreferencesUtil.saveData(LoginActivity.this, "token", user.getData().getToken());
@@ -101,11 +114,13 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
+                pd.dismiss();
                 Toast.makeText(x.app(), "网络访问错误", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onCancelled(CancelledException cex) {
+                pd.dismiss();
                 Toast.makeText(x.app(), "canclled", Toast.LENGTH_LONG).show();
             }
 

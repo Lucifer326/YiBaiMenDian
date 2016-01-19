@@ -18,4 +18,7 @@
 
     // 背景透明色
     <color name="transparent">#99000000</color>
+    //登录按钮变色
+    <color name="dark">#BBBBBB</color>
+    <color name="light">#E0E0E0</color>
 </resources>

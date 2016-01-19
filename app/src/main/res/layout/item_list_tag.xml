@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_margin="35dp"
-    android:layout_height="wrap_content">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginRight="32px"
+    android:gravity="center"
+    android:layout_height="match_parent">
 
     <ImageView
-        android:src="@drawable/a"
-        android:scaleType="centerCrop"
+        android:scaleType="centerInside"
         android:id="@+id/id_tag_image"
+        android:layout_width="320px"
+        android:layout_height="380px"
+        android:layout_centerInParent="true"/>
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/tag_progress_loding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"/>
-
-</FrameLayout>
+        android:layout_centerInParent="true"/>
+</RelativeLayout>

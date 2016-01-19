@@ -8,6 +8,7 @@
     tools:context="com.yeebob.yibaimendian.LoginActivity">
 
     <RelativeLayout
+        android:layout_marginTop="350dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -86,7 +87,7 @@
             android:layout_below="@+id/passwd"
             android:text="登录"
             android:textColor="#9e9e9e"
-            android:background="@drawable/btn_shape"
+            style="@style/login_button_style"
             android:textSize="30dp" />
     </RelativeLayout>
 

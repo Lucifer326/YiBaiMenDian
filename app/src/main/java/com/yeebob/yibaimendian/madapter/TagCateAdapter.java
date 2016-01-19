@@ -1,16 +1,18 @@
 package com.yeebob.yibaimendian.madapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.jsonbean.TagBean;
 
@@ -26,7 +28,6 @@ public class TagCateAdapter extends RecyclerView.Adapter<TagCateAdapter.MyViewHo
     private List<TagBean> mDatas;
     private OnItemClickLitener mOnItemClickLitener;
     protected DisplayImageOptions options;
-    private ImageLoader imageLoader;
 
 
     public void setOnItemClickLitener(OnItemClickLitener mOnItemClickLitener) {
@@ -46,7 +47,9 @@ public class TagCateAdapter extends RecyclerView.Adapter<TagCateAdapter.MyViewHo
         this.mDatas = datas;
         this.mInflate = LayoutInflater.from(context);
         options = new DisplayImageOptions.Builder().cacheInMemory(true)
-                .displayer(new RoundedBitmapDisplayer(25)).build();
+                .cacheOnDisk(true)
+                .displayer(new RoundedBitmapDisplayer(20))
+                .bitmapConfig(Bitmap.Config.RGB_565).build();
     }
 
     @Override
@@ -58,9 +61,21 @@ public class TagCateAdapter extends RecyclerView.Adapter<TagCateAdapter.MyViewHo
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
       /*  holder.mImageView.setImageResource(mDatas.get(position).getTagImage());*/
-//        ImageLoader.getInstance().displayImage(mDatas.get(position).getTag_image(), holder.mImageView);
-        imageLoader.displayImage(mDatas.get(position).getTag_image(), holder.mImageView,options);
-        Log.v("image", mDatas.get(position).getTag_image());
+        ImageLoader.getInstance().displayImage(mDatas.get(position).getTag_image(), holder.mImageView,options,new SimpleImageLoadingListener(){
+            @Override
+            public void onLoadingStarted(String imageUri, View view) {
+                super.onLoadingStarted(imageUri, view);
+                holder.progressBar.setProgress(0);
+                holder.progressBar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                super.onLoadingComplete(imageUri, view, loadedImage);
+                holder.progressBar.setVisibility(View.GONE);
+            }
+        });
+       // Log.v("image", mDatas.get(position).getTag_image());
         // 如果设置了回调，则设置点击事件
         if (mOnItemClickLitener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -90,10 +105,12 @@ public class TagCateAdapter extends RecyclerView.Adapter<TagCateAdapter.MyViewHo
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView mImageView;
+        public ProgressBar progressBar;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             mImageView = (ImageView) itemView.findViewById(R.id.id_tag_image);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.tag_progress_loding);
         }
     }
 }

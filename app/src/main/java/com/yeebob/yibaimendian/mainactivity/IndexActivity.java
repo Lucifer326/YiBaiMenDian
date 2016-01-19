@@ -44,7 +44,7 @@ public class IndexActivity extends AppCompatActivity {
     private Timer mTimer;
     private TimerTask mTimerTask;
     private Handler mHandler = new Handler();
-    private int[] Pics = {R.drawable.banner1,R.drawable.banner2,R.drawable.banner3,R.drawable.banner4} ;
+    private int[] Pics = {R.drawable.banner,R.drawable.banner,R.drawable.banner,R.drawable.banner} ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,7 @@ public class IndexActivity extends AppCompatActivity {
         //图片不渐变，渐变长为0
         mGallery.setFadingEdgeLength( 0 );
         //图片不重叠，图片间距为0
-        mGallery.setSpacing(50);
+        mGallery.setSpacing(36);
         //图片一开始设定在第几张Integer.MAX_VALUE/2的位置(Integer.MAX_VALUE为int的最高值)
         mGallery.setSelection(Integer.MAX_VALUE/2);
         //轮播的速度

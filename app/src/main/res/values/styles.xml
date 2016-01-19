@@ -1,6 +1,6 @@
 <resources>
-    <style name="AppTheme" parent="AppTheme.Base">
-    </style>
+
+    <style name="AppTheme" parent="AppTheme.Base"></style>
 
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -21,5 +21,9 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowBackground">@color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="login_button_style">
+        <item name="android:background">@drawable/selector_corners_button</item>
     </style>
 </resources>

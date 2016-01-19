@@ -2,13 +2,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
     tools:context=".fragment.ProductTagFragment">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:visibility="invisible"
+            android:layout_margin="28px"
+            android:background="@null"
+            android:id="@+id/tag_arrow_left"
+            android:layout_gravity="center"
+            android:layout_width="34px"
+            android:layout_height="62px"
+            android:src="@drawable/left" />
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/product_tag_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_weight="1" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
+        <ImageButton
+            android:visibility="invisible"
+            android:layout_margin="28px"
+            android:background="@null"
+            android:layout_gravity="center"
+            android:id="@+id/tag_arrow_right"
+            android:layout_width="34px"
+            android:layout_height="match_parent"
+            android:src="@drawable/right" />
+    </LinearLayout>
 </LinearLayout>
