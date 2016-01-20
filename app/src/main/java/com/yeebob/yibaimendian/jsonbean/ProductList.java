@@ -7,40 +7,24 @@ package com.yeebob.yibaimendian.jsonbean;
  */
 public class ProductList {
 
-    private int productId;
-    private String productName;
-    private String productPrice;
-    private int catImg;
+    private int product_id;
+    private String product_name;
+    private String sell_price;
+    private int catimg;
 
-    public int getProductId() {
-        return productId;
+    public int getProduct_id() {
+        return product_id;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public String getProduct_name() {
+        return product_name;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getSell_price() {
+        return sell_price;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getProductPrice() {
-        return productPrice;
-    }
-
-    public void setProductPrice(String productPrice) {
-        this.productPrice = productPrice;
-    }
-
-    public int getCatImg() {
-        return catImg;
-    }
-
-    public void setCatImg(int catImg) {
-        this.catImg = catImg;
+    public int getCatimg() {
+        return catimg;
     }
 }

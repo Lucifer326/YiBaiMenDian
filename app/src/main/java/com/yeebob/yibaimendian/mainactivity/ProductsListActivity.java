@@ -11,11 +11,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yeebob.yibaimendian.R;
+import com.yeebob.yibaimendian.jsonbean.CommonJsonList;
 import com.yeebob.yibaimendian.jsonbean.ProductList;
+import com.yeebob.yibaimendian.jsonbean.ProductListBean;
 import com.yeebob.yibaimendian.madapter.ProductListAdapter;
 import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
 
 import org.xutils.common.Callback;
+import org.xutils.ex.HttpException;
 import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
@@ -43,17 +46,18 @@ public class ProductsListActivity extends AppCompatActivity {
     @ViewInject(R.id.product_category)
     private TextView productCate;
 
-    private List<ProductList> mDatas;
+    private List<ProductListBean> mDatas = new ArrayList<>();
+    private List<ProductList> datas;
+    private String tagId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
 
-       /* Intent intent = getIntent();
+        Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        Integer integer = bundle.getInt("beanid");
-        Log.d("xxxxxxxxxxxxxxxxx", String.valueOf(integer));*/
+        tagId = bundle.getString("tag_id");
         // 初始化商品分类数据
         getDates();
         ProductListAdapter mCategoryAdapter = new ProductListAdapter(this, mDatas);
@@ -77,7 +81,6 @@ public class ProductsListActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
-
         // 返回事件
         arrowBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,7 +122,7 @@ public class ProductsListActivity extends AppCompatActivity {
             mDatas.add(productList);
         }*/
 
-        mDatas = new ArrayList<>();
+     /*   mDatas = new ArrayList<>();
         List<Integer> mImg = new ArrayList<>();
         mImg.add(R.drawable.brand_1);
         mImg.add(R.drawable.brand_2);
@@ -134,23 +137,43 @@ public class ProductsListActivity extends AppCompatActivity {
             productList.setCatImg(mImg.get(i % mImg.size()));
 
             mDatas.add(productList);
-        }
+        }*/
         Integer shopId = (Integer) SharedPreferencesUtil.getData(x.app(), "shopid", 0);
         String token = (String) SharedPreferencesUtil.getData(x.app(), "token", "");
 
         RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/vProduct/get_vlist");
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
-        params.addBodyParameter("tag_id", "1");
+        params.addBodyParameter("tag_id", tagId);
+        Log.v("get_list", tagId);
 
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 Log.v("result:get_list", result);
+                CommonJsonList resultObj = CommonJsonList.fromJson(result, ProductListBean.class);
+                if (resultObj.getStatus() == 1) {
+                    mDatas.clear();
+                    mDatas.addAll(resultObj.getData());
+                    Log.v("get_list", mDatas.toString());
+                } else {
+                    Toast.makeText(x.app(), "获取商品列表失败", Toast.LENGTH_SHORT).show();
+                }
+
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
+                if (ex instanceof HttpException) { // 网络错误
+                    HttpException httpEx = (HttpException) ex;
+                    int responseCode = httpEx.getCode();
+                    String responseMsg = httpEx.getMessage();
+                    String errorResult = httpEx.getResult();
+                    Toast.makeText(x.app(), responseCode, Toast.LENGTH_LONG).show();
+                    // ...
+                } else { // 其他错误
+                    Toast.makeText(x.app(), " 未知错误...", Toast.LENGTH_LONG).show();
+                }
 
             }
 

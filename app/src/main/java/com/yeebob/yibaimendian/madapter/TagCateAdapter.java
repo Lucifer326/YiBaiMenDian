@@ -48,7 +48,7 @@ public class TagCateAdapter extends RecyclerView.Adapter<TagCateAdapter.MyViewHo
         this.mInflate = LayoutInflater.from(context);
         options = new DisplayImageOptions.Builder().cacheInMemory(true)
                 .cacheOnDisk(true)
-                .displayer(new RoundedBitmapDisplayer(20))
+                .displayer(new RoundedBitmapDisplayer(15))
                 .bitmapConfig(Bitmap.Config.RGB_565).build();
     }
 
@@ -113,5 +113,6 @@ public class TagCateAdapter extends RecyclerView.Adapter<TagCateAdapter.MyViewHo
             progressBar = (ProgressBar) itemView.findViewById(R.id.tag_progress_loding);
         }
     }
+
 }
 

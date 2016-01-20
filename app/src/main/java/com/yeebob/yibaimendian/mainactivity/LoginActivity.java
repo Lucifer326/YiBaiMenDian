@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -91,6 +92,8 @@ public class LoginActivity extends AppCompatActivity {
 //        pd = ProgressDialog.show(LoginActivity.this, "标题", "登录中，请稍后……");
         pd = new ProgressDialog(this);
         pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pd.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        pd.setMessage("登陆中，请等待...");
         pd.show();
         RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/Index/Login");
         // 请求参数
@@ -106,9 +109,12 @@ public class LoginActivity extends AppCompatActivity {
                 if (user.getStatus() == 1) {
                     SharedPreferencesUtil.saveData(LoginActivity.this, "shopid", user.getData().getShop_id());
                     SharedPreferencesUtil.saveData(LoginActivity.this, "token", user.getData().getToken());
+                    SharedPreferencesUtil.saveData(LoginActivity.this, "href", user.getData().getHref());
                     startIndex(); // 打开首页
                 } else {
-                    Toast.makeText(getApplicationContext(), "用户名或密码错误", Toast.LENGTH_LONG).show();
+                    Toast toast = Toast.makeText(x.app(), "用户名或密码错误", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 }
             }
 

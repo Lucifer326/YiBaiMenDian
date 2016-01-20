@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Gallery;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yeebob.yibaimendian.R;
+import com.yeebob.yibaimendian.jsonbean.BannerBean;
+import com.yeebob.yibaimendian.jsonbean.CommonJsonList;
 import com.yeebob.yibaimendian.madapter.ImageAdapter;
 import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
 
@@ -23,6 +26,8 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -44,7 +49,8 @@ public class IndexActivity extends AppCompatActivity {
     private Timer mTimer;
     private TimerTask mTimerTask;
     private Handler mHandler = new Handler();
-    private int[] Pics = {R.drawable.banner,R.drawable.banner,R.drawable.banner,R.drawable.banner} ;
+    private int[] Pics = {R.drawable.banner, R.drawable.banner, R.drawable.banner, R.drawable.banner};
+    private List<BannerBean> mDatas = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,23 +60,6 @@ public class IndexActivity extends AppCompatActivity {
         this.setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        /*商品推荐轮播*/
-        mGallery = ((Gallery) findViewById(R.id.gallery));
-        //Pics图片的Resources阵列
-        mGallery.setAdapter(new ImageAdapter(this , Pics));
-        //图片透明度
-        mGallery.setUnselectedAlpha( 255 );
-        //图片不渐变，渐变长为0
-        mGallery.setFadingEdgeLength( 0 );
-        //图片不重叠，图片间距为0
-        mGallery.setSpacing(36);
-        //图片一开始设定在第几张Integer.MAX_VALUE/2的位置(Integer.MAX_VALUE为int的最高值)
-        mGallery.setSelection(Integer.MAX_VALUE/2);
-        //轮播的速度
-        mGallery.setAnimationDuration(2000);
-        //设定图片点击触发
-        mGallery.setOnItemClickListener(click);
-        /*商品推荐轮播*/
 
         shopQrcode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,9 +78,55 @@ public class IndexActivity extends AppCompatActivity {
 
     }
 
+    private void startBannert() {
+
+        /*商品推荐轮播*/
+        mGallery = ((Gallery) findViewById(R.id.gallery));
+        //Pics图片的Resources阵列
+        mGallery.setAdapter(new ImageAdapter(this, Pics, mDatas));
+        //图片透明度
+        mGallery.setUnselectedAlpha(255);
+        //图片不渐变，渐变长为0
+        mGallery.setFadingEdgeLength(0);
+        //图片不重叠，图片间距为0
+        mGallery.setSpacing(36);
+        //图片一开始设定在第几张Integer.MAX_VALUE/2的位置(Integer.MAX_VALUE为int的最高值)
+        mGallery.setSelection(Integer.MAX_VALUE / 2);
+        //轮播的速度
+        mGallery.setAnimationDuration(5000);
+        //设定图片点击触发
+        mGallery.setOnItemClickListener(click);
+        mGallery.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN: { //按住事件发生后执行代码的区域
+                        stopAutoScroller();
+                        break;
+                    }
+                    case MotionEvent.ACTION_MOVE: { //移动事件发生后执行代码的区域
+                        stopAutoScroller();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {   //松开事件发生后执行代码的区域
+                        startAutoScroller();
+                        break;
+                    }
+
+                    default:
+
+                        break;
+                }
+                return false;
+            }
+        });
+        /*商品推荐轮播*/
+    }
+
     private void getJsonData() {
         Integer shopId = (Integer) SharedPreferencesUtil.getData(IndexActivity.this, "shopid", 0);
-        String token = (String) SharedPreferencesUtil.getData(IndexActivity.this,"token","");
+        String token = (String) SharedPreferencesUtil.getData(IndexActivity.this, "token", "");
 
         RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/Banner/banner_list");
         params.addBodyParameter("shop_id", String.valueOf(shopId));
@@ -100,7 +135,15 @@ public class IndexActivity extends AppCompatActivity {
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                Log.v("result:banner", result);
+                CommonJsonList resultObj = CommonJsonList.fromJson(result, BannerBean.class);
+                Log.v("bean", result);
+                if (resultObj.getStatus() == 1) {
+                    mDatas = resultObj.getData();
+                    Log.v("xxxxxx", mDatas.toString());
+                    startBannert();
+                } else {
+                    Toast.makeText(x.app(), "获取轮播图错误", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -121,12 +164,10 @@ public class IndexActivity extends AppCompatActivity {
 
     }
 
-    private AdapterView.OnItemClickListener click = new AdapterView.OnItemClickListener()
-    {
+    private AdapterView.OnItemClickListener click = new AdapterView.OnItemClickListener() {
         @Override
-        public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
-        {
-            Toast.makeText(IndexActivity.this, "您點擊第" + ((arg2 % Pics.length) + 1) + "張圖片", Toast.LENGTH_SHORT).show();
+        public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+            Toast.makeText(IndexActivity.this, "你点击了" + ((arg2 % mDatas.size()) + 1) + "张图片", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -142,63 +183,63 @@ public class IndexActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if(mTimer!=null)
-        {
-            mTimer.cancel();
-            mTimer=null;
-        }
-
-        if(mTimerTask!=null)
-        {
-            mTimerTask.cancel();
-            mTimerTask=null;
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
+    private void startAutoScroller() {
         //因下方會重新new Timer，避免重複佔據系統不必要的資源，在此確認mTimer是否為null
-        if(mTimer!=null)
-        {
+        if (mTimer != null) {
             mTimer.cancel();
-            mTimer=null;
+            mTimer = null;
         }
 
         //因下方會重新new TimerTask，避免重複佔據系統不必要的資源，在此確認mTimerTask是否為null
-        if(mTimerTask!=null)
-        {
+        if (mTimerTask != null) {
             mTimerTask.cancel();
-            mTimerTask=null;
+            mTimerTask = null;
         }
 
         //建立Timer
         mTimer = new Timer();
         //建立TimerTask
-        mTimerTask = new TimerTask()
-        {
+        mTimerTask = new TimerTask() {
             @Override
-            public void run()
-            {
-                mHandler.post(new Runnable()
-                {
+            public void run() {
+                mHandler.post(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         //每3秒觸發時要做的事
                         //scroll 3
                         mGallery.onScroll(null, null, 3, 0);
                         //向右滾動
-                        mGallery.onKeyDown(KeyEvent.KEYCODE_DPAD_RIGHT , null);
+                        mGallery.onKeyDown(KeyEvent.KEYCODE_DPAD_RIGHT, null);
                     }
                 });
             }
         };
 
         //從3秒開始，每3秒觸發一次，每三秒自動滾動
-        mTimer.schedule(mTimerTask, 3000, 3000);
+        mTimer.schedule(mTimerTask, 5000, 5000);
+    }
+
+    private void stopAutoScroller() {
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
+        }
+
+        if (mTimerTask != null) {
+            mTimerTask.cancel();
+            mTimerTask = null;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopAutoScroller();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startAutoScroller();
     }
 }

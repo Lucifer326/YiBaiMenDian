@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.jsonbean.CommonJsonList;
@@ -60,11 +60,11 @@ public class ProductTagFragment extends Fragment {
         mTagAdapter.setOnItemClickLitener(new TagCateAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-               /* Toast.makeText(getActivity(), mDatas.get(position).getTagName() + " click",
+                /*Toast.makeText(x.app(), mDatas.get(position).getTag_id() + " click",
                         Toast.LENGTH_SHORT).show();*/
                 Intent intent = new Intent(getActivity(), ProductsListActivity.class);
-//                intent.putExtra("beanid", 5);
-                startActivity(intent);  // 打开自定义推广商品列表
+                intent.putExtra("tag_id", mDatas.get(position).getTag_id());
+                startActivity(intent);  // 打开自定义推广商品列表*/
             }
 
             @Override
@@ -77,10 +77,7 @@ public class ProductTagFragment extends Fragment {
         mImagebtnRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int firstItem = mLinearLayoutManager.findFirstVisibleItemPosition();
                 int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
-              /*  Log.v("Item", String.valueOf(firstItem));
-                Log.v("Item", String.valueOf(lastItem));*/
                 if (lastItem + 1 < mDatas.size()) {
                     if ((mDatas.size() - lastItem - 1) > 5) {
                         mRecyclerView.smoothScrollToPosition(lastItem + 5);
@@ -96,9 +93,6 @@ public class ProductTagFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 int firstItem = mLinearLayoutManager.findFirstVisibleItemPosition();
-                int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
-                Log.v("Item", String.valueOf(firstItem));
-                Log.v("Item", String.valueOf(lastItem));
                 if (firstItem > 0) {
                     if (firstItem > 5) {
                         mRecyclerView.smoothScrollToPosition(firstItem - 4);
@@ -201,14 +195,10 @@ public class ProductTagFragment extends Fragment {
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                //  Log.v("result:tag_list", result);
-//                CommonJsonList<TagBean> resultObj = CommonJsonList.fromJson(result, TagBean.class);
                 CommonJsonList resultObj = CommonJsonList.fromJson(result, TagBean.class);
-                Log.v("bean", resultObj.toString());
                 mDatas.clear();
                 mDatas.addAll(resultObj.getData());
                 mTagAdapter.notifyDataSetChanged();
-                int firstItem = mLinearLayoutManager.findFirstVisibleItemPosition();
                 int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
                 if (mDatas.size() > lastItem + 1) {
                     mImagebtnRight.setVisibility(View.VISIBLE);
@@ -217,7 +207,7 @@ public class ProductTagFragment extends Fragment {
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-
+                Toast.makeText(x.app(), " 未知错误...", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -236,17 +226,17 @@ public class ProductTagFragment extends Fragment {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            if (newState == recyclerView.SCROLL_STATE_IDLE) {
+            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                 int firstItem = mLinearLayoutManager.findFirstVisibleItemPosition();
                 int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
                 if (firstItem > 0) {
                     mImagebtnLeft.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     mImagebtnLeft.setVisibility(View.INVISIBLE);
                 }
-                if (lastItem + 1 < mDatas.size()){
+                if (lastItem + 1 < mDatas.size()) {
                     mImagebtnRight.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     mImagebtnRight.setVisibility(View.INVISIBLE);
                 }
             }
