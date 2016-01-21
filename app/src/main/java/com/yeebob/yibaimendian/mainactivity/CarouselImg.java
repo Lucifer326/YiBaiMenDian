@@ -2,6 +2,7 @@ package com.yeebob.yibaimendian.mainactivity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -9,7 +10,10 @@ import android.widget.ImageView;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.LoopPagerAdapter;
 import com.yeebob.yibaimendian.R;
+import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
 
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -24,13 +28,53 @@ public class CarouselImg extends AppCompatActivity {
     @ViewInject(R.id.roll_view_pager)
     private RollPagerView mRollViewPager;
 
+    private  static final String CAROUSEL_URL = "http://iwshop.yeebob.com//?/Advert/get_advert";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
 
-        startCarousel(); //启动轮播
+        getJsonData();
+    }
+
+    private void getJsonData(){
+        Integer shopId = (Integer) SharedPreferencesUtil.getData(CarouselImg.this, "shopid", 0);
+        String token = (String) SharedPreferencesUtil.getData(CarouselImg.this, "token", "");
+
+        RequestParams params = new RequestParams(CAROUSEL_URL);
+        params.addBodyParameter("shop_id", String.valueOf(shopId));
+        params.addBodyParameter("token", token);
+
+
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+               /* CommonJsonList resultObj = CommonJsonList.fromJson(result, BannerBean.class);*/
+                Log.v("bean", result);
+               /* if (resultObj.getStatus() == 1) {
+
+                } else {
+                    Toast.makeText(x.app(), "获取轮播图错误", Toast.LENGTH_SHORT).show();
+                }*/
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
     }
 
     private void startCarousel(){
