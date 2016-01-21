@@ -8,10 +8,9 @@
 
     <ImageView
         android:id="@+id/id_tag_image"
-        android:layout_width="311px"
-        android:layout_height="408px"
-        android:scaleType="centerInside"
-        android:src="@drawable/brand_1" />
+        android:layout_width="300px"
+        android:layout_height="376px"
+        android:scaleType="centerInside" />
 
     <LinearLayout
         android:layout_marginTop="15dp"

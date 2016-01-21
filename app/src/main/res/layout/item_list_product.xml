@@ -6,8 +6,9 @@
     <ImageView
         android:layout_gravity="center"
         android:id="@+id/id_cate_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="311px"
+        android:layout_height="380px"
+        android:scaleType="centerCrop"
         android:src="@drawable/brand_1" />
 
 </FrameLayout>

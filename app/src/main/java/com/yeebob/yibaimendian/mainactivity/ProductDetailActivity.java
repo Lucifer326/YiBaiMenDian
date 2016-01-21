@@ -13,7 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.yeebob.yibaimendian.R;
+import com.yeebob.yibaimendian.jsonbean.DetailBean;
 import com.yeebob.yibaimendian.madapter.GalleryAdapter;
 import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
 
@@ -90,7 +92,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         shopQrcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               startQrcodeActivity();
+                startQrcodeActivity();
             }
         });
 
@@ -138,18 +140,26 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     public void getJsonData() {
+        Intent intent = getIntent();
+        String productId = intent.getStringExtra("product_id");
+        Log.v("productid", productId); //商品id
         Integer shopId = (Integer) SharedPreferencesUtil.getData(ProductDetailActivity.this, "shopid", 0);
-        String token = (String) SharedPreferencesUtil.getData(ProductDetailActivity.this,"token","");
+        String token = (String) SharedPreferencesUtil.getData(ProductDetailActivity.this, "token", "");
 
         RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/vProduct/product_details");
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
-        params.addBodyParameter("product_id","8172"); //商品ID
+        params.addBodyParameter("product_id", productId); //商品ID
 
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 Log.v("result:detail", result);
+               /* CommonJsonList resultObj = CommonJsonList.fromJson(result, DetailBean.class);*/
+                /*Log.v("zzzzzzz", resultObj.toString());*/
+                Gson gson = new Gson();
+                DetailBean obj = gson.fromJson(result, DetailBean.class);
+                Log.v("sssss", obj.toString());
             }
 
             @Override

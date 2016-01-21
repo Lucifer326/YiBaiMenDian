@@ -7,11 +7,17 @@
 
     <include layout="@layout/category_toolbar"/>
 
-    <com.yeebob.yibaimendian.madapter.PageRecyclerView
+    <android.support.v7.widget.RecyclerView
         android:layout_marginTop="45dp"
         android:layout_marginBottom="45dp"
         android:id="@+id/product_category_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+ <!--   <com.yeebob.yibaimendian.madapter.PageRecyclerView
+        android:layout_marginTop="45dp"
+        android:layout_marginBottom="45dp"
+        android:id="@+id/product_category_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>-->
 
 </LinearLayout>

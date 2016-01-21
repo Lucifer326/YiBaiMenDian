@@ -7,33 +7,31 @@ package com.yeebob.yibaimendian.jsonbean;
  */
 public class CateBean {
 
-    private int catId;
-    private String catName;
-    private int catImg;
+    private int cat_id;
+    private String cat_name;
+    private String cat_image;
 
-    public int getCatId() {
-        return catId;
+    public int getCat_id() {
+        return cat_id;
     }
 
-    public void setCatId(int catId) {
-        this.catId = catId;
+    public void setCat_id(int cat_id) {
+        this.cat_id = cat_id;
     }
 
-    public String getCatName() {
-        return catName;
+    public String getCat_name() {
+        return cat_name;
     }
 
-    public void setCatName(String catName) {
-        this.catName = catName;
+    public void setCat_name(String cat_name) {
+        this.cat_name = cat_name;
     }
 
-    public int getCatImg() {
-        return catImg;
+    public String getCat_image() {
+        return cat_image;
     }
 
-    public void setCatImg(int catImg) {
-        this.catImg = catImg;
+    public void setCat_image(String cat_image) {
+        this.cat_image = cat_image;
     }
-
-
 }
