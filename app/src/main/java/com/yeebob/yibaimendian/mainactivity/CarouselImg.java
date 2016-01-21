@@ -30,12 +30,16 @@ public class CarouselImg extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
 
+        startCarousel(); //启动轮播
+    }
+
+    private void startCarousel(){
         mRollViewPager.setPlayDelay(5000);
         mRollViewPager.setAnimationDurtion(500);
         mRollViewPager.setAdapter(new LoopAdapter(mRollViewPager));
         mRollViewPager.setHintView(null);
         //mRollViewPager.setAdapter(new TestNomalAdapter());
-       // mRollViewPager.setHintView(new IconHintView(this,R.drawable.point_focus,R.drawable.point_normal));
+        // mRollViewPager.setHintView(new IconHintView(this,R.drawable.point_focus,R.drawable.point_normal));
         //mRollViewPager.setHintView(new ColorPointHintView(this, Color.YELLOW,Color.WHITE));
         //mRollViewPager.setHintView(new TextHintView(this));
     }
