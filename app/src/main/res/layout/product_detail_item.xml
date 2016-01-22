@@ -16,8 +16,9 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="18dp"
         android:id="@+id/id_qrcode_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="294px"
+        android:layout_height="294px"
+        android:scaleType="centerCrop"
         android:contentDescription="@string/app_name"
         android:src="@drawable/product_qrcode" />
     </FrameLayout>
@@ -42,6 +43,8 @@
             android:id="@+id/id_detail_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxLines="4"
+            android:maxWidth="360px"
             android:text="冬季新款韩版连帽韩国真毛领棉衣2015加厚\n中长款棉服外套女" />
 
         <LinearLayout
@@ -59,6 +62,7 @@
                 android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/id_product_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/id_detail_name"
@@ -105,6 +109,7 @@
                 android:textColor="@color/white"
                 android:textSize="20sp" />
             <TextView
+                android:id="@+id/id_product_instock"
                 android:layout_marginLeft="15dp"
                 android:textSize="20sp"
                 android:text="150件"

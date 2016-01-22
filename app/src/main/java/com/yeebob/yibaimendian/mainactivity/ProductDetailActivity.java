@@ -1,6 +1,7 @@
 package com.yeebob.yibaimendian.mainactivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,6 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.jsonbean.DetailBean;
 import com.yeebob.yibaimendian.madapter.GalleryAdapter;
@@ -26,7 +30,6 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -51,7 +54,26 @@ public class ProductDetailActivity extends AppCompatActivity {
     @ViewInject(R.id.id_image_content)
     private ImageView mImg;
 
-    private List<Integer> mDatas;
+    @ViewInject(R.id.id_qrcode_image)
+    private ImageView productQrcode;
+
+    @ViewInject(R.id.id_detail_name)
+    private TextView ProductDesc;
+
+    @ViewInject(R.id.id_product_price)
+    private TextView productPrice;
+
+    @ViewInject(R.id.id_product_instock)
+    private TextView productInstock;
+
+    private List<String> mDatas = new ArrayList<>();
+    private GalleryAdapter mAdapter;
+    private DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true)
+            .cacheOnDisk(true)
+            .showImageForEmptyUri(R.drawable.xq1)//设置图片Uri为空或是错误的时候显示的图片
+            .showImageOnFail(R.drawable.xq1)  //设置图片加载/解码过程中错误时候显示的图片
+            .displayer(new RoundedBitmapDisplayer(15)) //圆角处理
+            .bitmapConfig(Bitmap.Config.RGB_565).build();
 
 
     @Override
@@ -61,22 +83,23 @@ public class ProductDetailActivity extends AppCompatActivity {
         x.view().inject(this);
 
         getJsonData();
-        mDatas = new ArrayList<>(Arrays.asList(R.drawable.xq1,
-                R.drawable.xq2, R.drawable.xq3, R.drawable.xq4, R.drawable.xq5));
+      /*  mDatas = new ArrayList<>(Arrays.asList(R.drawable.xq1,
+                R.drawable.xq2, R.drawable.xq3, R.drawable.xq4, R.drawable.xq5));*/
        /* LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);*/
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        GalleryAdapter mAdapter = new GalleryAdapter(ProductDetailActivity.this, mDatas);
+        mAdapter = new GalleryAdapter(ProductDetailActivity.this, mDatas);
         mRecyclerView.setAdapter(mAdapter);
-        mImg.setImageResource(mDatas.get(0));
+        // mImg.setImageResource(mDatas.get(0));
         // 显示大图片
         mAdapter.setOnItemClickLitener(new GalleryAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
 //				Toast.makeText(getApplicationContext(), position + "", Toast.LENGTH_SHORT)
 //						.show();
-                mImg.setImageResource(mDatas.get(position));
+                //  mImg.setImageResource(mDatas.get(position));
+                ImageLoader.getInstance().displayImage(mDatas.get(position), mImg, options);
             }
         });
 
@@ -155,11 +178,17 @@ public class ProductDetailActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String result) {
                 Log.v("result:detail", result);
-               /* CommonJsonList resultObj = CommonJsonList.fromJson(result, DetailBean.class);*/
-                /*Log.v("zzzzzzz", resultObj.toString());*/
                 Gson gson = new Gson();
-                DetailBean obj = gson.fromJson(result, DetailBean.class);
-                Log.v("sssss", obj.toString());
+                DetailBean resultObj = gson.fromJson(result, DetailBean.class);
+                if (resultObj.getStatus() == 1) {
+                    Log.v("getdata", resultObj.getData().toString());
+                    mDatas.clear();
+                    mDatas.addAll(resultObj.getData().getProduct_images());
+                    mAdapter.notifyDataSetChanged();
+                    setDataForDetail(resultObj);
+                } else {
+                    Toast.makeText(x.app(), "获取商品详情失败,,,", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -177,5 +206,17 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void setDataForDetail(DetailBean resultObj) {
+        // 设置商品详情首图
+        ImageLoader.getInstance().displayImage(resultObj.getData().getCatimg(), mImg, options);
+        // 设置二维码
+        ImageLoader.getInstance().displayImage(resultObj.getData().getTwc_image(), productQrcode);
+        //设置商品名称
+        ProductDesc.setText(resultObj.getData().getProduct_name());
+        //设置价格
+       // productPrice.setText(resultObj.getData().get);
+        //设置库存
     }
 }

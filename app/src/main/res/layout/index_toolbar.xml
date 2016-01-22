@@ -42,5 +42,13 @@
         android:layout_marginEnd="100dp"
         android:textSize="16sp"
         android:text="@string/share_qrcdoe" />
+    <TextView
+        android:id="@+id/guanggao"
+        android:textSize="16sp"
+        android:textColor="#fafafa"
+        android:layout_marginLeft="150dp"
+        android:text="广告"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </android.support.v7.widget.Toolbar>

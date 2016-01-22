@@ -44,7 +44,8 @@ public class IndexActivity extends AppCompatActivity {
     private TextView shopQrcode;
     @ViewInject(R.id.id_product_category)
     private TextView productCate;
-
+    @ViewInject(R.id.guanggao)
+    private TextView gg; //测试数据
     private Gallery mGallery;
     private Timer mTimer;
     private TimerTask mTimerTask;
@@ -72,6 +73,13 @@ public class IndexActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startProductCategory(); //打开商品分类
+            }
+        });
+        gg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent  intent = new Intent(IndexActivity.this, CarouselImg.class);
+                startActivity(intent);
             }
         });
 

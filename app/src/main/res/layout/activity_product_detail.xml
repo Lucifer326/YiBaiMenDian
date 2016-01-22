@@ -17,10 +17,9 @@
 
         <ImageView
             android:id="@+id/id_image_content"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="524px"
+            android:layout_height="656px"
             android:layout_gravity="center"
-            android:layout_weight="1"
             android:contentDescription="@string/app_name"
             android:scaleType="fitXY" />
 
@@ -32,9 +31,8 @@
             android:layout_weight="1">
 
             <android.support.v7.widget.RecyclerView
-                android:paddingLeft="50dp"
                 android:id="@+id/detail_pic_recyclerView"
-                android:layout_width="wrap_content"
+                android:layout_width="361px"
                 android:layout_height="match_parent">
             </android.support.v7.widget.RecyclerView>
         </RelativeLayout>

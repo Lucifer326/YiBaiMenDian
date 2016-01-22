@@ -28,16 +28,17 @@ public class CarouselImg extends AppCompatActivity {
     @ViewInject(R.id.roll_view_pager)
     private RollPagerView mRollViewPager;
 
-    private  static final String CAROUSEL_URL = "http://iwshop.yeebob.com//?/Advert/get_advert";
+    private  static final String CAROUSEL_URL = "http://iwshop.yeebob.com/?/Advert/get_advert";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
-
+        startCarousel();
         getJsonData();
     }
+
 
     private void getJsonData(){
         Integer shopId = (Integer) SharedPreferencesUtil.getData(CarouselImg.this, "shopid", 0);

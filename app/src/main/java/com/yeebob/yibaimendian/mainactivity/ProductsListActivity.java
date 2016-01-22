@@ -1,12 +1,17 @@
 package com.yeebob.yibaimendian.mainactivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +47,9 @@ public class ProductsListActivity extends AppCompatActivity {
     @ViewInject(R.id.id_arrow_back)
     private TextView arrowBack;
 
+    @ViewInject(R.id.product_select)
+    private TextView productSelect;
+
     @ViewInject(R.id.product_category)
     private TextView productCate;
 
@@ -49,22 +57,22 @@ public class ProductsListActivity extends AppCompatActivity {
     private ProductListAdapter mCategoryAdapter;
     private String tagId;
     private String catId;
+    private PopupWindow mPopupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
-
         final Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         tagId = bundle.getString("tag_id", null);
         catId = bundle.getString("cat_id", null);
-        if (tagId != null) {
+     /*   if (tagId != null) {
             Log.v("bundle tagId", tagId);
         }
         if (catId != null) {
             Log.v("bundle catId", catId);
-        }
+        }*/
         // 初始化商品分类数据
         getDates();
         mCategoryAdapter = new ProductListAdapter(this, mDatas);
@@ -116,8 +124,18 @@ public class ProductsListActivity extends AppCompatActivity {
             }
         });
 
+        //商品筛选
+        productSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(x.app(), "商品筛选功能...", Toast.LENGTH_SHORT).show();
+                showProductFilterWindow();
+            }
+        });
+
     }
 
+    // 获取网络商品列表数据
     private void getDates() {
 
         Integer shopId = (Integer) SharedPreferencesUtil.getData(x.app(), "shopid", 0);
@@ -176,6 +194,20 @@ public class ProductsListActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    //商品筛选popwindow
+    private void showProductFilterWindow() {
+        //加载PopupWindow的布局文件
+        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = layoutInflater.inflate(R.layout.product_filter_window, null);
+        //加载PopupWindow的媒介布局文件
+        View parentView = layoutInflater.inflate(R.layout.activity_category_tag, null);
+
+        //声明并实例化PopupWindow
+        mPopupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //为PopupWindow设置弹出的位置
+        mPopupWindow.showAtLocation(parentView, Gravity.TOP, 0, 0);
     }
 
 }
