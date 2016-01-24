@@ -1,22 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:zhy="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg"
+    android:background="#000000"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@color/white"
-        android:text="pop window"
-        android:textSize="50dp" />
 
+    <!-- 筛选分类-->
+    <com.zhy.view.flowlayout.TagFlowLayout
+        android:id="@+id/id_cat_flowlayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        zhy:max_select="1"
+        >
+    </com.zhy.view.flowlayout.TagFlowLayout>
+
+    <!-- 筛选品牌 -->
+    <com.zhy.view.flowlayout.TagFlowLayout
+        android:id="@+id/id_brand_flowlayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        zhy:max_select="1"
+        >
+        </com.zhy.view.flowlayout.TagFlowLayout>
     <Button
         android:id="@+id/id_filter_btn"
         android:layout_marginTop="20dp"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:text="测试按钮"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
