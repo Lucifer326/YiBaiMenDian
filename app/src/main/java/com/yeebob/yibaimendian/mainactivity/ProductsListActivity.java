@@ -56,9 +56,12 @@ public class ProductsListActivity extends AppCompatActivity {
     @ViewInject(R.id.product_select)
     private TextView productSelect;
 
-    @ViewInject(R.id.product_category)
-    private TextView productCate;
+    @ViewInject(R.id.id_search_text)
+    private TextView searchText;
 
+   /* @ViewInject(R.id.product_category)
+    private TextView productCate;
+*/
     private List<ProductListBean> mDatas = new ArrayList<>();
     private ProductListAdapter mCategoryAdapter;
     private String tagId;
@@ -126,21 +129,21 @@ public class ProductsListActivity extends AppCompatActivity {
         });
 
         // 商城二维码展示
-        shopQrcode.setOnClickListener(new View.OnClickListener() {
+       /* shopQrcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ProductsListActivity.this, ShowShopQrcode.class);
                 startActivity(intent);
             }
-        });
+        });*/
         // 商品分类
-        productCate.setOnClickListener(new View.OnClickListener() {
+      /*  productCate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ProductsListActivity.this, ProductsCategoryActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         //商品筛选
         productSelect.setOnClickListener(new View.OnClickListener() {
@@ -150,7 +153,62 @@ public class ProductsListActivity extends AppCompatActivity {
                 showProductFilterWindow(view);
             }
         });
+        //搜索
+    }
 
+    private void getSearchData() {
+        RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/vProduct/get_vlist");
+        params.addBodyParameter("shop_id", String.valueOf(shopId));
+        params.addBodyParameter("token", token);
+        if (tagId == null && catId != null) {
+            params.addBodyParameter("catId", catId);
+        }
+        if (catId == null && tagId != null) {
+            params.addBodyParameter("tag_id", tagId);
+        }
+
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.v("result:get_list", result);
+                CommonJsonList resultObj = CommonJsonList.fromJson(result, ProductListBean.class);
+                if (resultObj.getStatus() == 1) {
+                    mDatas.clear();
+                    mDatas.addAll(resultObj.getData());
+                    mCategoryAdapter.notifyDataSetChanged();
+                    Log.v("get_list", mDatas.toString());
+
+                } else {
+                    Toast.makeText(x.app(), "获取商品列表失败", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                if (ex instanceof HttpException) { // 网络错误
+                    HttpException httpEx = (HttpException) ex;
+                    int responseCode = httpEx.getCode();
+                    String responseMsg = httpEx.getMessage();
+                    String errorResult = httpEx.getResult();
+                    Toast.makeText(x.app(), responseCode, Toast.LENGTH_LONG).show();
+                    // ...
+                } else { // 其他错误
+                    Toast.makeText(x.app(), " 未知错误...", Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
     }
 
     // 获取网络商品列表数据

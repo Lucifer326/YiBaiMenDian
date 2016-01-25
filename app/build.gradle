@@ -35,4 +35,5 @@ dependencies {
     compile 'com.github.yoojia:zxing:0.7@aar'
     compile 'com.zhy:flowlayout-lib:1.0.0'
     compile 'com.github.rtoshiro.fullscreenvideoview:fullscreenvideoview:1.1.0'
+    compile 'com.miguelcatalan:materialsearchview:1.4.0'
 }

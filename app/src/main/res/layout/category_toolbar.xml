@@ -7,52 +7,108 @@
     android:minHeight="?attr/actionBarSize">
 
 
-
-    <!-- 返回按钮-->
-    <TextView
-        android:id="@+id/id_arrow_back"
-        android:drawableLeft="@mipmap/arrowleft"
-        android:text="@string/arrow_back"
-        android:textColor="@color/white"
-        android:gravity="center"
-        android:drawablePadding="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
-    <!-- 商品分类 -->
-    <TextView
-        android:id="@+id/product_category"
-        android:layout_gravity="end"
-        android:layout_marginEnd="18dp"
-        android:drawablePadding="5dp"
-        android:textColor="@color/white"
-        android:gravity="center"
-        android:drawableStart="@mipmap/fenlei"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/product_category" />
+        android:gravity="center_vertical">
+        <!-- 返回按钮-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
 
-    <!-- 商城二维码分享 -->
-    <TextView
-        android:textColor="@color/white"
-        android:id="@+id/shop_qrcode"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:drawableStart="@mipmap/qrcode"
-        android:layout_gravity="end"
-        android:drawablePadding="5dp"
-        android:layout_marginEnd="15dp"
-        android:text="@string/share_qrcdoe" />
-    <!-- 商品筛选按钮 -->
-    <TextView
-        android:drawableStart="@mipmap/qrcode"
-        android:layout_marginRight="50dp"
-        android:layout_gravity="end"
-        android:textColor="@color/white"
-        android:id="@+id/product_select"
-        android:text="筛选"
-        android:drawablePadding="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_width="17px"
+                android:layout_height="30px"
+                android:layout_gravity="center"
+                android:src="@drawable/arrow_back" />
+
+            <TextView
+                android:id="@+id/id_arrow_back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:gravity="center"
+                android:text="@string/arrow_back"
+                android:textColor="#F0F0F0"
+                android:textSize="28px" />
+        </LinearLayout>
+        <!-- 商品筛选按钮 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/shop_qrcode">
+
+            <ImageView
+                android:layout_width="29px"
+                android:layout_height="30px"
+                android:layout_gravity="center"
+                android:src="@drawable/filter" />
+
+            <TextView
+                android:id="@+id/product_select"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:gravity="center"
+                android:text="筛选"
+                android:textColor="#F0F0F0"
+                android:textSize="28px" />
+        </LinearLayout>
+        <!-- 商城二维码分享 -->
+        <LinearLayout
+            android:layout_toLeftOf="@+id/id_search"
+            android:id="@+id/shop_qrcode"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+           >
+
+            <ImageView
+                android:layout_width="30px"
+                android:layout_height="30px"
+                android:layout_gravity="center"
+                android:src="@mipmap/erweima" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:text="@string/share_qrcdoe"
+                android:textColor="@color/white"
+                android:textSize="28px" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/id_search"
+            android:background="@drawable/sousuokuang"
+            android:layout_alignParentEnd="true"
+            android:layout_width="564px"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/id_search_text"
+                android:layout_marginLeft="15dp"
+                android:imeOptions="actionSearch"
+                android:background="@null"
+                android:inputType="text"
+                android:textSize="22px"
+                android:textColorHint="#9e9e9e"
+                android:layout_gravity="center"
+                android:hint="请输入要找的商品名称/品类/品牌等,如相机"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/search_btn"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="25dp"
+                android:layout_gravity="center"
+                android:src="@drawable/search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
+
 
 </android.support.v7.widget.Toolbar>

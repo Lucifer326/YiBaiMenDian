@@ -8,16 +8,16 @@
     <!-- xutils3.1.2 权限开启 -->
 
     <application
+        android:name=".app.YiApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".app.YiApp"
         android:theme="@style/AppTheme">
         <activity
-            android:windowSoftInputMode="adjustResize|stateHidden"
             android:name=".mainactivity.LoginActivity"
             android:label="@string/app_name"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,27 +27,40 @@
         <!--首页-->
         <activity
             android:name=".mainactivity.IndexActivity"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape" />
         <!--首页-->
         <!--商城二维码页-->
         <activity
-            android:theme="@style/Transparent"
             android:name=".mainactivity.ShowShopQrcode"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:theme="@style/Transparent" />
         <!--商城二维码页-->
         <!--商品品牌分类页面-->
-        <activity android:name=".mainactivity.ProductsCategoryActivity"
-            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".mainactivity.ProductsCategoryActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <!--商品品牌分类页面-->
         <!--商品详情页面-->
-        <activity android:name=".mainactivity.ProductDetailActivity"
-            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".mainactivity.ProductDetailActivity"
+            android:screenOrientation="landscape" />
         <!--商品详情页面-->
-        <activity android:name=".mainactivity.ProductsListActivity"
-            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".mainactivity.ProductsListActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <!-- 锁屏轮播图 -->
-        <activity android:name=".mainactivity.CarouselImg"
-            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".mainactivity.CarouselImg"
+            android:screenOrientation="landscape" />
+        <!-- 广告页面 -->
+        <activity
+            android:name=".mainactivity.Banner_WebView"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".mainactivity.ProductsSearchActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

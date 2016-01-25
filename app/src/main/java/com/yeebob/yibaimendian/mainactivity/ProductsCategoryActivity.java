@@ -7,6 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.jsonbean.CateBean;
 import com.yeebob.yibaimendian.jsonbean.CommonJsonList;
+import com.yeebob.yibaimendian.jsonbean.ProductListBean;
 import com.yeebob.yibaimendian.madapter.CategoryAdapter;
 import com.yeebob.yibaimendian.madapter.PageRecyclerView;
 import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
@@ -39,15 +41,24 @@ public class ProductsCategoryActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     //   private PageRecyclerView mRecyclerView;
 
-    @ViewInject(R.id.shop_qrcode)
-    private TextView shopQrcode;
-
+    /*  @ViewInject(R.id.shop_qrcode)
+      private TextView shopQrcode;
+  */
     @ViewInject(R.id.id_arrow_back)
     private TextView arrowBack;
+
+    @ViewInject(R.id.id_search_text)
+    private EditText searchText;
+
+    @ViewInject(R.id.search_btn)
+    private ImageView searchBtn;
 
     private List<CateBean> mDatas = new ArrayList<>();
     private CategoryAdapter mCategoryAdapter;
     private PageRecyclerView.PageAdapter myAdapter = null;
+
+    private Integer shopId;
+    private String token;
 
 
     @Override
@@ -144,20 +155,80 @@ public class ProductsCategoryActivity extends AppCompatActivity {
         });
 
         // 商城二维码展示
-        shopQrcode.setOnClickListener(new View.OnClickListener() {
+       /* shopQrcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ProductsCategoryActivity.this, ShowShopQrcode.class);
                 startActivity(intent);
             }
+        });*/
+
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String keyword = searchText.getText().toString();
+
+                if ("".equals(keyword)) {
+                    Toast.makeText(x.app(), "请输入搜索关键词", Toast.LENGTH_SHORT).show();
+                } else {
+                    getSearchData(keyword);
+                }
+            }
         });
 
     }
 
+    private void getSearchData(String keyword) {
+        //获取搜索商品
+        RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/vProduct/get_vlist");
+        params.addBodyParameter("shop_id", String.valueOf(shopId));
+        params.addBodyParameter("token", token);
+        params.addBodyParameter("keywords", keyword);
+
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.v("result:keywords", result);
+                CommonJsonList resultObj = CommonJsonList.fromJson(result, ProductListBean.class);
+                if (resultObj.getStatus() == 1) {
+                    List<ProductListBean> datas = resultObj.getData();
+                    if (datas.size() > 0) {
+                        Intent searhIntent = new Intent(x.app(), ProductsSearchActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("searchdata", (Serializable) datas);
+                        searhIntent.putExtras(bundle);
+                        startActivity(searhIntent);
+                    } else {
+                        Toast.makeText(x.app(), "暂无搜索商品...", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                } else {
+                    Toast.makeText(x.app(), "暂无搜索商品...", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
     private void getDates() {
 
-        Integer shopId = (Integer) SharedPreferencesUtil.getData(ProductsCategoryActivity.this, "shopid", 0);
-        String token = (String) SharedPreferencesUtil.getData(ProductsCategoryActivity.this, "token", "");
+        shopId = (Integer) SharedPreferencesUtil.getData(ProductsCategoryActivity.this, "shopid", 0);
+        token = (String) SharedPreferencesUtil.getData(ProductsCategoryActivity.this, "token", "");
 
         RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/vProduct/get_cate");
         params.addBodyParameter("cat_id", "0"); //商品分类 默认0

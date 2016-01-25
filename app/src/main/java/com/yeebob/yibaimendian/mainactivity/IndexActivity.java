@@ -61,7 +61,6 @@ public class IndexActivity extends AppCompatActivity {
         this.setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-
         shopQrcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,7 +77,7 @@ public class IndexActivity extends AppCompatActivity {
         gg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent  intent = new Intent(IndexActivity.this, CarouselImg.class);
+                Intent intent = new Intent(IndexActivity.this, CarouselImg.class);
                 startActivity(intent);
             }
         });
@@ -175,7 +174,17 @@ public class IndexActivity extends AppCompatActivity {
     private AdapterView.OnItemClickListener click = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-            Toast.makeText(IndexActivity.this, "你点击了" + ((arg2 % mDatas.size()) + 1) + "张图片", Toast.LENGTH_SHORT).show();
+            String url = mDatas.get(arg2 % mDatas.size()).getBanner_href();
+           /* Toast.makeText(IndexActivity.this, "你点击了" + ((arg2 % mDatas.size())) + ":::url", Toast.LENGTH_SHORT).show();*/
+            Intent webIntent = new Intent(IndexActivity.this, Banner_WebView.class);
+            if (url != null && url !="") {
+                webIntent.putExtra("url", url);
+                startActivity(webIntent);
+            } else {
+                Toast.makeText(x.app(), "暂无信息...", Toast.LENGTH_SHORT).show();
+            }
+
+
         }
     };
 

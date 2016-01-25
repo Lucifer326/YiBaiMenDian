@@ -45,8 +45,8 @@ public class ProductDetailActivity extends AppCompatActivity {
     @ViewInject(R.id.id_arrow_back)
     private TextView arrowBack;
 
-    @ViewInject(R.id.product_category)
-    private TextView productCate;
+   /* @ViewInject(R.id.product_category)
+    private TextView productCate;*/
 
     @ViewInject(R.id.detail_pic_recyclerView)
     private RecyclerView mRecyclerView;
@@ -120,12 +120,12 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
 
         // 商品分类
-        productCate.setOnClickListener(new View.OnClickListener() {
+       /* productCate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startProductCategory();
             }
-        });
+        });*/
 
     }
 
