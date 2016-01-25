@@ -1,7 +1,7 @@
 package com.yeebob.yibaimendian.mainactivity;
 
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,16 +10,21 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yeebob.yibaimendian.R;
+import com.yeebob.yibaimendian.jsonbean.CateBean;
 import com.yeebob.yibaimendian.jsonbean.CommonJsonList;
 import com.yeebob.yibaimendian.jsonbean.ProductListBean;
 import com.yeebob.yibaimendian.madapter.ProductListAdapter;
 import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
+import com.zhy.view.flowlayout.FlowLayout;
+import com.zhy.view.flowlayout.TagAdapter;
+import com.zhy.view.flowlayout.TagFlowLayout;
 
 import org.xutils.common.Callback;
 import org.xutils.ex.HttpException;
@@ -30,6 +35,7 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 商品自定义推广分类页 ProductsListActivity
@@ -58,6 +64,17 @@ public class ProductsListActivity extends AppCompatActivity {
     private String tagId;
     private String catId;
     private PopupWindow mPopupWindow;
+    private String[] mVals;
+    private List<CateBean> mCatetags = new ArrayList<>();
+
+    private String CateID;
+    private String BrandID;
+
+    private Integer shopId;
+    private String token;
+
+    private final static String BRAND_URI = "http://iwshop.yeebob.com/?/Brands/get_brand";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,12 +84,13 @@ public class ProductsListActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         tagId = bundle.getString("tag_id", null);
         catId = bundle.getString("cat_id", null);
-     /*   if (tagId != null) {
+        if (tagId != null) {
             Log.v("bundle tagId", tagId);
         }
         if (catId != null) {
             Log.v("bundle catId", catId);
-        }*/
+            mCatetags = (List<CateBean>) bundle.getSerializable("Catetag");
+        }
         // 初始化商品分类数据
         getDates();
         mCategoryAdapter = new ProductListAdapter(this, mDatas);
@@ -129,7 +147,7 @@ public class ProductsListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(x.app(), "商品筛选功能...", Toast.LENGTH_SHORT).show();
-                showProductFilterWindow();
+                showProductFilterWindow(view);
             }
         });
 
@@ -138,8 +156,8 @@ public class ProductsListActivity extends AppCompatActivity {
     // 获取网络商品列表数据
     private void getDates() {
 
-        Integer shopId = (Integer) SharedPreferencesUtil.getData(x.app(), "shopid", 0);
-        String token = (String) SharedPreferencesUtil.getData(x.app(), "token", "");
+        shopId = (Integer) SharedPreferencesUtil.getData(x.app(), "shopid", 0);
+        token = (String) SharedPreferencesUtil.getData(x.app(), "token", "");
 
         RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/vProduct/get_vlist");
         params.addBodyParameter("shop_id", String.valueOf(shopId));
@@ -197,17 +215,121 @@ public class ProductsListActivity extends AppCompatActivity {
     }
 
     //商品筛选popwindow
-    private void showProductFilterWindow() {
+    private void showProductFilterWindow(View parent) {
+
         //加载PopupWindow的布局文件
-        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = layoutInflater.inflate(R.layout.product_filter_window, null);
-        //加载PopupWindow的媒介布局文件
-        View parentView = layoutInflater.inflate(R.layout.activity_category_tag, null);
+        final LayoutInflater mInflater = LayoutInflater.from(x.app());
+        View view = mInflater.inflate(R.layout.product_filter_window, null);
+
+        final TagFlowLayout mFlowLayout = (TagFlowLayout) view.findViewById(R.id.id_cat_flowlayout); //一级分类
+        final TagFlowLayout mBrandFlowLayout = (TagFlowLayout) view.findViewById(R.id.id_brand_flowlayout); //品牌
+        final Button filterBtn = (Button) view.findViewById(R.id.id_filter_btn);
+        filterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        mVals = new String[]
+                {"全部", "Hello", "Android", "Weclome Hi ", "Button", "TextView", "Hello",
+                        "Android", "Weclome", "Button ImageView", "TextView", "Helloworld",
+                        "Android", "Weclome Hello", "Button Text", "TextView", "Android", "Weclome Hi ", "Button", "TextView", "Hello"
+                };
+        mCatetags.add(0, new CateBean(0, "全部", "全部"));
+        //设置 分类标签
+        mFlowLayout.setAdapter(new TagAdapter<CateBean>(mCatetags) {
+            @Override
+            public View getView(FlowLayout parent, int position, CateBean o) {
+                TextView tv = (TextView) mInflater.inflate(R.layout.filter_item_cat, mFlowLayout, false);
+                tv.setText(o.getCat_name());
+                return tv;
+            }
+        });
+        //监听
+        mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
+            @Override
+            public boolean onTagClick(View view, int position, FlowLayout parent) {
+                Toast.makeText(x.app(), mCatetags.get(position).getCat_id() + mCatetags.get(position).getCat_name(), Toast.LENGTH_SHORT).show();
+                //view.setVisibility(View.GONE);
+                return true;
+            }
+        });
+
+
+        mFlowLayout.setOnSelectListener(new TagFlowLayout.OnSelectListener() {
+            @Override
+            public void onSelected(Set<Integer> selectPosSet) {
+//                x.app().setTitle("choose:" + selectPosSet.toString());
+                CateID = selectPosSet.toString();
+                Toast.makeText(x.app(), "choose" + selectPosSet.toString(), Toast.LENGTH_SHORT).show();
+
+                RequestParams params = new RequestParams(BRAND_URI);
+                params.addBodyParameter("shop_id", String.valueOf(shopId));
+                params.addBodyParameter("token", token);
+                params.addBodyParameter("cat_id",CateID);
+
+                x.http().post(params, new Callback.CommonCallback<String>() {
+                    @Override
+                    public void onSuccess(String result) {
+                        Log.v("brands",result);
+                    }
+
+                    @Override
+                    public void onError(Throwable ex, boolean isOnCallback) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(CancelledException cex) {
+
+                    }
+
+                    @Override
+                    public void onFinished() {
+
+                    }
+                });
+            }
+        });
+        // 商品品牌标签
+        mBrandFlowLayout.setAdapter(new TagAdapter<String>(mVals) {
+            @Override
+            public View getView(FlowLayout parent, int position, String s) {
+                TextView tv = (TextView) mInflater.inflate(R.layout.filter_item_brand, mFlowLayout, false);
+                tv.setText(s);
+                return tv;
+            }
+        });
+        //监听
+        mBrandFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
+            @Override
+            public boolean onTagClick(View view, int position, FlowLayout parent) {
+                Toast.makeText(x.app(), String.valueOf(position), Toast.LENGTH_SHORT).show();
+                //view.setVisibility(View.GONE);
+                return true;
+            }
+        });
+
+
+        mBrandFlowLayout.setOnSelectListener(new TagFlowLayout.OnSelectListener() {
+            @Override
+            public void onSelected(Set<Integer> selectPosSet) {
+//                x.app().setTitle("choose:" + selectPosSet.toString());
+                BrandID = selectPosSet.toString();
+                Toast.makeText(x.app(), "choose" + selectPosSet.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //声明并实例化PopupWindow
-        mPopupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        //设置背景颜色
+        mPopupWindow.setBackgroundDrawable(new ColorDrawable(0));
+        //设置触摸行为
+        mPopupWindow.setTouchable(true);
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setFocusable(true);
         //为PopupWindow设置弹出的位置
-        mPopupWindow.showAtLocation(parentView, Gravity.TOP, 0, 0);
-    }
+        mPopupWindow.showAtLocation(parent, Gravity.TOP, 0, 0);
 
+    }
 }

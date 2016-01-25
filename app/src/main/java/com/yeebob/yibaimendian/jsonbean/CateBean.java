@@ -1,15 +1,23 @@
 package com.yeebob.yibaimendian.jsonbean;
 
+import java.io.Serializable;
+
 /**
  * 商品品牌分类
  * Created by wgl on 2016/1/10.
  * com.yeebob.yibaimendian.jsonbean
  */
-public class CateBean {
+public class CateBean implements Serializable{
 
     private int cat_id;
     private String cat_name;
     private String cat_image;
+
+    public CateBean(int cat_id, String cat_image, String cat_name) {
+        this.cat_id = cat_id;
+        this.cat_image = cat_image;
+        this.cat_name = cat_name;
+    }
 
     public int getCat_id() {
         return cat_id;
