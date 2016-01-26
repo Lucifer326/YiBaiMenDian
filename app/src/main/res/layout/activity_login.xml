@@ -3,92 +3,96 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/repeat_bg"
-    android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context="com.yeebob.yibaimendian.LoginActivity">
 
     <RelativeLayout
-        android:layout_marginTop="300dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="248px"
         tools:context=".mainactivity.LoginActivity">
 
         <LinearLayout
-            android:gravity="center_vertical"
             android:id="@+id/user"
-            android:layout_width="300dp"
-            android:layout_height="65dp"
+            android:layout_width="635px"
+            android:layout_height="135px"
             android:background="@drawable/login_focus"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_marginLeft="20dp"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="50px"
+                android:layout_height="57px"
+                android:layout_marginLeft="50px"
+                android:layout_marginRight="40px"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/user" />
 
             <EditText
-                android:textCursorDrawable="@drawable/color_cursor"
-                android:textColorHint="#7A7E89"
-                android:textSize="25dp"
-                android:layout_marginLeft="10dp"
                 android:id="@+id/login_username"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:background="@null"
+                android:cursorVisible="false"
                 android:hint="请输入用户名"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textColorHint="#7A7E89"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:textSize="48px" />
 
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical"
-            android:background="@drawable/dart_focus"
             android:id="@+id/passwd"
-            android:layout_width="300dp"
-            android:layout_height="60dp"
+            android:layout_width="635px"
+            android:layout_height="135px"
             android:layout_below="@+id/user"
+            android:layout_marginTop="25px"
+            android:background="@drawable/dart_focus"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_marginLeft="20dp"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="50px"
+                android:layout_height="63px"
                 android:layout_alignBottom="@+id/login_password"
                 android:layout_alignTop="@+id/login_password"
+                android:layout_marginLeft="50px"
+                android:layout_marginRight="40px"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/password" />
 
             <EditText
-                android:textCursorDrawable="@drawable/color_cursor"
-                android:textColorHint="#7A7E89"
-                android:textSize="25dp"
-                android:layout_marginLeft="10dp"
+                android:textColor="@color/white"
                 android:id="@+id/login_password"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_below="@+id/login_username"
+                android:layout_weight="1"
                 android:background="@null"
+                android:cursorVisible="false"
                 android:hint="请输入密码"
-                android:password="true" />
+                android:password="true"
+                android:textColorHint="#7A7E89"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:textSize="48px" />
 
 
         </LinearLayout>
 
         <Button
-            android:layout_marginTop="30dp"
             android:id="@+id/login_submit"
-            android:layout_width="300dp"
-            android:layout_height="65dp"
+            style="@style/login_button_style"
+            android:layout_width="630px"
+            android:layout_height="135px"
             android:layout_below="@+id/passwd"
+            android:layout_marginTop="84px"
             android:text="登录"
             android:textColor="#9e9e9e"
-            style="@style/login_button_style"
-            android:textSize="30dp" />
+            android:textSize="48px" />
     </RelativeLayout>
 
 </LinearLayout>

@@ -21,4 +21,6 @@
     //登录按钮变色
     <color name="dark">#BBBBBB</color>
     <color name="light">#E0E0E0</color>
+    // toolbar自提颜色
+    <color name="toolbar_text_color">#F0F0F0</color>
 </resources>

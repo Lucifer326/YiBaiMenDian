@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_marginRight="32px"
-    android:gravity="center"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="31px">
 
     <ImageView
-        android:scaleType="centerInside"
         android:id="@+id/id_tag_image"
         android:layout_width="320px"
         android:layout_height="380px"
-        android:layout_centerInParent="true"/>
+        android:scaleType="centerInside" />
+
     <ProgressBar
-        android:visibility="gone"
         android:id="@+id/tag_progress_loding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 </RelativeLayout>

@@ -11,9 +11,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.jsonbean.ProductListBean;
 
@@ -51,6 +49,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         this.mInflate = LayoutInflater.from(context);
         options = new DisplayImageOptions.Builder().cacheInMemory(true)
                 .cacheOnDisk(true)
+                .showImageOnFail(R.drawable.brand_2)
+                .showImageForEmptyUri(R.drawable.brand_2)
                 .displayer(new RoundedBitmapDisplayer(15)) //圆角处理
                 .bitmapConfig(Bitmap.Config.RGB_565).build();
     }
@@ -64,21 +64,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
        // holder.mImageView.setImageResource(mDatas.get(position).getCatImg());
-        ImageLoader.getInstance().displayImage(mDatas.get(position).getCatimg(),holder.mImageView,options, new SimpleImageLoadingListener(){
-            @Override
-            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                super.onLoadingFailed(imageUri, view, failReason);
-                holder.mImageView.setImageResource(R.drawable.brand_1);
-            }
-
-            @Override
-            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                super.onLoadingComplete(imageUri, view, loadedImage);
-                holder.mImageView.setImageBitmap(loadedImage);
-            }
-        });
+        ImageLoader.getInstance().displayImage(mDatas.get(position).getCatimg(),holder.mImageView,options);
         holder.mDescribe.setText(mDatas.get(position).getProduct_name());
-        holder.mPrice.setText(mDatas.get(position).getSell_price());
+        holder.mPrice.setText("￥ "+mDatas.get(position).getSell_price());
         // 如果设置了回调，则设置点击事件
         if (mOnItemClickLitener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {

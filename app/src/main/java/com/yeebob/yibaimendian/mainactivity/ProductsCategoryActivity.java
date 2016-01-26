@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,9 +43,9 @@ public class ProductsCategoryActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     //   private PageRecyclerView mRecyclerView;
 
-    /*  @ViewInject(R.id.shop_qrcode)
-      private TextView shopQrcode;
-  */
+    @ViewInject(R.id.shop_qrcode)
+    private LinearLayout shopQrcode;
+
     @ViewInject(R.id.id_arrow_back)
     private TextView arrowBack;
 
@@ -65,7 +67,7 @@ public class ProductsCategoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
-
+        getWindow().getDecorView().setSystemUiVisibility(View.GONE); //隐藏底部虚拟按键
         // 初始化商品分类数据
         getDates();
 
@@ -155,14 +157,31 @@ public class ProductsCategoryActivity extends AppCompatActivity {
         });
 
         // 商城二维码展示
-       /* shopQrcode.setOnClickListener(new View.OnClickListener() {
+        shopQrcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ProductsCategoryActivity.this, ShowShopQrcode.class);
                 startActivity(intent);
             }
-        });*/
+        });
+        //响应软键盘搜索
+        searchText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    String keyword = searchText.getText().toString();
 
+                    if ("".equals(keyword)) {
+                        Toast.makeText(x.app(), "请输入搜索关键词", Toast.LENGTH_SHORT).show();
+                    } else {
+                        getSearchData(keyword);
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+        //响应点击按钮搜索
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

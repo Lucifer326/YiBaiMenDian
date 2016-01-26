@@ -2,53 +2,73 @@
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/index_toolbar"
     android:layout_width="match_parent"
-    android:layout_height="128dp"
+    android:layout_height="174px"
+    android:background="@null"
     android:minHeight="?attr/actionBarSize">
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- 商城 logo-->
+        <ImageView
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:contentDescription="@string/app_name"
+            android:src="@mipmap/ic_launcher" />
+        <!-- 商品分类 -->
+        <LinearLayout
+            android:id="@+id/id_shop_qrcode"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="98px">
 
-    <!-- 商城 logo-->
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:contentDescription="@string/app_name"
-        android:src="@mipmap/ic_launcher" />
+            <ImageView
+                android:contentDescription="@string/app_name"
+                android:layout_width="36px"
+                android:layout_height="36px"
+                android:layout_gravity="center"
+                android:layout_marginRight="25px"
+                android:src="@drawable/fenlei" />
 
-    <!-- 商品分类 -->
-    <TextView
-        android:id="@+id/id_product_category"
-        android:layout_gravity="end"
-        android:layout_marginEnd="80dp"
-        android:drawablePadding="10dp"
-        android:textColor="#fafafa"
-        android:drawableStart="@mipmap/fenlei"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:text="@string/product_category" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/product_category"
+                android:textColor="@color/toolbar_text_color"
+                android:textSize="28px" />
+        </LinearLayout>
+        <!-- 商城二维码分享 -->
+        <LinearLayout
+            android:layout_toLeftOf="@+id/id_shop_qrcode"
+            android:id="@+id/id_product_category"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
 
-    <!-- 商城二维码分享 -->
-    <TextView
-        android:textColor="#fafafa"
-        android:id="@+id/id_shop_qrcode"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:drawableStart="@mipmap/qrcode"
-        android:gravity="center"
-        android:layout_gravity="end"
-        android:drawablePadding="10dp"
-        android:layout_marginEnd="100dp"
-        android:textSize="16sp"
-        android:text="@string/share_qrcdoe" />
-    <TextView
-        android:id="@+id/guanggao"
-        android:textSize="16sp"
-        android:textColor="#fafafa"
-        android:layout_marginLeft="150dp"
-        android:text="广告"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            android:layout_marginRight="89px">
 
+            <ImageView
+                android:contentDescription="@string/app_name"
+                android:layout_width="36px"
+                android:layout_height="36px"
+                android:layout_gravity="center"
+                android:layout_marginRight="24px"
+                android:src="@drawable/shop_code" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/share_qrcdoe"
+                android:textColor="@color/toolbar_text_color"
+                android:textSize="28px" />
+        </LinearLayout>
+    </RelativeLayout>
 </android.support.v7.widget.Toolbar>

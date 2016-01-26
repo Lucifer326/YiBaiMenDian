@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -48,10 +49,12 @@ public class LoginActivity extends AppCompatActivity {
     private String userPassword;
     private ProgressDialog pd;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
+        getWindow().getDecorView().setSystemUiVisibility(View.GONE); //隐藏底部虚拟按键
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
 
     }
 
@@ -104,6 +108,7 @@ public class LoginActivity extends AppCompatActivity {
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
+                Log.v("result", result);
                 User user = new Gson().fromJson(result, User.class);
                 pd.dismiss();
                 if (user.getStatus() == 1) {

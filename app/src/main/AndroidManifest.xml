@@ -60,7 +60,8 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".mainactivity.ProductsSearchActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
     </application>
 
 </manifest>

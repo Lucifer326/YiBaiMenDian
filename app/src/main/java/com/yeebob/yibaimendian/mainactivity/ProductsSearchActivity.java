@@ -3,7 +3,10 @@ package com.yeebob.yibaimendian.mainactivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.yeebob.yibaimendian.R;
@@ -47,10 +50,13 @@ public class ProductsSearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
-        final Intent intent = getIntent();
+        Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
+        mDatas = (List<ProductListBean>) bundle.getSerializable("searchdata");
+        Log.v("mdatas", mDatas.toString());
 
-       /* mCategoryAdapter = new ProductListAdapter(this, mDatas);
+
+        mCategoryAdapter = new ProductListAdapter(this, mDatas);
         mRecyclerView.setAdapter(mCategoryAdapter);
         // 垂直gridview
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 5));
@@ -64,7 +70,7 @@ public class ProductsSearchActivity extends AppCompatActivity {
             public void onClick(View view) {
                 onBackPressed();
             }
-        });*/
+        });
 
 
     }

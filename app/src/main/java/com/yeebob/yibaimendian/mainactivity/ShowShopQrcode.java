@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -39,7 +40,10 @@ public class ShowShopQrcode extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().getDecorView().setSystemUiVisibility(View.GONE); //隐藏底部虚拟按键
         x.view().inject(this);
+
+
         // getJsonData();
         final String qrcodeUrl = (String) SharedPreferencesUtil.getData(this, "href", "");
         ImageLoader.getInstance().displayImage(qrcodeUrl, mQrcodeImg, options);

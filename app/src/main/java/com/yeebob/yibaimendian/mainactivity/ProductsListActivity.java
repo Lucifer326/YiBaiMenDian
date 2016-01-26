@@ -48,13 +48,16 @@ public class ProductsListActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
 
     @ViewInject(R.id.shop_qrcode)
-    private TextView shopQrcode;
+    private LinearLayout shopQrcode;
+
+    @ViewInject(R.id.product_filter)
+    private LinearLayout productFilter;
 
     @ViewInject(R.id.id_arrow_back)
     private TextView arrowBack;
 
-    @ViewInject(R.id.product_select)
-    private TextView productSelect;
+ /*   @ViewInject(R.id.product_select)
+    private TextView productSelect;*/
 
     @ViewInject(R.id.id_search_text)
     private TextView searchText;
@@ -83,6 +86,9 @@ public class ProductsListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
+
+        productFilter.setVisibility(View.VISIBLE);
+
         final Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         tagId = bundle.getString("tag_id", null);
@@ -107,11 +113,11 @@ public class ProductsListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 //打开商品详情 临时
-                Integer proId = mDatas.get(position).getProduct_id();
+             /*   Integer proId = mDatas.get(position).getProduct_id();
                 Toast.makeText(x.app(), proId.toString(), Toast.LENGTH_SHORT).show();
                 Intent intentDetail = new Intent(ProductsListActivity.this, ProductDetailActivity.class);
                 intentDetail.putExtra("product_id", proId.toString());
-                startActivity(intentDetail);
+                startActivity(intentDetail);*/
             }
 
             @Override
@@ -129,13 +135,13 @@ public class ProductsListActivity extends AppCompatActivity {
         });
 
         // 商城二维码展示
-       /* shopQrcode.setOnClickListener(new View.OnClickListener() {
+        shopQrcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ProductsListActivity.this, ShowShopQrcode.class);
                 startActivity(intent);
             }
-        });*/
+        });
         // 商品分类
       /*  productCate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,7 +152,7 @@ public class ProductsListActivity extends AppCompatActivity {
         });*/
 
         //商品筛选
-        productSelect.setOnClickListener(new View.OnClickListener() {
+        productFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(x.app(), "商品筛选功能...", Toast.LENGTH_SHORT).show();

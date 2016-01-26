@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Gallery;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.yeebob.yibaimendian.R;
@@ -41,11 +41,10 @@ public class IndexActivity extends AppCompatActivity {
     @ViewInject(R.id.index_toolbar)
     private Toolbar mToolbar;
     @ViewInject(R.id.id_shop_qrcode)
-    private TextView shopQrcode;
+    private LinearLayout shopQrcode;
     @ViewInject(R.id.id_product_category)
-    private TextView productCate;
-    @ViewInject(R.id.guanggao)
-    private TextView gg; //测试数据
+    private LinearLayout productCate;
+
     private Gallery mGallery;
     private Timer mTimer;
     private TimerTask mTimerTask;
@@ -56,29 +55,26 @@ public class IndexActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().getDecorView().setSystemUiVisibility(View.GONE); //隐藏底部虚拟按键
         x.view().inject(this);
-        getJsonData();
-        this.setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+
+        this.setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false); //隐藏toolbar name
+
+        getJsonData();
         shopQrcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startQrcodeActivity(); //商城二维码
+
+                startProductCategory(); //打开商品分类
             }
         });
 
         productCate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startProductCategory(); //打开商品分类
-            }
-        });
-        gg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(IndexActivity.this, CarouselImg.class);
-                startActivity(intent);
+                startQrcodeActivity(); //商城二维码
             }
         });
 
@@ -177,7 +173,7 @@ public class IndexActivity extends AppCompatActivity {
             String url = mDatas.get(arg2 % mDatas.size()).getBanner_href();
            /* Toast.makeText(IndexActivity.this, "你点击了" + ((arg2 % mDatas.size())) + ":::url", Toast.LENGTH_SHORT).show();*/
             Intent webIntent = new Intent(IndexActivity.this, Banner_WebView.class);
-            if (url != null && url !="") {
+            if (url != null && url != "") {
                 webIntent.putExtra("url", url);
                 startActivity(webIntent);
             } else {

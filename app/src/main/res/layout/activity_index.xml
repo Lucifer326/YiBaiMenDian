@@ -10,14 +10,15 @@
 
 
     <Gallery
+        android:layout_marginTop="18px"
         android:id="@+id/gallery"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="378px"
         android:fadingEdge="none"
         android:scrollbars="none" />
 
     <fragment
+        android:layout_marginTop="43px"
         android:id="@+id/tag_fragment"
         android:name="com.yeebob.yibaimendian.fragment.ProductTagFragment"
         android:layout_width="match_parent"

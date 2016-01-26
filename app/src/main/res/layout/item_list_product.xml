@@ -8,7 +8,7 @@
         android:id="@+id/id_cate_image"
         android:layout_width="311px"
         android:layout_height="380px"
-        android:scaleType="centerCrop"
+        android:scaleType="centerInside"
         android:src="@drawable/brand_1" />
 
 </FrameLayout>
