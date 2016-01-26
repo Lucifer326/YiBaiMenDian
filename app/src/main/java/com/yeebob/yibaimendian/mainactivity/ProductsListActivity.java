@@ -69,6 +69,7 @@ public class ProductsListActivity extends AppCompatActivity {
     private ProductListAdapter mCategoryAdapter;
     private String tagId;
     private String catId;
+    private String bannerId;
     private PopupWindow mPopupWindow;
     private String[] mVals;
     private List<CateBean> mCatetags = new ArrayList<>();
@@ -93,6 +94,8 @@ public class ProductsListActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         tagId = bundle.getString("tag_id", null);
         catId = bundle.getString("cat_id", null);
+        bannerId= bundle.getString("banner_id", null);
+
         if (tagId != null) {
             Log.v("bundle tagId", tagId);
         }
@@ -226,11 +229,14 @@ public class ProductsListActivity extends AppCompatActivity {
         RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/vProduct/get_vlist");
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
-        if (tagId == null && catId != null) {
+        if (bannerId ==null &&tagId == null && catId != null) {
             params.addBodyParameter("catId", catId);
         }
-        if (catId == null && tagId != null) {
+        if (bannerId ==null && catId == null && tagId != null) {
             params.addBodyParameter("tag_id", tagId);
+        }
+        if(bannerId !=null && catId == null && tagId == null){
+            params.addBodyParameter("banner_id",bannerId);
         }
 
         x.http().post(params, new Callback.CommonCallback<String>() {

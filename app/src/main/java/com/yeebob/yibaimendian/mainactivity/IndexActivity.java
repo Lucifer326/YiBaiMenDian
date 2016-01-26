@@ -45,6 +45,9 @@ public class IndexActivity extends AppCompatActivity {
     @ViewInject(R.id.id_product_category)
     private LinearLayout productCate;
 
+    private Integer shopId;
+    private String token;
+
     private Gallery mGallery;
     private Timer mTimer;
     private TimerTask mTimerTask;
@@ -128,8 +131,8 @@ public class IndexActivity extends AppCompatActivity {
     }
 
     private void getJsonData() {
-        Integer shopId = (Integer) SharedPreferencesUtil.getData(IndexActivity.this, "shopid", 0);
-        String token = (String) SharedPreferencesUtil.getData(IndexActivity.this, "token", "");
+        shopId = (Integer) SharedPreferencesUtil.getData(IndexActivity.this, "shopid", 0);
+        token = (String) SharedPreferencesUtil.getData(IndexActivity.this, "token", "");
 
         RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/Banner/banner_list");
         params.addBodyParameter("shop_id", String.valueOf(shopId));
@@ -170,19 +173,21 @@ public class IndexActivity extends AppCompatActivity {
     private AdapterView.OnItemClickListener click = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-            String url = mDatas.get(arg2 % mDatas.size()).getBanner_href();
-           /* Toast.makeText(IndexActivity.this, "你点击了" + ((arg2 % mDatas.size())) + ":::url", Toast.LENGTH_SHORT).show();*/
-            Intent webIntent = new Intent(IndexActivity.this, Banner_WebView.class);
-            if (url != null && url != "") {
-                webIntent.putExtra("url", url);
-                startActivity(webIntent);
-            } else {
-                Toast.makeText(x.app(), "暂无信息...", Toast.LENGTH_SHORT).show();
-            }
 
+            String bannerId = mDatas.get(arg2 % mDatas.size()).getBanner_id();
+
+
+            if ("".equals(bannerId)) {
+                Toast.makeText(x.app(), "暂无商品推荐，敬请期待!", Toast.LENGTH_SHORT).show();
+            } else {
+                Intent bannerIntent = new Intent(IndexActivity.this, ProductsListActivity.class);
+                bannerIntent.putExtra("banner_id", bannerId);
+                startActivity(bannerIntent);
+            }
 
         }
     };
+
 
     private void startProductCategory() {
         // 打开商品品牌分类页
