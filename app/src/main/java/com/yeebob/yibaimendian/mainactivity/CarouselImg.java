@@ -50,6 +50,7 @@ public class CarouselImg extends AppCompatActivity {
     private List<String> mVideoUris = new ArrayList<>();
 
     private static final String CAROUSEL_URL = "http://iwshop.yeebob.com/?/Advert/get_advert";
+    private boolean flag = false; // 视频 true 图片 false 视频
 
     PowerManager pm;
     PowerManager.WakeLock wakeLock;
@@ -66,7 +67,7 @@ public class CarouselImg extends AppCompatActivity {
         wakeLock.acquire(); //点亮屏幕
 
         //startCarousel(); //开始轮播
-        startVideo();
+        //startVideo();
         getJsonData();
 
         closeScreen.setOnClickListener(new View.OnClickListener() {
@@ -92,13 +93,14 @@ public class CarouselImg extends AppCompatActivity {
     }
 
     private void startVideo() {
-      //  videoLayout.setVisibility(View.VISIBLE);
+        //  videoLayout.setVisibility(View.VISIBLE);
         videoLayout.setActivity(this);
         videoLayout.setShouldAutoplay(true);
         videoLayout.setLooping(true);
         videoLayout.hideControls();
 
-        Uri videoUri = Uri.parse("http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4");
+      /*  Uri videoUri = Uri.parse("http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4");*/
+        Uri videoUri = Uri.parse(mVideoUris.get(0));
         try {
             videoLayout.setVideoURI(videoUri);
         } catch (IOException e) {
@@ -122,26 +124,38 @@ public class CarouselImg extends AppCompatActivity {
                /* CommonJsonList resultObj = CommonJsonList.fromJson(result, BannerBean.class);*/
                 Log.v("bean", result);
                 CommonJsonList resultObj = CommonJsonList.fromJson(result, CarouselBean.class);
-                List<String> urls = new ArrayList<>(); //图片轮播地址
-                List<String> uris = new ArrayList<>(); //视频轮播地址
-                if (resultObj.getStatus() == 1) {
+                List<String> imgUrl = new ArrayList<>(); //图片轮播地址
+                List<String> videoUrl = new ArrayList<>(); //视频轮播地址
+                if (resultObj.getStatus() == 1 && resultObj.getData().size() > 0) {
                     List<CarouselBean> dataObj = resultObj.getData();
                     for (int i = 0; i < dataObj.size(); i++) {
                         if (dataObj.get(i).getAdvert_type().equals("1")) {
-                            urls.addAll(dataObj.get(i).getAdvert_resource());
+                            flag = false;
+                            imgUrl.addAll(dataObj.get(i).getAdvert_resource());
                         } else {
-                            uris.addAll(dataObj.get(i).getAdvert_resource());
+                            flag = true;
+                            videoUrl.addAll(dataObj.get(i).getAdvert_resource());
                         }
                     }
-                    mUrls.clear();
-                    mUrls.addAll(urls);
-                    // mLoopAdapter.notifyDataSetChanged();
 
-                    mVideoUris.clear();
-                    mVideoUris.addAll(uris);
+                    if(!flag){
+                        mUrls.clear();
+                        mUrls.addAll(imgUrl);
+                        videoLayout.setVisibility(View.GONE);
+                        mRollViewPager.setVisibility(View.VISIBLE);
+                        startCarousel();
+                    }else{
+                        mVideoUris.clear();
+                        mVideoUris.addAll(videoUrl);
+                        videoLayout.setVisibility(View.VISIBLE);
+                        mRollViewPager.setVisibility(View.GONE);
+                        startVideo();
+                    }
+
+
 
                 } else {
-                    Toast.makeText(x.app(), "获取轮播图错误", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(x.app(), "获取广告资源错误", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -163,10 +177,11 @@ public class CarouselImg extends AppCompatActivity {
     }
 
     private void startCarousel() {
-        mUrls.add("http://pic23.nipic.com/20120831/10705080_094138516197_2.jpg");
+       /* mUrls.add("http://pic23.nipic.com/20120831/10705080_094138516197_2.jpg");
         mUrls.add("http://pic48.nipic.com/file/20140911/19553859_130737471000_2.jpg");
         mUrls.add("http://pic23.nipic.com/20120813/6906103_153852672124_2.jpg");
-        mUrls.add("http://pic.nipic.com/2007-10-12/20071012214019250_2.jpg");
+        mUrls.add("http://pic.nipic.com/2007-10-12/20071012214019250_2.jpg");*/
+
         mRollViewPager.setPlayDelay(5000);
         mRollViewPager.setAnimationDurtion(500);
         mLoopAdapter = new LoopAdapter(mRollViewPager, CarouselImg.this, mUrls);
