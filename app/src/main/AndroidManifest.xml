@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <!-- xutils3.1.2 权限开启 -->
 
     <application
@@ -44,7 +46,8 @@
         <!--商品详情页面-->
         <activity
             android:name=".mainactivity.ProductDetailActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <!--商品详情页面-->
         <activity
             android:name=".mainactivity.ProductsListActivity"
@@ -62,6 +65,9 @@
             android:name=".mainactivity.ProductsSearchActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <!-- 屏保守护程序 -->
+        <service android:name="com.yeebob.yibaimendian.mainactivity.ScreenService"/>
+
     </application>
 
 </manifest>

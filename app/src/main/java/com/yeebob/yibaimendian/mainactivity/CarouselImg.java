@@ -1,10 +1,13 @@
 package com.yeebob.yibaimendian.mainactivity;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.github.rtoshiro.view.video.FullscreenVideoLayout;
@@ -38,6 +41,9 @@ public class CarouselImg extends AppCompatActivity {
     @ViewInject(R.id.videoview)
     private FullscreenVideoLayout videoLayout;
 
+    @ViewInject(R.id.close_screnn)
+    private ImageView closeScreen;
+
     private List<String> mUrls = new ArrayList<>();
     private LoopAdapter mLoopAdapter;
 
@@ -45,35 +51,56 @@ public class CarouselImg extends AppCompatActivity {
 
     private static final String CAROUSEL_URL = "http://iwshop.yeebob.com/?/Advert/get_advert";
 
+    PowerManager pm;
+    PowerManager.WakeLock wakeLock;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
+        getWindow().getDecorView().setSystemUiVisibility(View.GONE); //隐藏底部虚拟按键
+        // 屏幕长亮
+        pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        final PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, "bright");
+        wakeLock.acquire(); //点亮屏幕
+
         //startCarousel(); //开始轮播
         startVideo();
         getJsonData();
+
+        closeScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                wakeLock.release(); //释放屏幕长亮
+                videoLayout.pause();
+                onBackPressed();
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+
     }
 
     private void startVideo() {
-        videoLayout.setVisibility(View.VISIBLE);
+      //  videoLayout.setVisibility(View.VISIBLE);
         videoLayout.setActivity(this);
+        videoLayout.setShouldAutoplay(true);
+        videoLayout.setLooping(true);
+        videoLayout.hideControls();
+
         Uri videoUri = Uri.parse("http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4");
         try {
             videoLayout.setVideoURI(videoUri);
-            videoLayout.hideControls();
-            videoLayout.setShouldAutoplay(true);
-            videoLayout.setLooping(true);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -151,5 +178,8 @@ public class CarouselImg extends AppCompatActivity {
         //mRollViewPager.setHintView(new TextHintView(this));
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

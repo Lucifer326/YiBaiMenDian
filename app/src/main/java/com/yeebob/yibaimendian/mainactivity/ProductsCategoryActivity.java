@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yeebob.yibaimendian.R;
@@ -47,7 +46,7 @@ public class ProductsCategoryActivity extends AppCompatActivity {
     private LinearLayout shopQrcode;
 
     @ViewInject(R.id.id_arrow_back)
-    private TextView arrowBack;
+    private LinearLayout arrowBack;
 
     @ViewInject(R.id.id_search_text)
     private EditText searchText;

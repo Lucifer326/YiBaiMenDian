@@ -12,19 +12,19 @@ public class DetailBean {
     /**
      * status : 1
      * message : success
-     * data : {"product_id":"8172","product_name":"测试商品0104","catimg":"http://iwshop.yeebob.com/uploads/product_hpic/1453260419569efe834ece6.jpg","product_images":["http://iwshop.yeebob.com/uploads/product_hpic/1452224140568f2e8caceb7.jpg","http://iwshop.yeebob.com/uploads/product_hpic/1453283379569f583375bbb.png","http://iwshop.yeebob.com/uploads/product_hpic/1453283383569f583759854.png","http://iwshop.yeebob.com/uploads/product_hpic/1453283386569f583a06b22.png","http://iwshop.yeebob.com/uploads/product_hpic/1453283389569f583d8ab32.png"],"twc_image":"http://iwshop.yeebob.com/?/index/getqrcode&str=aHR0cDovL3d3dy5iYWlkdS5jb20=","twc_title":"http://iwshop.yeebob.com/?/vProduct/view/id=8172","attr":[{"product_id":"1","spec_det_id1":1,"sale_price":1000,"instock":200},{"product_id":"1","spec_det_id1":2,"sale_price":1010,"instock":10}]}
+     * data : {"product_id":"8160","product_name":"你到网卡配置目","catimg":"http://iwshop.yeebob.com/uploads/product_hpic/1453282677569f5575a4679.jpg","product_images":["http://iwshop.yeebob.com/uploads/product_hpic/1452244974568f7fee33b9b.jpg","http://iwshop.yeebob.com/uploads/product_hpic/1453282693569f55853be9e.jpg","http://iwshop.yeebob.com/uploads/product_hpic/1453282711569f5597c82f0.jpg"],"twc_image":"http://iwshop.yeebob.com/?/Index/getqrcode&str=aHR0cDovL3d3dy5iYWlkdS5jb20=","twc_title":"http://iwshop.yeebob.com/?/vProduct/view/id=8160","attr":[{"product_id":"8160","spec_det_id1":"2","sale_price":"666.00","instock":"100","spec_name":"s"},{"product_id":"8160","spec_det_id1":"3","sale_price":"667.00","instock":"200","spec_name":"m"},{"product_id":"8160","spec_det_id1":"4","sale_price":"668.00","instock":"300","spec_name":"l"},{"product_id":"8160","spec_det_id1":"6","sale_price":"669.00","instock":"400","spec_name":"xxl"}]}
      */
 
     private int status;
     private String message;
     /**
-     * product_id : 8172
-     * product_name : 测试商品0104
-     * catimg : http://iwshop.yeebob.com/uploads/product_hpic/1453260419569efe834ece6.jpg
-     * product_images : ["http://iwshop.yeebob.com/uploads/product_hpic/1452224140568f2e8caceb7.jpg","http://iwshop.yeebob.com/uploads/product_hpic/1453283379569f583375bbb.png","http://iwshop.yeebob.com/uploads/product_hpic/1453283383569f583759854.png","http://iwshop.yeebob.com/uploads/product_hpic/1453283386569f583a06b22.png","http://iwshop.yeebob.com/uploads/product_hpic/1453283389569f583d8ab32.png"]
-     * twc_image : http://iwshop.yeebob.com/?/index/getqrcode&str=aHR0cDovL3d3dy5iYWlkdS5jb20=
-     * twc_title : http://iwshop.yeebob.com/?/vProduct/view/id=8172
-     * attr : [{"product_id":"1","spec_det_id1":1,"sale_price":1000,"instock":200},{"product_id":"1","spec_det_id1":2,"sale_price":1010,"instock":10}]
+     * product_id : 8160
+     * product_name : 你到网卡配置目
+     * catimg : http://iwshop.yeebob.com/uploads/product_hpic/1453282677569f5575a4679.jpg
+     * product_images : ["http://iwshop.yeebob.com/uploads/product_hpic/1452244974568f7fee33b9b.jpg","http://iwshop.yeebob.com/uploads/product_hpic/1453282693569f55853be9e.jpg","http://iwshop.yeebob.com/uploads/product_hpic/1453282711569f5597c82f0.jpg"]
+     * twc_image : http://iwshop.yeebob.com/?/Index/getqrcode&str=aHR0cDovL3d3dy5iYWlkdS5jb20=
+     * twc_title : http://iwshop.yeebob.com/?/vProduct/view/id=8160
+     * attr : [{"product_id":"8160","spec_det_id1":"2","sale_price":"666.00","instock":"100","spec_name":"s"},{"product_id":"8160","spec_det_id1":"3","sale_price":"667.00","instock":"200","spec_name":"m"},{"product_id":"8160","spec_det_id1":"4","sale_price":"668.00","instock":"300","spec_name":"l"},{"product_id":"8160","spec_det_id1":"6","sale_price":"669.00","instock":"400","spec_name":"xxl"}]
      */
 
     private DataEntity data;
@@ -61,10 +61,11 @@ public class DetailBean {
         private String twc_title;
         private List<String> product_images;
         /**
-         * product_id : 1
-         * spec_det_id1 : 1
-         * sale_price : 1000
-         * instock : 200
+         * product_id : 8160
+         * spec_det_id1 : 2
+         * sale_price : 666.00
+         * instock : 100
+         * spec_name : s
          */
 
         private List<AttrEntity> attr;
@@ -127,40 +128,49 @@ public class DetailBean {
 
         public static class AttrEntity {
             private String product_id;
-            private int spec_det_id1;
-            private int sale_price;
-            private int instock;
+            private String spec_det_id1;
+            private String sale_price;
+            private String instock;
+            private String spec_name;
 
             public void setProduct_id(String product_id) {
                 this.product_id = product_id;
             }
 
-            public void setSpec_det_id1(int spec_det_id1) {
+            public void setSpec_det_id1(String spec_det_id1) {
                 this.spec_det_id1 = spec_det_id1;
             }
 
-            public void setSale_price(int sale_price) {
+            public void setSale_price(String sale_price) {
                 this.sale_price = sale_price;
             }
 
-            public void setInstock(int instock) {
+            public void setInstock(String instock) {
                 this.instock = instock;
+            }
+
+            public void setSpec_name(String spec_name) {
+                this.spec_name = spec_name;
             }
 
             public String getProduct_id() {
                 return product_id;
             }
 
-            public int getSpec_det_id1() {
+            public String getSpec_det_id1() {
                 return spec_det_id1;
             }
 
-            public int getSale_price() {
+            public String getSale_price() {
                 return sale_price;
             }
 
-            public int getInstock() {
+            public String getInstock() {
                 return instock;
+            }
+
+            public String getSpec_name() {
+                return spec_name;
             }
         }
     }

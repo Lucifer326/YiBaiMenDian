@@ -1,58 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:zhy="http://schemas.android.com/apk/res-auto"
     android:layout_width="0dp"
-    android:layout_weight="1"
-    android:gravity="center_horizontal"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_weight="1"
+    android:orientation="vertical"
+    android:paddingLeft="97px">
 
     <!-- 扫描商品二维码 -->
     <FrameLayout
         android:id="@+id/frame"
-        android:background="@drawable/qrcode_border_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    <ImageView
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="18dp"
-        android:id="@+id/id_qrcode_image"
-        android:layout_width="294px"
-        android:layout_height="294px"
-        android:scaleType="centerCrop"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/product_qrcode" />
+        android:layout_width="356px"
+        android:layout_height="331px"
+        android:background="@drawable/qrcode_border_bg">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/id_qrcode_image"
+                android:layout_width="294px"
+                android:layout_height="294px"
+                android:layout_gravity="center"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerCrop"
+                android:src="@drawable/product_qrcode" />
+        </LinearLayout>
     </FrameLayout>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="356px"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="35px"
+        android:gravity="center_horizontal"
         android:text="@string/scan_qrcode"
+        android:textColor="#43D789"
         android:textSize="25sp" />
 
     <RelativeLayout
-        android:layout_marginLeft="70dp"
-        android:layout_below="@+id/detail_holder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/detail_holder">
 
         <TextView
-            android:textSize="18dp"
-            android:textColor="@color/white"
-            android:layout_marginTop="20dp"
             android:id="@+id/id_detail_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLines="4"
-            android:maxWidth="360px"
-            android:text="冬季新款韩版连帽韩国真毛领棉衣2015加厚\n中长款棉服外套女" />
+            android:layout_marginTop="20dp"
+            android:maxLines="2"
+            android:maxWidth="356px"
+            android:text="冬季新款韩版连帽韩国真毛领棉衣2015加厚\n中长款棉服外套女"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
         <LinearLayout
-            android:layout_marginTop="10dp"
             android:id="@+id/price"
-            android:layout_width="wrap_content"
+            android:layout_width="356px"
             android:layout_height="wrap_content"
-            android:layout_below="@id/id_detail_name">
+            android:layout_below="@id/id_detail_name"
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -74,48 +82,50 @@
 
         <LinearLayout
             android:id="@+id/color"
-            android:layout_below="@+id/price"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/price">
 
             <TextView
+                android:layout_marginTop="22dp"
+                android:id="@+id/holer_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="颜色:"
+                android:text="尺寸:"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
-            <Button
-                android:text="白色"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <Button
-                android:text="米色"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <Button
-                android:text="黄色"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+
+            <com.zhy.view.flowlayout.TagFlowLayout
+                android:id="@+id/id_style_flowlayout"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                zhy:max_select="1">
+
+            </com.zhy.view.flowlayout.TagFlowLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_below="@+id/color"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="356px"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/color">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="库存:"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
+
             <TextView
                 android:id="@+id/id_product_instock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:textSize="20sp"
                 android:text="150件"
                 android:textColor="@color/white"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textSize="20sp" />
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

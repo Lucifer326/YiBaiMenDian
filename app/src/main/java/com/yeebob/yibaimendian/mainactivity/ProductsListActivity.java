@@ -11,6 +11,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -33,6 +35,7 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -50,17 +53,18 @@ public class ProductsListActivity extends AppCompatActivity {
     @ViewInject(R.id.shop_qrcode)
     private LinearLayout shopQrcode;
 
+
     @ViewInject(R.id.product_filter)
     private LinearLayout productFilter;
 
     @ViewInject(R.id.id_arrow_back)
-    private TextView arrowBack;
-
- /*   @ViewInject(R.id.product_select)
-    private TextView productSelect;*/
+    private LinearLayout arrowBack;
 
     @ViewInject(R.id.id_search_text)
-    private TextView searchText;
+    private EditText searchText;
+
+    @ViewInject(R.id.search_btn)
+    private ImageView searchBtn;
 
    /* @ViewInject(R.id.product_category)
     private TextView productCate;
@@ -90,6 +94,7 @@ public class ProductsListActivity extends AppCompatActivity {
 
         productFilter.setVisibility(View.VISIBLE);
 
+
         final Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         tagId = bundle.getString("tag_id", null);
@@ -116,11 +121,10 @@ public class ProductsListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 //打开商品详情 临时
-             /*   Integer proId = mDatas.get(position).getProduct_id();
-                Toast.makeText(x.app(), proId.toString(), Toast.LENGTH_SHORT).show();
+                Integer proId = mDatas.get(position).getProduct_id();
                 Intent intentDetail = new Intent(ProductsListActivity.this, ProductDetailActivity.class);
                 intentDetail.putExtra("product_id", proId.toString());
-                startActivity(intentDetail);*/
+                startActivity(intentDetail);
             }
 
             @Override
@@ -145,14 +149,19 @@ public class ProductsListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        // 商品分类
-      /*  productCate.setOnClickListener(new View.OnClickListener() {
+        // 搜索商品
+        searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ProductsListActivity.this, ProductsCategoryActivity.class);
-                startActivity(intent);
+                String keyword = searchText.getText().toString();
+
+                if ("".equals(keyword)) {
+                    Toast.makeText(x.app(), "请输入搜索关键词", Toast.LENGTH_SHORT).show();
+                } else {
+                    getSearchData(keyword);
+                }
             }
-        });*/
+        });
 
         //商品筛选
         productFilter.setOnClickListener(new View.OnClickListener() {
@@ -165,46 +174,38 @@ public class ProductsListActivity extends AppCompatActivity {
         //搜索
     }
 
-    private void getSearchData() {
+    private void getSearchData(String keyword) {
+        //获取搜索商品
         RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/vProduct/get_vlist");
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
-        if (tagId == null && catId != null) {
-            params.addBodyParameter("catId", catId);
-        }
-        if (catId == null && tagId != null) {
-            params.addBodyParameter("tag_id", tagId);
-        }
+        params.addBodyParameter("keywords", keyword);
 
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                Log.v("result:get_list", result);
+                Log.v("result:keywords", result);
                 CommonJsonList resultObj = CommonJsonList.fromJson(result, ProductListBean.class);
                 if (resultObj.getStatus() == 1) {
-                    mDatas.clear();
-                    mDatas.addAll(resultObj.getData());
-                    mCategoryAdapter.notifyDataSetChanged();
-                    Log.v("get_list", mDatas.toString());
+                    List<ProductListBean> datas = resultObj.getData();
+                    if (datas.size() > 0) {
+                        Intent searhIntent = new Intent(x.app(), ProductsSearchActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("searchdata", (Serializable) datas);
+                        searhIntent.putExtras(bundle);
+                        startActivity(searhIntent);
+                    } else {
+                        Toast.makeText(x.app(), "暂无搜索商品...", Toast.LENGTH_SHORT).show();
+                    }
+
 
                 } else {
-                    Toast.makeText(x.app(), "获取商品列表失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(x.app(), "暂无搜索商品...", Toast.LENGTH_SHORT).show();
                 }
-
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                if (ex instanceof HttpException) { // 网络错误
-                    HttpException httpEx = (HttpException) ex;
-                    int responseCode = httpEx.getCode();
-                    String responseMsg = httpEx.getMessage();
-                    String errorResult = httpEx.getResult();
-                    Toast.makeText(x.app(), responseCode, Toast.LENGTH_LONG).show();
-                    // ...
-                } else { // 其他错误
-                    Toast.makeText(x.app(), " 未知错误...", Toast.LENGTH_LONG).show();
-                }
 
             }
 

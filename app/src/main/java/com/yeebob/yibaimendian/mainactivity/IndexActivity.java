@@ -3,6 +3,7 @@ package com.yeebob.yibaimendian.mainactivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,6 +19,7 @@ import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.jsonbean.BannerBean;
 import com.yeebob.yibaimendian.jsonbean.CommonJsonList;
 import com.yeebob.yibaimendian.madapter.ImageAdapter;
+import com.yeebob.yibaimendian.utils.ScreenObserver;
 import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
 
 import org.xutils.common.Callback;
@@ -55,16 +57,41 @@ public class IndexActivity extends AppCompatActivity {
     private int[] Pics = {R.drawable.banner, R.drawable.banner, R.drawable.banner, R.drawable.banner};
     private List<BannerBean> mDatas = new ArrayList<>();
 
+    // 屏幕保护
+    private String TAG = "IndexActivity";
+    private ScreenObserver mScreenObserver;
+    PowerManager pm;
+    PowerManager.WakeLock mWakeLock;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().getDecorView().setSystemUiVisibility(View.GONE); //隐藏底部虚拟按键
         x.view().inject(this);
 
-
         this.setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false); //隐藏toolbar name
 
+
+        Log.i("pingbao", "pingbao");
+        Intent mService=new Intent(IndexActivity.this,ScreenService.class);//启动服务
+        mService.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startService(mService);
+        //屏幕保护
+      //  mScreenObserver = new ScreenObserver(this);
+       /* mScreenObserver.requestScreenStateUpdate(new ScreenObserver.ScreenStateListener() {
+            @Override
+            public void onScreenOn() {
+                Log.v("screnn","aaaaaaa");
+
+            }
+
+            @Override
+            public void onScreenOff() {
+                Log.v("screnn","bbbbbxxxxxxxxxxxxxxxxxxxxxxbb");
+                //startAd();
+            }
+        });*/
         getJsonData();
         shopQrcode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +109,18 @@ public class IndexActivity extends AppCompatActivity {
         });
 
 
+    }
+    //打开轮播广告
+    private void startAd() {
+        //点亮 屏幕
+        pm = (PowerManager)getSystemService(POWER_SERVICE);
+        mWakeLock = pm.newWakeLock(
+                PowerManager.ACQUIRE_CAUSES_WAKEUP |
+                        PowerManager.SCREEN_DIM_WAKE_LOCK |
+                        PowerManager.ON_AFTER_RELEASE, "SimpleTimer");
+
+        Intent adIntent = new Intent(IndexActivity.this,LockScreenActivity.class);
+        startActivity(adIntent);
     }
 
     private void startBannert() {
@@ -258,6 +297,14 @@ public class IndexActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+//        mWakeLock.acquire();
         startAutoScroller();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //停止监听screen状态
+ //       mScreenObserver.stopScreenStateUpdate();
     }
 }
