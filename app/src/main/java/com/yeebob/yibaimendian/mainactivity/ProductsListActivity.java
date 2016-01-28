@@ -287,8 +287,8 @@ public class ProductsListActivity extends AppCompatActivity {
         if (selectCateID != -1 && selectCateID == 0) {
 
         }
-        params.addBodyParameter("cat_id", String.valueOf(CateID));
-        params.addBodyParameter("brand_id", BrandID);
+       /* params.addBodyParameter("cat_id", String.valueOf(CateID));
+        params.addBodyParameter("brand_id", BrandID);*/
 
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
