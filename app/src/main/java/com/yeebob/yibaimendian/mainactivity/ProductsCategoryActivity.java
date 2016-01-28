@@ -210,12 +210,12 @@ public class ProductsCategoryActivity extends AppCompatActivity {
                         searhIntent.putExtras(bundle);
                         startActivity(searhIntent);
                     } else {
-                        Toast.makeText(x.app(), "暂无搜索商品...", Toast.LENGTH_SHORT).show();
+                        startErrorActivity();
                     }
 
 
                 } else {
-                    Toast.makeText(x.app(), "暂无搜索商品...", Toast.LENGTH_SHORT).show();
+                    startErrorActivity();
                 }
             }
 
@@ -256,7 +256,7 @@ public class ProductsCategoryActivity extends AppCompatActivity {
                     mDatas.addAll(resultObj.getData());
                     mCategoryAdapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(x.app(), "获取商品信息失败", Toast.LENGTH_SHORT).show();
+                    startErrorActivity();
                 }
             }
 
@@ -276,15 +276,10 @@ public class ProductsCategoryActivity extends AppCompatActivity {
             }
         });
     }
-
-    public class MyHolder extends RecyclerView.ViewHolder {
-
-        public ImageView imageView = null;
-
-        public MyHolder(View itemView) {
-            super(itemView);
-            imageView = (ImageView) itemView.findViewById(R.id.id_cate_image);
-        }
+    //错误页面
+    private void startErrorActivity(){
+        Intent intent = new Intent(x.app(), LoadErrorActivity.class);
+        startActivity(intent);
     }
 
 }

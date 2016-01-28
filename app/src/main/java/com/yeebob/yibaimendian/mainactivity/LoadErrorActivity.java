@@ -25,7 +25,7 @@ public class LoadErrorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
-        getSupportActionBar().setDisplayShowTitleEnabled(false); //隐藏toolbar name
+
 
         loadErrorData.setOnClickListener(new View.OnClickListener() {
             @Override

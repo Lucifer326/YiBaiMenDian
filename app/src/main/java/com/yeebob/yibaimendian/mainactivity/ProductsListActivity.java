@@ -78,9 +78,10 @@ public class ProductsListActivity extends AppCompatActivity {
     private List<TagBrandBean> tagBrandBeans = new ArrayList<>();
 
     private TagAdapter mBrandTagAdapter;
+    private TagFlowLayout mBrandFlowLayout;
 
-    private int selectCateID = -1;
-    private int selectBrandID = -1;
+    private int selectCatePos = -1;
+    private int selectBrandPos = -1;
 
     private Integer shopId;
     private String token;
@@ -248,12 +249,12 @@ public class ProductsListActivity extends AppCompatActivity {
                         searhIntent.putExtras(bundle);
                         startActivity(searhIntent);
                     } else {
-                        Toast.makeText(x.app(), "暂无搜索商品...", Toast.LENGTH_SHORT).show();
+                        startErrorActivity();
                     }
 
 
                 } else {
-                    Toast.makeText(x.app(), "暂无搜索商品...", Toast.LENGTH_SHORT).show();
+                    startErrorActivity();
                 }
             }
 
@@ -276,24 +277,18 @@ public class ProductsListActivity extends AppCompatActivity {
 
     //获取筛选数据
     private void getFilterData() {
-        //获取搜索商品
+
+        //获取筛选商品
         RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/vProduct/get_vlist");
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
+        params.addBodyParameter("brand_id", String.valueOf(tagBrandBeans.get(selectBrandPos).getId()));
 
-        if (selectCateID == -1) {
-            return;
-        }
-        if (selectCateID != -1 && selectCateID == 0) {
-
-        }
-       /* params.addBodyParameter("cat_id", String.valueOf(CateID));
-        params.addBodyParameter("brand_id", BrandID);*/
 
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                Log.v("result:keywords", result);
+                Log.v("result:filter", result);
                 CommonJsonList resultObj = CommonJsonList.fromJson(result, ProductListBean.class);
                 if (resultObj.getStatus() == 1) {
                     List<ProductListBean> datas = resultObj.getData();
@@ -303,12 +298,12 @@ public class ProductsListActivity extends AppCompatActivity {
                         mCategoryAdapter.notifyDataSetChanged();
 
                     } else {
-                        Toast.makeText(x.app(), "暂无搜索商品...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(x.app(), "暂无商品...", Toast.LENGTH_SHORT).show();
                     }
 
 
                 } else {
-                    Toast.makeText(x.app(), "暂无搜索商品...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(x.app(), "暂无商品...", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -356,6 +351,7 @@ public class ProductsListActivity extends AppCompatActivity {
                 Log.v("result:get_list", result);
                 CommonJsonList resultObj = CommonJsonList.fromJson(result, ProductListBean.class);
                 if (resultObj.getStatus() == 1) {
+                    mDatas.clear();
                     mDatas.addAll(resultObj.getData());
                     mCategoryAdapter.notifyDataSetChanged();
                     // 暂存
@@ -405,13 +401,24 @@ public class ProductsListActivity extends AppCompatActivity {
         View view = mInflater.inflate(R.layout.product_filter_window, null);
 
         final TagFlowLayout mFlowLayout = (TagFlowLayout) view.findViewById(R.id.id_cat_flowlayout); //一级分类
-        final TagFlowLayout mBrandFlowLayout = (TagFlowLayout) view.findViewById(R.id.id_brand_flowlayout); //品牌
+        mBrandFlowLayout = (TagFlowLayout) view.findViewById(R.id.id_brand_flowlayout); //品牌
         final ImageButton filterBtn = (ImageButton) view.findViewById(R.id.id_filter_btn);
 
+        //获取分类商品
         filterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFilterData();
+                if (selectCatePos == 0 && -1 == selectBrandPos) {
+                    mDatas.clear();
+                    mDatas.addAll(tmpDatas);
+                    mCategoryAdapter.notifyDataSetChanged();
+                } else if (selectCatePos == -1 && -1 == selectBrandPos) {
+
+                } else if (selectCatePos >= 0 && selectBrandPos != -1) {
+                    getFilterData();
+                }
+
+
                 mPopupWindow.dismiss();
             }
         });
@@ -436,7 +443,6 @@ public class ProductsListActivity extends AppCompatActivity {
             }
         });
 
-
         mFlowLayout.setOnSelectListener(new TagFlowLayout.OnSelectListener() {
 
             @Override
@@ -446,7 +452,10 @@ public class ProductsListActivity extends AppCompatActivity {
                 for (Integer position : selectPosSet) {
                     pos = position;
                 }
-                selectCateID = pos;
+                //重置标签选取位置
+                selectCatePos = pos;
+                //品牌重置标志位
+                selectBrandPos = -1;
                 // 取全部的品牌
                 if (pos == 0) {
                     for (int i = 0; i < mCatetags.size(); i++) {
@@ -457,6 +466,7 @@ public class ProductsListActivity extends AppCompatActivity {
                         }
                     }
                 } else {
+
                     int id = mCatetags.get(pos).getCat_id();
 
                     RequestParams params = new RequestParams(BRAND_URI);
@@ -471,12 +481,17 @@ public class ProductsListActivity extends AppCompatActivity {
                             CommonJsonList resultObj = CommonJsonList.fromJson(result, TagBrandBean.class);
                             if (resultObj.getStatus() == 1) {
                                 // 判断是否有品牌存在
-                                if (resultObj.getData().size() > 0) {
-                                    List obj = resultObj.getData();
+
+                                List<TagBrandBean> obj = resultObj.getData();
+                                if (obj.size() > 0) {
                                     tagBrandBeans.clear();
                                     tagBrandBeans.addAll(obj);
+                                    mBrandFlowLayout.setVisibility(View.VISIBLE);
                                     mBrandTagAdapter.notifyDataChanged();
+                                } else {
+                                    mBrandFlowLayout.setVisibility(View.INVISIBLE);
                                 }
+
 
                             } else {
                                 Toast.makeText(x.app(), "暂无品牌分类", Toast.LENGTH_SHORT).show();
@@ -532,7 +547,7 @@ public class ProductsListActivity extends AppCompatActivity {
                 for (Integer id : selectPosSet) {
                     pos = id;
                 }
-                selectBrandID = pos;
+                selectBrandPos = pos;
 
             }
         });
@@ -568,6 +583,9 @@ public class ProductsListActivity extends AppCompatActivity {
                     if (resultObj.getData().size() > 0) {
                         tagBrandBeans.addAll(obj);
                         mBrandTagAdapter.notifyDataChanged();
+                        mBrandFlowLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        mBrandFlowLayout.setVisibility(View.INVISIBLE);
                     }
                 } else {
                     Toast.makeText(x.app(), "暂无品牌分类", Toast.LENGTH_SHORT).show();
@@ -589,6 +607,10 @@ public class ProductsListActivity extends AppCompatActivity {
 
             }
         });
+    }
+    private void startErrorActivity(){
+        Intent errorIntent = new Intent(x.app(),LoadErrorActivity.class);
+        startActivity(errorIntent);
     }
 }
 

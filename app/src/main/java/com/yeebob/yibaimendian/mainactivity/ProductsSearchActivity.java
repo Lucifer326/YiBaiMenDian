@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yeebob.yibaimendian.R;
@@ -48,8 +47,7 @@ public class ProductsSearchActivity extends AppCompatActivity {
     @ViewInject(R.id.product_filter)
     private LinearLayout productFilter;
 
-    @ViewInject(R.id.product_select)
-    private TextView productSelect;
+
 
     @ViewInject(R.id.id_search_text)
     private EditText searchText;
@@ -65,7 +63,7 @@ public class ProductsSearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
-        productFilter.setVisibility(View.VISIBLE);
+        productFilter.setVisibility(View.GONE);
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
