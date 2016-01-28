@@ -2,10 +2,12 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_marginRight="30px"
     android:text="Helloworld"
-    android:background="@drawable/tag_bg"
-    android:textSize="20sp"
-    android:textColor="@color/black">
+    android:background="@null"
+    android:drawableRight="@drawable/tag_diver"
+    android:drawablePadding="30px"
+    android:textSize="26px"
+    android:textColor="@drawable/filter_text_color">
 
 </TextView>

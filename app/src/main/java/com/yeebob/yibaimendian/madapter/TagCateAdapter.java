@@ -48,6 +48,8 @@ public class TagCateAdapter extends RecyclerView.Adapter<TagCateAdapter.MyViewHo
         this.mInflate = LayoutInflater.from(context);
         options = new DisplayImageOptions.Builder().cacheInMemory(true)
                 .cacheOnDisk(true)
+                .showImageForEmptyUri(R.drawable.productlisterror)
+                .showImageOnFail(R.drawable.productlisterror)
                 .displayer(new RoundedBitmapDisplayer(15))
                 .bitmapConfig(Bitmap.Config.RGB_565).build();
     }
@@ -61,7 +63,7 @@ public class TagCateAdapter extends RecyclerView.Adapter<TagCateAdapter.MyViewHo
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
       /*  holder.mImageView.setImageResource(mDatas.get(position).getTagImage());*/
-        ImageLoader.getInstance().displayImage(mDatas.get(position).getTag_image(), holder.mImageView,options,new SimpleImageLoadingListener(){
+        ImageLoader.getInstance().displayImage(mDatas.get(position).getTag_image(), holder.mImageView, options, new SimpleImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
                 super.onLoadingStarted(imageUri, view);
@@ -72,10 +74,11 @@ public class TagCateAdapter extends RecyclerView.Adapter<TagCateAdapter.MyViewHo
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 super.onLoadingComplete(imageUri, view, loadedImage);
+                //holder.mImageView.setImageBitmap(CommonUtil.createReflectedImage(loadedImage, 320, 380));
                 holder.progressBar.setVisibility(View.GONE);
             }
         });
-       // Log.v("image", mDatas.get(position).getTag_image());
+        // Log.v("image", mDatas.get(position).getTag_image());
         // 如果设置了回调，则设置点击事件
         if (mOnItemClickLitener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {

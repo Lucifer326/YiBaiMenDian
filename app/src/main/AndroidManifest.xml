@@ -65,8 +65,12 @@
             android:name=".mainactivity.ProductsSearchActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <!-- 加载错误面板 -->
+        <activity
+            android:name=".mainactivity.LoadErrorActivity"
+            android:screenOrientation="landscape" />
         <!-- 屏保守护程序 -->
-        <service android:name="com.yeebob.yibaimendian.mainactivity.ScreenService"/>
+        <service android:name="com.yeebob.yibaimendian.mainactivity.ScreenService" />
 
     </application>
 

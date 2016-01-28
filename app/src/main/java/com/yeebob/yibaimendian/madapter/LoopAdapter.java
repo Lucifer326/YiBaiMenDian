@@ -35,7 +35,7 @@ public class LoopAdapter extends LoopPagerAdapter {
         this.mInflater = LayoutInflater.from(context);
         this.mUrls = urls;
         this.options = new DisplayImageOptions.Builder().cacheInMemory(true)
-                .showImageOnFail(R.drawable.banner1) //下载失败后加载的图片
+                .showImageOnFail(R.drawable.carsouimg) //下载失败后加载的图片
                 .cacheOnDisk(true)
                 .bitmapConfig(Bitmap.Config.RGB_565).build();
     }

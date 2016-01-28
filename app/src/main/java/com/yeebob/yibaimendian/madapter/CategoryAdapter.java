@@ -46,7 +46,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
         this.mInflate = LayoutInflater.from(context);
         options = new DisplayImageOptions.Builder().cacheInMemory(true)
                 .cacheOnDisk(true)
-                .showImageForEmptyUri(R.drawable.brand_5)
+                .showImageForEmptyUri(R.drawable.productlisterror)
+                .showImageOnFail(R.drawable.productlisterror)
                 .displayer(new RoundedBitmapDisplayer(15)) //圆角处理
                 .bitmapConfig(Bitmap.Config.RGB_565).build();
     }

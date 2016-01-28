@@ -128,15 +128,8 @@ public class ProductsCategoryActivity extends AppCompatActivity {
         mCategoryAdapter.setOnItemClickLitener(new CategoryAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-            /*    Toast.makeText(ProductsCategoryActivity.this, mDatas.get(position).getCat_id() + " click",
-                        Toast.LENGTH_SHORT).show();*/
                 Intent intent = new Intent(ProductsCategoryActivity.this, ProductsListActivity.class);
                 intent.putExtra("cat_id", String.valueOf(mDatas.get(position).getCat_id()));
-                // Create a Bundle and Put Bundle in to it
-                Bundle bundleObject = new Bundle();
-                bundleObject.putSerializable("Catetag", (Serializable) mDatas);
-                // Put Bundle in to Intent and call start Activity
-                intent.putExtras(bundleObject);
                 startActivity(intent);  // 打开商品列表*/
             }
 

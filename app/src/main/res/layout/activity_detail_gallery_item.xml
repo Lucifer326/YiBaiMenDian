@@ -8,7 +8,6 @@
         android:layout_width="168px"
         android:layout_height="210px"
         android:layout_margin="10dp"
-        android:src="@drawable/xq1"
         android:scaleType="centerInside" />
 
 </FrameLayout>

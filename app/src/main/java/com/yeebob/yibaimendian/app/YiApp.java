@@ -20,7 +20,7 @@ import java.io.File;
  * 翼百门店app YiApp
  * Created by WGL on 2015-12-29.
  */
-public class YiApp extends Application{
+public class YiApp extends Application {
 
     @Override
     public void onCreate() {
@@ -30,8 +30,8 @@ public class YiApp extends Application{
         x.Ext.setDebug(true);   //是否打开debug调试
         init();
     }
-    public void init()
-    {
+
+    public void init() {
         initImageLoader(this);
     }
 
@@ -49,4 +49,6 @@ public class YiApp extends Application{
                 .tasksProcessingOrder(QueueProcessingType.LIFO).build();
         ImageLoader.getInstance().init(config);
     }
+
+
 }

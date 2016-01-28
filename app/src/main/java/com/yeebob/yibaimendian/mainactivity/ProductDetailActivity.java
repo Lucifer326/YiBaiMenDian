@@ -87,8 +87,8 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true)
             .cacheOnDisk(true)
-            .showImageForEmptyUri(R.drawable.xq1)//设置图片Uri为空或是错误的时候显示的图片
-            .showImageOnFail(R.drawable.xq1)  //设置图片加载/解码过程中错误时候显示的图片
+            .showImageForEmptyUri(R.drawable.productdetailerror)//设置图片Uri为空或是错误的时候显示的图片
+            .showImageOnFail(R.drawable.productdetailerror)  //设置图片加载/解码过程中错误时候显示的图片
             .displayer(new RoundedBitmapDisplayer(15)) //圆角处理
             .bitmapConfig(Bitmap.Config.RGB_565).build();
 
@@ -102,10 +102,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         searchBar.setVisibility(View.GONE);
 
         getJsonData();
-      /*  mDatas = new ArrayList<>(Arrays.asList(R.drawable.xq1,
-                R.drawable.xq2, R.drawable.xq3, R.drawable.xq4, R.drawable.xq5));*/
-       /* LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);*/
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         mAdapter = new GalleryAdapter(ProductDetailActivity.this, mDatas);

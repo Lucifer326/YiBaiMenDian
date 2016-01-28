@@ -3,35 +3,35 @@
     xmlns:zhy="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#000000"
+    android:background="#EF000000"
     android:orientation="vertical">
 
 
     <!-- 筛选分类-->
     <com.zhy.view.flowlayout.TagFlowLayout
+        android:layout_marginTop="131px"
+        android:layout_marginLeft="98px"
         android:id="@+id/id_cat_flowlayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        zhy:max_select="1"
-        >
-    </com.zhy.view.flowlayout.TagFlowLayout>
+        zhy:max_select="1"></com.zhy.view.flowlayout.TagFlowLayout>
 
     <!-- 筛选品牌 -->
     <com.zhy.view.flowlayout.TagFlowLayout
+        android:layout_marginTop="105px"
+        android:layout_marginLeft="98px"
         android:id="@+id/id_brand_flowlayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        zhy:max_select="1"
-        >
-        </com.zhy.view.flowlayout.TagFlowLayout>
-    <Button
+        zhy:max_select="1"></com.zhy.view.flowlayout.TagFlowLayout>
+
+    <ImageButton
+        android:layout_marginTop="60px"
+        android:src="@drawable/filterbtn"
+        android:background="#00000000"
         android:id="@+id/id_filter_btn"
-        android:layout_marginTop="20dp"
-        android:textSize="30sp"
-        android:text="测试按钮"
-        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50px"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

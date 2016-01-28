@@ -22,13 +22,13 @@ import java.util.List;
  */
 public class ImageAdapter extends BaseAdapter {
 
-    private int[] mPics;
+   // private int[] mPics;
     private List<BannerBean> mDatas;
     private DisplayImageOptions options;
     private LayoutInflater mInflater;
 
-    public ImageAdapter(Context mContext, int[] mPics, List<BannerBean> datas) {
-        this.mPics = mPics;
+    public ImageAdapter(Context mContext, List<BannerBean> datas) {
+   //     this.mPics = mPics;
         this.mDatas = datas;
         this.mInflater = LayoutInflater.from(mContext);
         options = new DisplayImageOptions.Builder().cacheInMemory(true)
@@ -65,7 +65,7 @@ public class ImageAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.mImageView.setImageResource(mPics[position % mPics.length]);
+      //  viewHolder.mImageView.setImageResource(mPics[position % mPics.length]);
         ImageLoader.getInstance().displayImage(mDatas.get(position % mDatas.size()).getBanner_image(), viewHolder.mImageView, options);
         return convertView;
     }

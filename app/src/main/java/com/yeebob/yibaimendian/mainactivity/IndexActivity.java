@@ -54,7 +54,7 @@ public class IndexActivity extends AppCompatActivity {
     private Timer mTimer;
     private TimerTask mTimerTask;
     private Handler mHandler = new Handler();
-    private int[] Pics = {R.drawable.banner, R.drawable.banner, R.drawable.banner, R.drawable.banner};
+    //private int[] Pics = {R.drawable.banner, R.drawable.banner, R.drawable.banner, R.drawable.banner};
     private List<BannerBean> mDatas = new ArrayList<>();
 
     // 屏幕保护
@@ -70,28 +70,13 @@ public class IndexActivity extends AppCompatActivity {
         x.view().inject(this);
 
         this.setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false); //隐藏toolbar name
+       getSupportActionBar().setDisplayShowTitleEnabled(false); //隐藏toolbar name
 
 
         Log.i("pingbao", "pingbao");
-        Intent mService=new Intent(IndexActivity.this,ScreenService.class);//启动服务
+        Intent mService = new Intent(IndexActivity.this, ScreenService.class);//启动服务
         mService.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(mService);
-        //屏幕保护
-      //  mScreenObserver = new ScreenObserver(this);
-       /* mScreenObserver.requestScreenStateUpdate(new ScreenObserver.ScreenStateListener() {
-            @Override
-            public void onScreenOn() {
-                Log.v("screnn","aaaaaaa");
-
-            }
-
-            @Override
-            public void onScreenOff() {
-                Log.v("screnn","bbbbbxxxxxxxxxxxxxxxxxxxxxxbb");
-                //startAd();
-            }
-        });*/
         getJsonData();
         shopQrcode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,25 +95,13 @@ public class IndexActivity extends AppCompatActivity {
 
 
     }
-    //打开轮播广告
-    private void startAd() {
-        //点亮 屏幕
-        pm = (PowerManager)getSystemService(POWER_SERVICE);
-        mWakeLock = pm.newWakeLock(
-                PowerManager.ACQUIRE_CAUSES_WAKEUP |
-                        PowerManager.SCREEN_DIM_WAKE_LOCK |
-                        PowerManager.ON_AFTER_RELEASE, "SimpleTimer");
-
-        Intent adIntent = new Intent(IndexActivity.this,LockScreenActivity.class);
-        startActivity(adIntent);
-    }
 
     private void startBannert() {
 
         /*商品推荐轮播*/
         mGallery = ((Gallery) findViewById(R.id.gallery));
         //Pics图片的Resources阵列
-        mGallery.setAdapter(new ImageAdapter(this, Pics, mDatas));
+        mGallery.setAdapter(new ImageAdapter(this, mDatas));
         //图片透明度
         mGallery.setUnselectedAlpha(255);
         //图片不渐变，渐变长为0
@@ -305,6 +278,6 @@ public class IndexActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         //停止监听screen状态
- //       mScreenObserver.stopScreenStateUpdate();
+        //       mScreenObserver.stopScreenStateUpdate();
     }
 }

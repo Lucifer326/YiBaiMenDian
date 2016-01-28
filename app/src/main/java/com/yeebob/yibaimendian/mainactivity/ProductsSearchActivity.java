@@ -65,7 +65,6 @@ public class ProductsSearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
-
         productFilter.setVisibility(View.VISIBLE);
 
         Intent intent = getIntent();
@@ -154,12 +153,12 @@ public class ProductsSearchActivity extends AppCompatActivity {
                         searhIntent.putExtras(bundle);
                         startActivity(searhIntent);
                     } else {
-                        Toast.makeText(x.app(), "暂无搜索商品...", Toast.LENGTH_SHORT).show();
+                        startErrorActivity();
                     }
 
 
                 } else {
-                    Toast.makeText(x.app(), "暂无搜索商品...", Toast.LENGTH_SHORT).show();
+                    startErrorActivity();
                 }
             }
 
@@ -178,5 +177,10 @@ public class ProductsSearchActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void startErrorActivity(){
+        Intent errorIntent = new Intent(x.app(),LoadErrorActivity.class);
+        startActivity(errorIntent);
     }
 }

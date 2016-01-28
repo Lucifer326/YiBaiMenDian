@@ -42,8 +42,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
         this.mInflate = LayoutInflater.from(context);
         options = new DisplayImageOptions.Builder().cacheInMemory(true)
                 .cacheOnDisk(true)
-                .showImageForEmptyUri(R.drawable.xq1)//设置图片Uri为空或是错误的时候显示的图片
-                .showImageOnFail(R.drawable.xq1)  //设置图片加载/解码过程中错误时候显示的图片
+                .showImageForEmptyUri(R.drawable.productdetailerror)//设置图片Uri为空或是错误的时候显示的图片
+                .showImageOnFail(R.drawable.productdetailerror)  //设置图片加载/解码过程中错误时候显示的图片
                 .displayer(new RoundedBitmapDisplayer(10)) //圆角处理
                 .bitmapConfig(Bitmap.Config.RGB_565).build();
     }
