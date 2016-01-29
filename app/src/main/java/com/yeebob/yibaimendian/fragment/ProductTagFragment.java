@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.jsonbean.CommonJsonList;
 import com.yeebob.yibaimendian.jsonbean.TagBean;
@@ -31,13 +32,10 @@ public class ProductTagFragment extends Fragment {
     private List<TagBean> mDatas = new ArrayList<>();
     private TagCateAdapter mTagAdapter;
     private LinearLayoutManager mLinearLayoutManager;
-
+    private ImageLoader mImageLoader = ImageLoader.getInstance();
 
     private ImageButton mImagebtnLeft;
     private ImageButton mImagebtnRight;
-    private boolean move = false;
-
-    private int mIndex = 0; //可见item postion
 
 
     @Override
@@ -53,7 +51,7 @@ public class ProductTagFragment extends Fragment {
         mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayout.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setHasFixedSize(true);
-        mTagAdapter = new TagCateAdapter(getActivity(), mDatas);
+        mTagAdapter = new TagCateAdapter(getActivity(), mDatas, mImageLoader);
         mRecyclerView.setAdapter(mTagAdapter);
 
         // item点击事件监听
@@ -119,72 +117,6 @@ public class ProductTagFragment extends Fragment {
     }
 
     private void getTagDates() {
-       /* mDatas = new ArrayList<>();
-
-        TagBean tagBean1 = new TagBean();
-        tagBean1.setTagId(1);
-        tagBean1.setTagName("本周上新");
-        tagBean1.setTagImage(R.drawable.benzhou);
-
-        mDatas.add(tagBean1);
-
-        TagBean tagBean2 = new TagBean();
-        tagBean2.setTagId(2);
-        tagBean2.setTagName("天天低价");
-        tagBean2.setTagImage(R.drawable.dijia);
-
-        mDatas.add(tagBean2);
-
-        TagBean tagBean3 = new TagBean();
-        tagBean3.setTagId(3);
-        tagBean3.setTagName("女神新衣");
-        tagBean3.setTagImage(R.drawable.nvshen);
-
-        mDatas.add(tagBean3);
-
-        TagBean tagBean4 = new TagBean();
-        tagBean4.setTagId(4);
-        tagBean4.setTagName("天天特价");
-        tagBean4.setTagImage(R.drawable.tejia);
-
-        mDatas.add(tagBean4);
-
-        TagBean tagBean5 = new TagBean();
-        tagBean5.setTagId(5);
-        tagBean5.setTagName("本周热卖");
-        tagBean5.setTagImage(R.drawable.remai);
-
-        mDatas.add(tagBean5);
-
-        TagBean tagBean6 = new TagBean();
-        tagBean6.setTagId(6);
-        tagBean6.setTagName("本周上新");
-        tagBean6.setTagImage(R.drawable.benzhou);
-
-        mDatas.add(tagBean6);
-
-        TagBean tagBean7 = new TagBean();
-        tagBean7.setTagId(7);
-        tagBean7.setTagName("天天低价");
-        tagBean7.setTagImage(R.drawable.dijia);
-
-        mDatas.add(tagBean7);
-
-        TagBean tagBean8 = new TagBean();
-        tagBean8.setTagId(8);
-        tagBean8.setTagName("女神新衣");
-        tagBean8.setTagImage(R.drawable.nvshen);
-
-        mDatas.add(tagBean8);*/
-      /*  for (int i = 0; i < 10; i++) {
-
-            TagBean tagBean = new TagBean();
-            tagBean.setTagId(i);
-            tagBean.setTagName("tagname: " + i);
-            tagBean.setTagImage(R.drawable.c);
-
-            mDatas.add(tagBean);
-        }*/
         Integer shopId = (Integer) SharedPreferencesUtil.getData(x.app(), "shopid", 0);
         String token = (String) SharedPreferencesUtil.getData(x.app(), "token", "");
 
@@ -226,7 +158,30 @@ public class ProductTagFragment extends Fragment {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+            switch (newState) {
+                case RecyclerView.SCROLL_STATE_IDLE:    //正在滑动
+                    mImageLoader.resume();  //停止加载图片
+                    int firstItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+                    int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
+                    if (firstItem > 0) {
+                        mImagebtnLeft.setVisibility(View.VISIBLE);
+                    } else {
+                        mImagebtnLeft.setVisibility(View.INVISIBLE);
+                    }
+                    if (lastItem + 1 < mDatas.size()) {
+                        mImagebtnRight.setVisibility(View.VISIBLE);
+                    } else {
+                        mImagebtnRight.setVisibility(View.INVISIBLE);
+                    }
+                    break;
+                case RecyclerView.SCROLL_STATE_DRAGGING: //滑动停止
+                    mImageLoader.resume();// 恢复加载图片
+                    break;
+                default:
+                    break;
+
+            }
+           /* if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                 int firstItem = mLinearLayoutManager.findFirstVisibleItemPosition();
                 int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
                 if (firstItem > 0) {
@@ -239,8 +194,9 @@ public class ProductTagFragment extends Fragment {
                 } else {
                     mImagebtnRight.setVisibility(View.INVISIBLE);
                 }
-            }
+            }*/
         }
+
 
         public RecyclerViewListener() {
             super();

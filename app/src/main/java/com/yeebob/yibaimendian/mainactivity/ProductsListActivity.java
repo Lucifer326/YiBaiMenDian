@@ -177,7 +177,7 @@ public class ProductsListActivity extends AppCompatActivity {
         productFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(x.app(), "商品筛选功能...", Toast.LENGTH_SHORT).show();
+               /* Toast.makeText(x.app(), "商品筛选功能...", Toast.LENGTH_SHORT).show();*/
                 showProductFilterWindow(view);
             }
         });

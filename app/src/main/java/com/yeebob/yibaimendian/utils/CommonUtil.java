@@ -11,6 +11,8 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Shader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -145,7 +147,7 @@ public class CommonUtil {
     //创建图片倒影效果
     public static Bitmap createReflectedImage(Bitmap originalImage) {
 
-        final int reflectionGap = 4;
+        final int reflectionGap = 0;
 
         int width = originalImage.getWidth();
         int height = originalImage.getHeight();
@@ -154,10 +156,10 @@ public class CommonUtil {
         matrix.preScale(1, -1);
 
         Bitmap reflectionImage = Bitmap.createBitmap(originalImage, 0,
-                height / 2, width, height / 2, matrix, false);
+                height / 5, width, height / 5, matrix, false);
 
         Bitmap bitmapWithReflection = Bitmap.createBitmap(width,
-                (height + height / 2), Bitmap.Config.ARGB_8888);
+                (height + height / 5), Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(bitmapWithReflection);
 
@@ -182,6 +184,22 @@ public class CommonUtil {
                 + reflectionGap, paint);
 
         return bitmapWithReflection;
+    }
+
+    //图片圆角处理
+    public static Bitmap getRCB(Bitmap bitmap, float roundPX) {
+        Bitmap dstbmp = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(dstbmp);
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(0xff424242);
+        canvas.drawRoundRect(rectF, roundPX, roundPX, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return dstbmp;
     }
 
 }

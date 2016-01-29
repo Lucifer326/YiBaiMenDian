@@ -98,6 +98,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         x.view().inject(this);
+
+        getWindow().getDecorView().setSystemUiVisibility(View.GONE); //隐藏底部虚拟按键
+
         shopQrcode.setVisibility(View.GONE);
         searchBar.setVisibility(View.GONE);
 

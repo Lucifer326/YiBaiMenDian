@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
-        // getWindow().getDecorView().setSystemUiVisibility(View.GONE); //隐藏底部虚拟按键
+        getWindow().getDecorView().setSystemUiVisibility(View.GONE); //隐藏底部虚拟按键
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override

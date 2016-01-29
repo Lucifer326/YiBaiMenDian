@@ -70,7 +70,6 @@ public class IndexActivity extends AppCompatActivity {
         x.view().inject(this);
 
         this.setSupportActionBar(mToolbar);
-       getSupportActionBar().setDisplayShowTitleEnabled(false); //隐藏toolbar name
 
 
         Log.i("pingbao", "pingbao");

@@ -11,10 +11,10 @@ import android.widget.ProgressBar;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.jsonbean.TagBean;
+import com.yeebob.yibaimendian.utils.CommonUtil;
 
 import java.util.List;
 
@@ -28,6 +28,7 @@ public class TagCateAdapter extends RecyclerView.Adapter<TagCateAdapter.MyViewHo
     private List<TagBean> mDatas;
     private OnItemClickLitener mOnItemClickLitener;
     protected DisplayImageOptions options;
+    private ImageLoader mImageLoader;
 
 
     public void setOnItemClickLitener(OnItemClickLitener mOnItemClickLitener) {
@@ -43,14 +44,14 @@ public class TagCateAdapter extends RecyclerView.Adapter<TagCateAdapter.MyViewHo
     }
 
     // 构造方法赋初始值
-    public TagCateAdapter(Context context, List<TagBean> datas) {
+    public TagCateAdapter(Context context, List<TagBean> datas,ImageLoader imageLoader) {
         this.mDatas = datas;
         this.mInflate = LayoutInflater.from(context);
+        this.mImageLoader = imageLoader;
         options = new DisplayImageOptions.Builder().cacheInMemory(true)
                 .cacheOnDisk(true)
                 .showImageForEmptyUri(R.drawable.productlisterror)
                 .showImageOnFail(R.drawable.productlisterror)
-                .displayer(new RoundedBitmapDisplayer(15))
                 .bitmapConfig(Bitmap.Config.RGB_565).build();
     }
 
@@ -63,7 +64,7 @@ public class TagCateAdapter extends RecyclerView.Adapter<TagCateAdapter.MyViewHo
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
       /*  holder.mImageView.setImageResource(mDatas.get(position).getTagImage());*/
-        ImageLoader.getInstance().displayImage(mDatas.get(position).getTag_image(), holder.mImageView, options, new SimpleImageLoadingListener() {
+        mImageLoader.displayImage(mDatas.get(position).getTag_image(), holder.mImageView, options, new SimpleImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
                 super.onLoadingStarted(imageUri, view);
@@ -73,8 +74,9 @@ public class TagCateAdapter extends RecyclerView.Adapter<TagCateAdapter.MyViewHo
 
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                super.onLoadingComplete(imageUri, view, loadedImage);
-                //holder.mImageView.setImageBitmap(CommonUtil.createReflectedImage(loadedImage, 320, 380));
+//                super.onLoadingComplete(imageUri, view, loadedImage);
+                Bitmap bitmap = CommonUtil.getRCB(loadedImage, 12);
+                holder.mImageView.setImageBitmap(CommonUtil.createReflectedImage(bitmap));
                 holder.progressBar.setVisibility(View.GONE);
             }
         });
