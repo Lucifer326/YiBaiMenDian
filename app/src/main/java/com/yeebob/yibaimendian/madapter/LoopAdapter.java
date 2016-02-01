@@ -1,8 +1,6 @@
 package com.yeebob.yibaimendian.madapter;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -20,21 +18,14 @@ import java.util.List;
  * com.yeebob.yibaimendian.madapter
  */
 public class LoopAdapter extends LoopPagerAdapter {
-    /*   private int[] imgs = {
-               R.drawable.banner1,
-               R.drawable.banner2,
-               R.drawable.banner3,
-               R.drawable.banner4,
-       };*/
     private DisplayImageOptions options;
-    private LayoutInflater mInflater;
     private List<String> mUrls;
 
-    public LoopAdapter(RollPagerView viewPager,Context context, List<String> urls) {
+    public LoopAdapter(RollPagerView viewPager, List<String> urls) {
         super(viewPager);
-        this.mInflater = LayoutInflater.from(context);
         this.mUrls = urls;
         this.options = new DisplayImageOptions.Builder().cacheInMemory(true)
+                .showImageOnFail(R.drawable.carsouimg)
                 .showImageOnFail(R.drawable.carsouimg) //下载失败后加载的图片
                 .cacheOnDisk(true)
                 .bitmapConfig(Bitmap.Config.RGB_565).build();
@@ -43,7 +34,7 @@ public class LoopAdapter extends LoopPagerAdapter {
     @Override
     public View getView(ViewGroup container, int position) {
         ImageView view = new ImageView(container.getContext());
-        //view.setImageResource(imgs[position]);
+        view.setImageResource(R.drawable.carsouimg);
         ImageLoader.getInstance().displayImage(mUrls.get(position), view, options);
         view.setScaleType(ImageView.ScaleType.CENTER_CROP);
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));

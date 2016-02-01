@@ -5,22 +5,25 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yeebob.yibaimendian.R;
+import com.yeebob.yibaimendian.app.YiApp;
 import com.yeebob.yibaimendian.jsonbean.CommonJsonList;
 import com.yeebob.yibaimendian.jsonbean.TagBean;
 import com.yeebob.yibaimendian.madapter.TagCateAdapter;
 import com.yeebob.yibaimendian.mainactivity.ProductsListActivity;
 import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
 
+import org.xutils.DbManager;
 import org.xutils.common.Callback;
+import org.xutils.ex.DbException;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -30,12 +33,15 @@ import java.util.List;
 public class ProductTagFragment extends Fragment {
 
     private List<TagBean> mDatas = new ArrayList<>();
+    private List<TagBean> mDbDatas = new ArrayList<>(); //数据库缓存数据
     private TagCateAdapter mTagAdapter;
     private LinearLayoutManager mLinearLayoutManager;
     private ImageLoader mImageLoader = ImageLoader.getInstance();
 
     private ImageButton mImagebtnLeft;
     private ImageButton mImagebtnRight;
+
+    private DbManager db = x.getDb(YiApp.daoConfig);
 
 
     @Override
@@ -58,10 +64,8 @@ public class ProductTagFragment extends Fragment {
         mTagAdapter.setOnItemClickLitener(new TagCateAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-                /*Toast.makeText(x.app(), mDatas.get(position).getTag_id() + " click",
-                        Toast.LENGTH_SHORT).show();*/
                 Intent intent = new Intent(getActivity(), ProductsListActivity.class);
-                intent.putExtra("tag_id", mDatas.get(position).getTag_id());
+                intent.putExtra("tag_id", String.valueOf(mDatas.get(position).getTag_id()));
                 startActivity(intent);  // 打开自定义推广商品列表*/
             }
 
@@ -112,11 +116,10 @@ public class ProductTagFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // 获取自定义推广商品
-        //getTagDates();
     }
 
     private void getTagDates() {
+
         Integer shopId = (Integer) SharedPreferencesUtil.getData(x.app(), "shopid", 0);
         String token = (String) SharedPreferencesUtil.getData(x.app(), "token", "");
 
@@ -127,10 +130,36 @@ public class ProductTagFragment extends Fragment {
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
+                Log.v("xxxxxxxxxxx", result);
                 CommonJsonList resultObj = CommonJsonList.fromJson(result, TagBean.class);
-                mDatas.clear();
-                mDatas.addAll(resultObj.getData());
-                mTagAdapter.notifyDataSetChanged();
+                if (resultObj.getStatus() == 1 && resultObj.getData().size() > 0) {
+                    mDatas.addAll(resultObj.getData());
+                    System.out.print(mDatas);
+                    mDatas.clear();
+                    mDatas.addAll(resultObj.getData());
+                    mTagAdapter.notifyDataSetChanged();
+                    x.task().run(new Runnable() {
+                        @Override
+                        public void run() {
+                            // 数据库存储
+                            try {
+                                db.dropTable(TagBean.class);
+                            } catch (DbException e) {
+                                e.printStackTrace();
+                            }
+                            for (TagBean tagBean : mDatas) {
+                                try {
+                                    db.save(tagBean);
+                                } catch (DbException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    });
+
+                }
+
+                // 设置滚动按键
                 int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
                 if (mDatas.size() > lastItem + 1) {
                     mImagebtnRight.setVisibility(View.VISIBLE);
@@ -139,7 +168,7 @@ public class ProductTagFragment extends Fragment {
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                Toast.makeText(x.app(), " 未知错误...", Toast.LENGTH_LONG).show();
+                getDbDatas();
             }
 
             @Override
@@ -152,6 +181,20 @@ public class ProductTagFragment extends Fragment {
 
             }
         });
+    }
+
+
+    private void getDbDatas() {
+        //读取数据
+        try {
+            mDatas.clear();
+            mDbDatas.clear();
+            mDbDatas = db.selector(TagBean.class).orderBy("tag_id", true).findAll();
+            mDatas.addAll(mDbDatas);
+            mTagAdapter.notifyDataSetChanged();
+        } catch (DbException exs) {
+            exs.printStackTrace();
+        }
     }
 
     private class RecyclerViewListener extends RecyclerView.OnScrollListener {
@@ -181,20 +224,6 @@ public class ProductTagFragment extends Fragment {
                     break;
 
             }
-           /* if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                int firstItem = mLinearLayoutManager.findFirstVisibleItemPosition();
-                int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
-                if (firstItem > 0) {
-                    mImagebtnLeft.setVisibility(View.VISIBLE);
-                } else {
-                    mImagebtnLeft.setVisibility(View.INVISIBLE);
-                }
-                if (lastItem + 1 < mDatas.size()) {
-                    mImagebtnRight.setVisibility(View.VISIBLE);
-                } else {
-                    mImagebtnRight.setVisibility(View.INVISIBLE);
-                }
-            }*/
         }
 
 

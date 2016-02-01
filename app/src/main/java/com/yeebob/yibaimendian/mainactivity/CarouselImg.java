@@ -53,7 +53,6 @@ public class CarouselImg extends AppCompatActivity {
     private boolean flag = false; // 视频 true 图片 false 视频
 
     PowerManager pm;
-    PowerManager.WakeLock wakeLock;
 
 
     @Override
@@ -101,6 +100,7 @@ public class CarouselImg extends AppCompatActivity {
 
       /*  Uri videoUri = Uri.parse("http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4");*/
         Uri videoUri = Uri.parse(mVideoUris.get(0));
+
         try {
             videoLayout.setVideoURI(videoUri);
         } catch (IOException e) {
@@ -138,20 +138,19 @@ public class CarouselImg extends AppCompatActivity {
                         }
                     }
 
-                    if(!flag){
+                    if (!flag) {
                         mUrls.clear();
                         mUrls.addAll(imgUrl);
                         videoLayout.setVisibility(View.GONE);
                         mRollViewPager.setVisibility(View.VISIBLE);
                         startCarousel();
-                    }else{
+                    } else {
                         mVideoUris.clear();
                         mVideoUris.addAll(videoUrl);
                         videoLayout.setVisibility(View.VISIBLE);
                         mRollViewPager.setVisibility(View.GONE);
                         startVideo();
                     }
-
 
 
                 } else {
@@ -184,7 +183,7 @@ public class CarouselImg extends AppCompatActivity {
 
         mRollViewPager.setPlayDelay(5000);
         mRollViewPager.setAnimationDurtion(500);
-        mLoopAdapter = new LoopAdapter(mRollViewPager, CarouselImg.this, mUrls);
+        mLoopAdapter = new LoopAdapter(mRollViewPager, mUrls);
         mRollViewPager.setAdapter(mLoopAdapter);
         mRollViewPager.setHintView(null);
         //mRollViewPager.setAdapter(new TestNomalAdapter());

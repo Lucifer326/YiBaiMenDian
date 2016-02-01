@@ -3,7 +3,6 @@ package com.yeebob.yibaimendian.mainactivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,7 +18,6 @@ import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.jsonbean.BannerBean;
 import com.yeebob.yibaimendian.jsonbean.CommonJsonList;
 import com.yeebob.yibaimendian.madapter.ImageAdapter;
-import com.yeebob.yibaimendian.utils.ScreenObserver;
 import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
 
 import org.xutils.common.Callback;
@@ -54,14 +52,8 @@ public class IndexActivity extends AppCompatActivity {
     private Timer mTimer;
     private TimerTask mTimerTask;
     private Handler mHandler = new Handler();
-    //private int[] Pics = {R.drawable.banner, R.drawable.banner, R.drawable.banner, R.drawable.banner};
     private List<BannerBean> mDatas = new ArrayList<>();
 
-    // 屏幕保护
-    private String TAG = "IndexActivity";
-    private ScreenObserver mScreenObserver;
-    PowerManager pm;
-    PowerManager.WakeLock mWakeLock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +62,6 @@ public class IndexActivity extends AppCompatActivity {
         x.view().inject(this);
 
         this.setSupportActionBar(mToolbar);
-
-
-        Log.i("pingbao", "pingbao");
         Intent mService = new Intent(IndexActivity.this, ScreenService.class);//启动服务
         mService.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(mService);
@@ -269,14 +258,7 @@ public class IndexActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        mWakeLock.acquire();
         startAutoScroller();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //停止监听screen状态
-        //       mScreenObserver.stopScreenStateUpdate();
-    }
 }

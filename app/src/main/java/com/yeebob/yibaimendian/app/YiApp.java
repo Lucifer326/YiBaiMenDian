@@ -12,6 +12,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.yeebob.yibaimendian.utils.CommonUtil;
 import com.yeebob.yibaimendian.utils.FileHelper;
 
+import org.xutils.DbManager;
 import org.xutils.x;
 
 import java.io.File;
@@ -21,6 +22,10 @@ import java.io.File;
  * Created by WGL on 2015-12-29.
  */
 public class YiApp extends Application {
+    //数据库初始化
+    public static DbManager.DaoConfig daoConfig = new DbManager.DaoConfig()
+            .setDbName("yibaishop.db")
+            .setDbVersion(1);
 
     @Override
     public void onCreate() {
@@ -28,6 +33,8 @@ public class YiApp extends Application {
         //xutils3.1.2 加载初始化
         x.Ext.init(this);
         x.Ext.setDebug(true);   //是否打开debug调试
+
+
         init();
     }
 

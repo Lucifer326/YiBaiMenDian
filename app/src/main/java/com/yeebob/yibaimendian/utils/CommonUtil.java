@@ -153,7 +153,8 @@ public class CommonUtil {
         int height = originalImage.getHeight();
 
         Matrix matrix = new Matrix();
-        matrix.preScale(1, -1);
+        //实现图片反转
+        //matrix.preScale(1, -1);
 
         Bitmap reflectionImage = Bitmap.createBitmap(originalImage, 0,
                 height / 5, width, height / 5, matrix, false);
