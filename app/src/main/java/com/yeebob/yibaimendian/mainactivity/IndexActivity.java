@@ -18,6 +18,7 @@ import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.jsonbean.BannerBean;
 import com.yeebob.yibaimendian.jsonbean.CommonJsonList;
 import com.yeebob.yibaimendian.madapter.ImageAdapter;
+import com.yeebob.yibaimendian.utils.HttpUtils;
 import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
 
 import org.xutils.common.Callback;
@@ -62,9 +63,9 @@ public class IndexActivity extends AppCompatActivity {
         x.view().inject(this);
 
         this.setSupportActionBar(mToolbar);
-        Intent mService = new Intent(IndexActivity.this, ScreenService.class);//启动服务
+      /*  Intent mService = new Intent(IndexActivity.this, ScreenService.class);//启动服务
         mService.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startService(mService);
+        startService(mService);*/
         getJsonData();
         shopQrcode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +135,7 @@ public class IndexActivity extends AppCompatActivity {
         shopId = (Integer) SharedPreferencesUtil.getData(IndexActivity.this, "shopid", 0);
         token = (String) SharedPreferencesUtil.getData(IndexActivity.this, "token", "");
 
-        RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/Banner/banner_list");
+        RequestParams params = new RequestParams(HttpUtils.BASEURL + "Banner/banner_list");
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
 
@@ -145,8 +146,12 @@ public class IndexActivity extends AppCompatActivity {
                 Log.v("bean", result);
                 if (resultObj.getStatus() == 1) {
                     mDatas = resultObj.getData();
-                    Log.v("xxxxxx", mDatas.toString());
-                    startBannert();
+                    //Log.v("xxxxxx", mDatas.toString());
+                    if (mDatas.size() > 0) {
+                        startScreeSaver();
+                        startBannert();
+                    }
+
                 } else {
                     Toast.makeText(x.app(), "获取轮播图错误", Toast.LENGTH_SHORT).show();
                 }
@@ -154,6 +159,7 @@ public class IndexActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
+                Toast.makeText(x.app(), "网络错误", Toast.LENGTH_SHORT).show();
 
             }
 
@@ -249,16 +255,26 @@ public class IndexActivity extends AppCompatActivity {
         }
     }
 
+    private void startScreeSaver() {
+        Intent mService = new Intent(IndexActivity.this, ScreenService.class);//启动服务
+        mService.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startService(mService);
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
-        stopAutoScroller();
+        if (mDatas.size() > 0) {
+            stopAutoScroller();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        startAutoScroller();
+        if (mDatas.size() > 0) {
+            startAutoScroller();
+        }
     }
 
 }

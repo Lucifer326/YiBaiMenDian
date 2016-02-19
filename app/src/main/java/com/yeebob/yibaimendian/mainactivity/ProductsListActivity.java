@@ -24,6 +24,7 @@ import com.yeebob.yibaimendian.jsonbean.CommonJsonList;
 import com.yeebob.yibaimendian.jsonbean.ProductListBean;
 import com.yeebob.yibaimendian.jsonbean.TagBrandBean;
 import com.yeebob.yibaimendian.madapter.ProductListAdapter;
+import com.yeebob.yibaimendian.utils.HttpUtils;
 import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
@@ -86,7 +87,7 @@ public class ProductsListActivity extends AppCompatActivity {
     private Integer shopId;
     private String token;
 
-    private final static String BRAND_URI = "http://iwshop.yeebob.com/?/Brands/get_brand";
+    private final static String BRAND_URI = HttpUtils.BASEURL + "Brands/get_brand";
 
     private final static int CATIDTAG = 0;  //分类标识
     private final static int BANNERTAG = 1;  //轮播标识
@@ -189,7 +190,7 @@ public class ProductsListActivity extends AppCompatActivity {
         shopId = (Integer) SharedPreferencesUtil.getData(ProductsListActivity.this, "shopid", 0);
         token = (String) SharedPreferencesUtil.getData(ProductsListActivity.this, "token", "");
 
-        RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/vProduct/get_cate");
+        RequestParams params = new RequestParams(HttpUtils.BASEURL + "vProduct/get_cate");
         params.addBodyParameter("cat_id", catId); //商品分类 默认0
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
@@ -230,7 +231,7 @@ public class ProductsListActivity extends AppCompatActivity {
 
     private void getSearchData(String keyword) {
         //获取搜索商品
-        RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/vProduct/get_vlist");
+        RequestParams params = new RequestParams(HttpUtils.BASEURL + "vProduct/get_vlist");
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
         params.addBodyParameter("keywords", keyword);
@@ -279,7 +280,7 @@ public class ProductsListActivity extends AppCompatActivity {
     private void getFilterData() {
 
         //获取筛选商品
-        RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/vProduct/get_vlist");
+        RequestParams params = new RequestParams(HttpUtils.BASEURL + "vProduct/get_vlist");
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
         params.addBodyParameter("brand_id", String.valueOf(tagBrandBeans.get(selectBrandPos).getId()));
@@ -330,7 +331,7 @@ public class ProductsListActivity extends AppCompatActivity {
         shopId = (Integer) SharedPreferencesUtil.getData(x.app(), "shopid", 0);
         token = (String) SharedPreferencesUtil.getData(x.app(), "token", "");
 
-        RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/vProduct/get_vlist");
+        RequestParams params = new RequestParams(HttpUtils.BASEURL + "vProduct/get_vlist");
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
 

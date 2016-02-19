@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yeebob.yibaimendian.R;
@@ -19,6 +19,7 @@ import com.yeebob.yibaimendian.jsonbean.CommonJsonList;
 import com.yeebob.yibaimendian.jsonbean.TagBean;
 import com.yeebob.yibaimendian.madapter.TagCateAdapter;
 import com.yeebob.yibaimendian.mainactivity.ProductsListActivity;
+import com.yeebob.yibaimendian.utils.HttpUtils;
 import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
 
 import org.xutils.DbManager;
@@ -123,18 +124,18 @@ public class ProductTagFragment extends Fragment {
         Integer shopId = (Integer) SharedPreferencesUtil.getData(x.app(), "shopid", 0);
         String token = (String) SharedPreferencesUtil.getData(x.app(), "token", "");
 
-        RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/Banner/tag_list");
+        RequestParams params = new RequestParams(HttpUtils.BASEURL + "Banner/tag_list");
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
 
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                Log.v("xxxxxxxxxxx", result);
+               // Log.v("xxxxxxxxxxx", result);
                 CommonJsonList resultObj = CommonJsonList.fromJson(result, TagBean.class);
                 if (resultObj.getStatus() == 1 && resultObj.getData().size() > 0) {
                     mDatas.addAll(resultObj.getData());
-                    System.out.print(mDatas);
+                    //System.out.print(mDatas);
                     mDatas.clear();
                     mDatas.addAll(resultObj.getData());
                     mTagAdapter.notifyDataSetChanged();
@@ -169,6 +170,7 @@ public class ProductTagFragment extends Fragment {
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 getDbDatas();
+                Toast.makeText(x.app(), "网络错误", Toast.LENGTH_SHORT).show();
             }
 
             @Override

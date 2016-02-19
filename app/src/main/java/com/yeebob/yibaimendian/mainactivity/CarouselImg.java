@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -121,8 +120,6 @@ public class CarouselImg extends AppCompatActivity {
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-               /* CommonJsonList resultObj = CommonJsonList.fromJson(result, BannerBean.class);*/
-                Log.v("bean", result);
                 CommonJsonList resultObj = CommonJsonList.fromJson(result, CarouselBean.class);
                 List<String> imgUrl = new ArrayList<>(); //图片轮播地址
                 List<String> videoUrl = new ArrayList<>(); //视频轮播地址

@@ -22,6 +22,7 @@ import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.jsonbean.DetailBean;
 import com.yeebob.yibaimendian.jsonbean.ProductStyleBean;
 import com.yeebob.yibaimendian.madapter.GalleryAdapter;
+import com.yeebob.yibaimendian.utils.HttpUtils;
 import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
@@ -54,9 +55,6 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     @ViewInject(R.id.holer_style)
     private TextView holderStyle;
-
-   /* @ViewInject(R.id.product_category)
-    private TextView productCate;*/
 
     @ViewInject(R.id.detail_pic_recyclerView)
     private RecyclerView mRecyclerView;
@@ -139,7 +137,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         Integer shopId = (Integer) SharedPreferencesUtil.getData(ProductDetailActivity.this, "shopid", 0);
         String token = (String) SharedPreferencesUtil.getData(ProductDetailActivity.this, "token", "");
 
-        RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/vProduct/product_details");
+        RequestParams params = new RequestParams(HttpUtils.BASEURL + "vProduct/product_details");
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
         params.addBodyParameter("product_id", productId); //商品ID
@@ -218,7 +216,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     return true;
                 }
             });
-        }else{
+        } else {
             holderStyle.setVisibility(View.GONE);
             productPrice.setText("暂无"); //设置价格
             productInstock.setText("暂无");  //设置库存

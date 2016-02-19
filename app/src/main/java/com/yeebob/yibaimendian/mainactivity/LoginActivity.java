@@ -18,6 +18,7 @@ import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.jsonbean.Paramers;
 import com.yeebob.yibaimendian.jsonbean.User;
 import com.yeebob.yibaimendian.jsonbean.UserParams;
+import com.yeebob.yibaimendian.utils.HttpUtils;
 import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
 
 import org.xutils.common.Callback;
@@ -99,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
         pd.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pd.setMessage("登陆中，请等待...");
         pd.show();
-        RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/Index/Login");
+        RequestParams params = new RequestParams(HttpUtils.BASEURL + "Index/Login");
         // 请求参数
         params.addBodyParameter("uname", user);
         params.addBodyParameter("password", md5password);

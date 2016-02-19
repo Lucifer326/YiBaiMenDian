@@ -27,6 +27,8 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 public class CommonUtil {
 
+
+
     public static boolean hasSDCard() {
         String status = Environment.getExternalStorageState();
         if (!status.equals(Environment.MEDIA_MOUNTED)) {

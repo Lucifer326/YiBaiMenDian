@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,6 +11,7 @@ import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.jsonbean.CateBean;
 import com.yeebob.yibaimendian.jsonbean.CommonJsonList;
 import com.yeebob.yibaimendian.madapter.CategoryAdapter;
+import com.yeebob.yibaimendian.utils.HttpUtils;
 import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
 
 import org.xutils.common.Callback;
@@ -59,7 +59,7 @@ public class ProductsCategoryListActivity extends AppCompatActivity {
         Integer shopId = (Integer) SharedPreferencesUtil.getData(ProductsCategoryListActivity.this, "shopid", 0);
         String token = (String) SharedPreferencesUtil.getData(ProductsCategoryListActivity.this, "token", "");
 
-        RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/vProduct/get_cate");
+        RequestParams params = new RequestParams(HttpUtils.BASEURL + "vProduct/get_cate");
         params.addBodyParameter("cat_id", "0"); //商品分类 默认0
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
@@ -67,7 +67,7 @@ public class ProductsCategoryListActivity extends AppCompatActivity {
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                Log.v("result:cat", result);
+                //Log.v("result:cat", result);
                 CommonJsonList resultObj = CommonJsonList.fromJson(result, CateBean.class);
                 if (resultObj.getStatus() == 1) {
                     mDatas.clear();

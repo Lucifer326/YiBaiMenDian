@@ -16,6 +16,7 @@ import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.jsonbean.CommonJsonList;
 import com.yeebob.yibaimendian.jsonbean.ProductListBean;
 import com.yeebob.yibaimendian.madapter.ProductListAdapter;
+import com.yeebob.yibaimendian.utils.HttpUtils;
 import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
 
 import org.xutils.common.Callback;
@@ -132,7 +133,7 @@ public class ProductsSearchActivity extends AppCompatActivity {
         Integer shopId = (Integer) SharedPreferencesUtil.getData(ProductsSearchActivity.this, "shopid", 0);
         String token = (String) SharedPreferencesUtil.getData(ProductsSearchActivity.this, "token", "");
 
-        RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/vProduct/get_vlist");
+        RequestParams params = new RequestParams(HttpUtils.BASEURL + "vProduct/get_vlist");
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
         params.addBodyParameter("keywords", keyword);

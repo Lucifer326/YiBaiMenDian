@@ -19,6 +19,7 @@ import com.yeebob.yibaimendian.jsonbean.CommonJsonList;
 import com.yeebob.yibaimendian.jsonbean.ProductListBean;
 import com.yeebob.yibaimendian.madapter.CategoryAdapter;
 import com.yeebob.yibaimendian.madapter.PageRecyclerView;
+import com.yeebob.yibaimendian.utils.HttpUtils;
 import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
 
 import org.xutils.common.Callback;
@@ -191,7 +192,7 @@ public class ProductsCategoryActivity extends AppCompatActivity {
 
     private void getSearchData(String keyword) {
         //获取搜索商品
-        RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/vProduct/get_vlist");
+        RequestParams params = new RequestParams(HttpUtils.BASEURL + "vProduct/get_vlist");
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
         params.addBodyParameter("keywords", keyword);
@@ -199,7 +200,7 @@ public class ProductsCategoryActivity extends AppCompatActivity {
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                Log.v("result:keywords", result);
+                //Log.v("result:keywords", result);
                 CommonJsonList resultObj = CommonJsonList.fromJson(result, ProductListBean.class);
                 if (resultObj.getStatus() == 1) {
                     List<ProductListBean> datas = resultObj.getData();
@@ -241,7 +242,7 @@ public class ProductsCategoryActivity extends AppCompatActivity {
         shopId = (Integer) SharedPreferencesUtil.getData(ProductsCategoryActivity.this, "shopid", 0);
         token = (String) SharedPreferencesUtil.getData(ProductsCategoryActivity.this, "token", "");
 
-        RequestParams params = new RequestParams("http://iwshop.yeebob.com/?/vProduct/get_cate");
+        RequestParams params = new RequestParams(HttpUtils.BASEURL + "vProduct/get_cate");
         params.addBodyParameter("cat_id", "0"); //商品分类 默认0
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
