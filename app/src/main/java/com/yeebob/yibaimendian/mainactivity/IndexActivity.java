@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Gallery;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -45,7 +46,10 @@ public class IndexActivity extends AppCompatActivity {
     private LinearLayout shopQrcode;
     @ViewInject(R.id.id_product_category)
     private LinearLayout productCate;
+    @ViewInject(R.id.logo)
+    private ImageView shopLogo;
 
+    private int clickCount = 0;
     private Integer shopId;
     private String token;
 
@@ -79,6 +83,17 @@ public class IndexActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startQrcodeActivity(); //商城二维码
+            }
+        });
+
+        //隐藏功能 点击logo六次后关闭程序
+        shopLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickCount++;
+                if (clickCount == 6) {
+                   finish();
+                }
             }
         });
 

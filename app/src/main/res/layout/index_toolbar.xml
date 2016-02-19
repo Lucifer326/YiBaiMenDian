@@ -12,6 +12,7 @@
         android:layout_height="match_parent">
         <!-- 商城 logo-->
         <ImageView
+            android:id="@+id/logo"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

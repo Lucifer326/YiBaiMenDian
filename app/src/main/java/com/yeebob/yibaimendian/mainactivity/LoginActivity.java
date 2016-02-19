@@ -145,5 +145,6 @@ public class LoginActivity extends AppCompatActivity {
     private void startIndex() {
         Intent intent = new Intent(LoginActivity.this, IndexActivity.class);
         startActivity(intent);
+        finish();
     }
 }
