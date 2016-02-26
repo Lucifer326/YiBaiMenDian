@@ -59,6 +59,26 @@ public class DetailBean {
         private String catimg;
         private String twc_image;
         private String twc_title;
+        private String sell_price; //商品价格
+        private String product_instocks; //商品库存
+
+        public String getSell_price() {
+            return sell_price;
+        }
+
+        public void setSell_price(String sell_price) {
+            this.sell_price = sell_price;
+        }
+
+        public String getProduct_instocks() {
+            return product_instocks;
+        }
+
+        public void setProduct_instocks(String product_instocks) {
+            this.product_instocks = product_instocks;
+        }
+
+
         private List<String> product_images;
         /**
          * product_id : 8160

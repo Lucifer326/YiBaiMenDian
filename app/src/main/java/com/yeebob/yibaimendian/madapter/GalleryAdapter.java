@@ -3,7 +3,6 @@ package com.yeebob.yibaimendian.madapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +59,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     public void onBindViewHolder(final GalleryViewHolder holder, final int position) {
        // holder.mImageView.setImageResource(mDatas.get(position));
         ImageLoader.getInstance().displayImage(mDatas.get(position),holder.mImageView,options);
-        Log.v("postion", mDatas.get(position));
+        //Log.v("postion", mDatas.get(position));
 
         // 如果设置了回调，则设置点击事件
         if (mOnItemClickLitener != null) {

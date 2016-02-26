@@ -1,6 +1,9 @@
 package com.yeebob.yibaimendian.mainactivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,15 +24,32 @@ public class LoadErrorActivity extends AppCompatActivity {
     @ViewInject(R.id.load_error_data)
     private ImageView loadErrorData;
 
+    private String flag = null;
+    PowerManager pm;
+    private PowerManager.WakeLock wakeLock;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
 
+        Intent intent = getIntent();
+        flag = intent.getStringExtra("errorAcivity");
+
+        if ("error".equals(flag)) {
+            loadErrorData.setImageResource(R.drawable.carsouimg);
+            pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            wakeLock = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, "bright");
+            wakeLock.acquire(); //点亮屏幕
+        }
+
 
         loadErrorData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (flag != null) {
+                    wakeLock.release(); //释放屏幕长亮
+                }
                 finish();
             }
         });

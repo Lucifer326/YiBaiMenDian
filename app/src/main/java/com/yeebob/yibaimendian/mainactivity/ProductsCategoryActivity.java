@@ -129,9 +129,15 @@ public class ProductsCategoryActivity extends AppCompatActivity {
         mCategoryAdapter.setOnItemClickLitener(new CategoryAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent(ProductsCategoryActivity.this, ProductsListActivity.class);
-                intent.putExtra("cat_id", String.valueOf(mDatas.get(position).getCat_id()));
-                startActivity(intent);  // 打开商品列表*/
+
+                if (mDatas.get(position).getCat_id() >= 0) {
+                    Intent intent = new Intent(ProductsCategoryActivity.this, ProductsListActivity.class);
+                    intent.putExtra("cat_id", String.valueOf(mDatas.get(position).getCat_id()));
+                    startActivity(intent);  // 打开商品列表*/
+                } else {
+                    startErrorActivity();
+                }
+
             }
 
             @Override
@@ -277,8 +283,9 @@ public class ProductsCategoryActivity extends AppCompatActivity {
             }
         });
     }
+
     //错误页面
-    private void startErrorActivity(){
+    private void startErrorActivity() {
         Intent intent = new Intent(x.app(), LoadErrorActivity.class);
         startActivity(intent);
     }

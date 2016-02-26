@@ -199,7 +199,7 @@ public class ProductsListActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String result) {
                 CommonJsonList resultObj = CommonJsonList.fromJson(result, CateBean.class);
-                if (resultObj.getStatus() == 1) {
+                if (resultObj.getStatus() == 1 && resultObj.getData().size() > 0) {
                     mCatetags.clear();
                     for (int i = 0; i < resultObj.getData().size(); i++) {
                         CateBean cateBean = (CateBean) resultObj.getData().get(i);
@@ -208,7 +208,8 @@ public class ProductsListActivity extends AppCompatActivity {
                     }
 
                 } else {
-                    Toast.makeText(x.app(), "获取商品信息失败", Toast.LENGTH_SHORT).show();
+                    finish(); //关闭空白页
+                    startErrorActivity();
                 }
             }
 
@@ -349,9 +350,9 @@ public class ProductsListActivity extends AppCompatActivity {
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                Log.v("result:get_list", result);
+                Log.v("result:get_listxxxx", result);
                 CommonJsonList resultObj = CommonJsonList.fromJson(result, ProductListBean.class);
-                if (resultObj.getStatus() == 1) {
+                if (resultObj.getStatus() == 1 && resultObj.getData().size() > 0) {
                     mDatas.clear();
                     mDatas.addAll(resultObj.getData());
                     mCategoryAdapter.notifyDataSetChanged();
@@ -359,7 +360,7 @@ public class ProductsListActivity extends AppCompatActivity {
                     tmpDatas.clear();
                     tmpDatas.addAll(resultObj.getData());
                 } else {
-                    Toast.makeText(x.app(), "获取商品列表失败", Toast.LENGTH_SHORT).show();
+                    startErrorActivity();
                 }
 
             }
@@ -371,10 +372,10 @@ public class ProductsListActivity extends AppCompatActivity {
                     int responseCode = httpEx.getCode();
                     String responseMsg = httpEx.getMessage();
                     String errorResult = httpEx.getResult();
-                    Toast.makeText(x.app(), responseCode, Toast.LENGTH_LONG).show();
+                    startErrorActivity();
                     // ...
                 } else { // 其他错误
-                    Toast.makeText(x.app(), " 未知错误...", Toast.LENGTH_LONG).show();
+                    startErrorActivity();
                 }
 
             }
@@ -589,7 +590,7 @@ public class ProductsListActivity extends AppCompatActivity {
                         mBrandFlowLayout.setVisibility(View.INVISIBLE);
                     }
                 } else {
-                    Toast.makeText(x.app(), "暂无品牌分类", Toast.LENGTH_SHORT).show();
+                    startErrorActivity();
                 }
             }
 
@@ -609,8 +610,9 @@ public class ProductsListActivity extends AppCompatActivity {
             }
         });
     }
-    private void startErrorActivity(){
-        Intent errorIntent = new Intent(x.app(),LoadErrorActivity.class);
+
+    private void startErrorActivity() {
+        Intent errorIntent = new Intent(x.app(), LoadErrorActivity.class);
         startActivity(errorIntent);
     }
 }

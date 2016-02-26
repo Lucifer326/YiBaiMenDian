@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -133,7 +132,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     public void getJsonData() {
         Intent intent = getIntent();
         String productId = intent.getStringExtra("product_id");
-        Log.v("productid", productId); //商品id
+        // Log.v("productid", productId); //商品id
         Integer shopId = (Integer) SharedPreferencesUtil.getData(ProductDetailActivity.this, "shopid", 0);
         String token = (String) SharedPreferencesUtil.getData(ProductDetailActivity.this, "token", "");
 
@@ -145,23 +144,25 @@ public class ProductDetailActivity extends AppCompatActivity {
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                // Log.v("result:detail", result);
+                Log.v("result:xiangqing", result);
                 Gson gson = new Gson();
                 DetailBean resultObj = gson.fromJson(result, DetailBean.class);
                 if (resultObj.getStatus() == 1) {
-                    Log.v("getdata", resultObj.getData().toString());
+                    // Log.v("getdata", resultObj.getData().toString());
                     mDatas.clear();
                     mDatas.addAll(resultObj.getData().getProduct_images());
                     mAdapter.notifyDataSetChanged();
                     setDataForDetail(resultObj);
                 } else {
-                    Toast.makeText(x.app(), "获取商品详情失败,,,", Toast.LENGTH_SHORT).show();
+                    finish();
+                    startErrorActivity();
                 }
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-
+                finish();
+                startErrorActivity(); //打开错误页面
             }
 
             @Override
@@ -181,9 +182,15 @@ public class ProductDetailActivity extends AppCompatActivity {
         ImageLoader.getInstance().displayImage(resultObj.getData().getCatimg(), mImg, options);
         // 设置二维码
         ImageLoader.getInstance().displayImage(resultObj.getData().getTwc_image(), productQrcode);
+        // Log.v("qrcode", resultObj.getData().getTwc_image());
         //设置商品名称
-        ProductDesc.setText(resultObj.getData().getProduct_name());
+        ProductDesc.setText(resultObj.getData().getProduct_name()); //商品名称
+        String proPrice = "".equals(resultObj.getData().getSell_price()) ? "暂无" : "￥ " + resultObj.getData().getSell_price();
+        productPrice.setText(proPrice); //设置价格
+        String proInstocks = "".equals(resultObj.getData().getProduct_instocks()) ? "暂无" : resultObj.getData().getProduct_instocks();
+        productInstock.setText(proInstocks);  //设置库存
         styleDatas.clear();
+        //型号设置
         List<DetailBean.DataEntity.AttrEntity> obj = resultObj.getData().getAttr();
         if (obj.size() > 0) {
             for (int i = 0; i < resultObj.getData().getAttr().size(); i++) {
@@ -196,16 +203,22 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                 styleDatas.add(productStyleBean);
             }
+            if (styleDatas.size() > 0 && styleDatas.get(0).getSpec_name() != null) {
+                holderStyle.setVisibility(View.VISIBLE);
+                mFlowLayout.setVisibility(View.VISIBLE);
+                //holderStyle.setText(styleDatas.get(0).getSpec_name());
+                mFlowLayout.setAdapter(tagAdapter = new TagAdapter<ProductStyleBean>(styleDatas) {
+                    @Override
+                    public View getView(FlowLayout parent, int position, ProductStyleBean productStyleBean) {
+                        TextView tv = (TextView) LayoutInflater.from(x.app()).inflate(R.layout.product_style_item, mFlowLayout, false);
+                        tv.setText(styleDatas.get(position).getSpec_name());
+                        return tv;
+                    }
+                });
+                tagAdapter.setSelectedList(0);
 
-            mFlowLayout.setAdapter(tagAdapter = new TagAdapter<ProductStyleBean>(styleDatas) {
-                @Override
-                public View getView(FlowLayout parent, int position, ProductStyleBean productStyleBean) {
-                    TextView tv = (TextView) LayoutInflater.from(x.app()).inflate(R.layout.product_style_item, mFlowLayout, false);
-                    tv.setText(styleDatas.get(position).getSpec_name());
-                    return tv;
-                }
-            });
-            tagAdapter.setSelectedList(0);
+            }
+
             productPrice.setText("￥ " + styleDatas.get(0).getSale_price()); //设置价格
             productInstock.setText(styleDatas.get(0).getInstock());  //设置库存
             mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
@@ -218,9 +231,11 @@ public class ProductDetailActivity extends AppCompatActivity {
             });
         } else {
             holderStyle.setVisibility(View.GONE);
-            productPrice.setText("暂无"); //设置价格
-            productInstock.setText("暂无");  //设置库存
         }
     }
-
+    //错误页面
+    private void startErrorActivity() {
+        Intent intent = new Intent(x.app(), LoadErrorActivity.class);
+        startActivity(intent);
+    }
 }

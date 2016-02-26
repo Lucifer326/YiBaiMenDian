@@ -87,15 +87,17 @@
             android:layout_below="@+id/price">
 
             <TextView
+                android:visibility="gone"
                 android:layout_marginTop="22dp"
                 android:id="@+id/holer_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="尺寸:"
+                android:text="规格:"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <com.zhy.view.flowlayout.TagFlowLayout
+                android:visibility="gone"
                 android:id="@+id/id_style_flowlayout"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -107,6 +109,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="15px"
             android:layout_width="356px"
             android:layout_height="wrap_content"
             android:layout_below="@+id/color">

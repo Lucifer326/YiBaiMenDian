@@ -1,13 +1,13 @@
 package com.yeebob.yibaimendian.mainactivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.github.rtoshiro.view.video.FullscreenVideoLayout;
 import com.jude.rollviewpager.RollPagerView;
@@ -15,6 +15,7 @@ import com.yeebob.yibaimendian.R;
 import com.yeebob.yibaimendian.jsonbean.CarouselBean;
 import com.yeebob.yibaimendian.jsonbean.CommonJsonList;
 import com.yeebob.yibaimendian.madapter.LoopAdapter;
+import com.yeebob.yibaimendian.utils.HttpUtils;
 import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
 
 import org.xutils.common.Callback;
@@ -48,7 +49,7 @@ public class CarouselImg extends AppCompatActivity {
 
     private List<String> mVideoUris = new ArrayList<>();
 
-    private static final String CAROUSEL_URL = "http://iwshop.yeebob.com/?/Advert/get_advert";
+    private static final String CAROUSEL_URL = HttpUtils.BASEURL + "Advert/get_advert";
     private boolean flag = false; // 视频 true 图片 false 视频
 
     PowerManager pm;
@@ -151,13 +152,14 @@ public class CarouselImg extends AppCompatActivity {
 
 
                 } else {
-                    Toast.makeText(x.app(), "获取广告资源错误", Toast.LENGTH_SHORT).show();
+                    startErrorActivity();
+                    //Toast.makeText(x.app(), "获取广告资源错误", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-
+                startErrorActivity();
             }
 
             @Override
@@ -171,7 +173,13 @@ public class CarouselImg extends AppCompatActivity {
             }
         });
     }
-
+    //错误页面
+    private void startErrorActivity(){
+        Intent intent = new Intent(x.app(), LoadErrorActivity.class);
+        intent.putExtra("errorAcivity", "error");
+        finish(); // 关闭当前activity
+        startActivity(intent);
+    }
     private void startCarousel() {
        /* mUrls.add("http://pic23.nipic.com/20120831/10705080_094138516197_2.jpg");
         mUrls.add("http://pic48.nipic.com/file/20140911/19553859_130737471000_2.jpg");
@@ -187,10 +195,5 @@ public class CarouselImg extends AppCompatActivity {
         // mRollViewPager.setHintView(new IconHintView(this,R.drawable.point_focus,R.drawable.point_normal));
         //mRollViewPager.setHintView(new ColorPointHintView(this, Color.YELLOW,Color.WHITE));
         //mRollViewPager.setHintView(new TextHintView(this));
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }

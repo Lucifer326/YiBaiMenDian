@@ -52,6 +52,7 @@ public class IndexActivity extends AppCompatActivity {
     private int clickCount = 0;
     private Integer shopId;
     private String token;
+    private Intent mService; //屏保监听服务
 
     private Gallery mGallery;
     private Timer mTimer;
@@ -92,7 +93,16 @@ public class IndexActivity extends AppCompatActivity {
             public void onClick(View view) {
                 clickCount++;
                 if (clickCount == 6) {
-                   finish();
+                    stopService(mService); //关闭屏保服务
+                    int currentVersion = android.os.Build.VERSION.SDK_INT;
+                    if (currentVersion > android.os.Build.VERSION_CODES.ECLAIR_MR1) {
+                        Intent startMain = new Intent(Intent.ACTION_MAIN);
+                        startMain.addCategory(Intent.CATEGORY_HOME);
+                        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(startMain);
+                        System.exit(0);
+                    }
+                    finish();
                 }
             }
         });
@@ -271,7 +281,7 @@ public class IndexActivity extends AppCompatActivity {
     }
 
     private void startScreeSaver() {
-        Intent mService = new Intent(IndexActivity.this, ScreenService.class);//启动服务
+        mService = new Intent(IndexActivity.this, ScreenService.class);//启动服务
         mService.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(mService);
     }
