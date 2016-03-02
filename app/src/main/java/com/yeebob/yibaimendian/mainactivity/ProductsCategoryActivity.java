@@ -80,7 +80,7 @@ public class ProductsCategoryActivity extends AppCompatActivity {
             public void onItemClick(View view, int position) {
 
                 if (mDatas.get(position).getCat_id() >= 0) {
-                    Intent intent = new Intent(ProductsCategoryActivity.this, ProductsCategoryListActivity.class);
+                    Intent intent = new Intent(ProductsCategoryActivity.this, ProductsListActivity.class);
                     intent.putExtra("cat_id", String.valueOf(mDatas.get(position).getCat_id()));
                     startActivity(intent);  // 打开商品列表*/
                 } else {

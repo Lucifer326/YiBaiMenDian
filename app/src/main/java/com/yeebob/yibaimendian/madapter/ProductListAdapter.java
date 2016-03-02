@@ -49,6 +49,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         this.mInflate = LayoutInflater.from(context);
         options = new DisplayImageOptions.Builder().cacheInMemory(true)
                 .cacheOnDisk(true)
+                .showImageOnLoading(R.drawable.productlisterror)
                 .showImageOnFail(R.drawable.productlisterror)
                 .showImageForEmptyUri(R.drawable.productlisterror)
                 .displayer(new RoundedBitmapDisplayer(15)) //圆角处理

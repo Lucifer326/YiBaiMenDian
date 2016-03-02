@@ -110,7 +110,7 @@ public class ProductsListActivity extends AppCompatActivity {
             getDates(CUSTOMTAG, tagId);
         }
         if (catId != null) {
-            //getSenCate(catId);
+            getSenCate(catId);
             getDates(CATIDTAG, catId);
             productFilter.setVisibility(View.VISIBLE);
         } else {
@@ -178,14 +178,14 @@ public class ProductsListActivity extends AppCompatActivity {
         productFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               /* Toast.makeText(x.app(), "商品筛选功能...", Toast.LENGTH_SHORT).show();*/
+                Toast.makeText(x.app(), "商品筛选功能...", Toast.LENGTH_SHORT).show();
                 showProductFilterWindow(view);
             }
         });
         //搜索
     }
 
-    // 获取二级分类
+    // 获取二级分类标签
     private void getSenCate(String catId) {
         shopId = (Integer) SharedPreferencesUtil.getData(ProductsListActivity.this, "shopid", 0);
         token = (String) SharedPreferencesUtil.getData(ProductsListActivity.this, "token", "");
@@ -208,9 +208,6 @@ public class ProductsListActivity extends AppCompatActivity {
                         mCatetags.add(cateBean);
                     }
 
-                } else {
-                    finish(); //关闭空白页
-                    startErrorActivity();
                 }
             }
 
@@ -328,7 +325,7 @@ public class ProductsListActivity extends AppCompatActivity {
     }
 
     // 获取网络商品列表数据
-    private void getDates(int flag, String id) {
+    private void getDates(final int flag, final String id) {
 
         shopId = (Integer) SharedPreferencesUtil.getData(x.app(), "shopid", 0);
         token = (String) SharedPreferencesUtil.getData(x.app(), "token", "");
@@ -337,20 +334,25 @@ public class ProductsListActivity extends AppCompatActivity {
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
 
-        if (flag == 0) {
-            params.addBodyParameter("cat_id", id);
-        }
-        if (flag == 1) {
-            params.addBodyParameter("banner_id", id);
-
-        }
-        if (flag == 2) {
-            params.addBodyParameter("tag_id", id);
+        switch (flag) {
+            case 0:
+                params.addBodyParameter("cat_id", id);
+                break;
+            case 1:
+                params.addBodyParameter("banner_id", id);
+                break;
+            case 2:
+                params.addBodyParameter("tag_id", id);
+                break;
+            default:
+                break;
         }
 
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
+                Log.v("result:get_listxxxx", String.valueOf(flag));
+                Log.v("result:get_listxxxx", id);
                 Log.v("result:get_listxxxx", result);
                 CommonJsonList resultObj = CommonJsonList.fromJson(result, ProductListBean.class);
                 if (resultObj.getStatus() == 1 && resultObj.getData().size() > 0) {
