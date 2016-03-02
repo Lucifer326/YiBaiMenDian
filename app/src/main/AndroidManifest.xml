@@ -53,6 +53,10 @@
             android:name=".mainactivity.ProductsListActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <!--商品二级分类页面-->
+        <activity android:name=".mainactivity.ProductsCategoryListActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
         <!-- 锁屏轮播图 -->
         <activity
             android:name=".mainactivity.CarouselImg"

@@ -18,7 +18,6 @@ import com.yeebob.yibaimendian.jsonbean.CateBean;
 import com.yeebob.yibaimendian.jsonbean.CommonJsonList;
 import com.yeebob.yibaimendian.jsonbean.ProductListBean;
 import com.yeebob.yibaimendian.madapter.CategoryAdapter;
-import com.yeebob.yibaimendian.madapter.PageRecyclerView;
 import com.yeebob.yibaimendian.utils.HttpUtils;
 import com.yeebob.yibaimendian.utils.SharedPreferencesUtil;
 
@@ -41,7 +40,6 @@ public class ProductsCategoryActivity extends AppCompatActivity {
 
     @ViewInject(R.id.product_category_recyclerview)
     private RecyclerView mRecyclerView;
-    //   private PageRecyclerView mRecyclerView;
 
     @ViewInject(R.id.shop_qrcode)
     private LinearLayout shopQrcode;
@@ -57,7 +55,6 @@ public class ProductsCategoryActivity extends AppCompatActivity {
 
     private List<CateBean> mDatas = new ArrayList<>();
     private CategoryAdapter mCategoryAdapter;
-    private PageRecyclerView.PageAdapter myAdapter = null;
 
     private Integer shopId;
     private String token;
@@ -71,67 +68,19 @@ public class ProductsCategoryActivity extends AppCompatActivity {
         // 初始化商品分类数据
         getDates();
 
-     /*   mRecyclerView.setAdapter(myAdapter = mRecyclerView.new PageAdapter(mDatas, new PageRecyclerView.CallBack() {
-            @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int postion) {
-                View view = LayoutInflater.from(ProductsCategoryActivity.this).inflate(R.layout.item_list_product, parent, false);
-                return new MyHolder(view);
-
-            }
-
-            @Override
-            public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-               *//**//* ((MyHolder)holder).imageView.setImageResource(mDatas.get(position).getCatImg());*//**//*
-                ImageLoader.getInstance().displayImage(mDatas.get(position).getCat_image(),((MyHolder)holder).imageView,options, new SimpleImageLoadingListener(){
-                    @Override
-                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                        super.onLoadingFailed(imageUri, view, failReason);
-                        ((MyHolder)holder).imageView.setImageResource(R.drawable.brand_1);
-                    }
-
-                    @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                        super.onLoadingComplete(imageUri, view, loadedImage);
-                        ((MyHolder)holder).imageView.setImageBitmap(loadedImage);
-                    }
-                });
-
-            }
-
-            @Override
-            public void onItemClickListener(View view, int position) {
-               *//* Toast.makeText(ProductsCategoryActivity.this, "点击："
-                        + mDatas.get(position).getCatName(), Toast.LENGTH_SHORT).show();*//*
-                Intent intent = new Intent(ProductsCategoryActivity.this, ProductsListActivity.class);
-                startActivity(intent);
-
-            }
-
-            @Override
-            public void onItemLongClickListener(View view, int position) {
-
-            }
-        }));*/
-        // 设置行数和列数
-    /*    mRecyclerView.setPageSize(2, 5);
-        // 设置页间距
-        mRecyclerView.setPageMargin(20);*/
         //item事件点击
         mCategoryAdapter = new CategoryAdapter(this, mDatas);
         mRecyclerView.setAdapter(mCategoryAdapter);
-        // LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        // mRecyclerView.setLayoutManager(linearLayoutManager);
         // 垂直gridview
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 5));
         // 水平滚动gridview;
-      /*  mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL));*/
 
         mCategoryAdapter.setOnItemClickLitener(new CategoryAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
 
                 if (mDatas.get(position).getCat_id() >= 0) {
-                    Intent intent = new Intent(ProductsCategoryActivity.this, ProductsListActivity.class);
+                    Intent intent = new Intent(ProductsCategoryActivity.this, ProductsCategoryListActivity.class);
                     intent.putExtra("cat_id", String.valueOf(mDatas.get(position).getCat_id()));
                     startActivity(intent);  // 打开商品列表*/
                 } else {

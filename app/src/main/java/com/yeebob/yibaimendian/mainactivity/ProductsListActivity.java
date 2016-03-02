@@ -110,7 +110,8 @@ public class ProductsListActivity extends AppCompatActivity {
             getDates(CUSTOMTAG, tagId);
         }
         if (catId != null) {
-            getSenCate(catId);
+            //getSenCate(catId);
+            getDates(CATIDTAG, catId);
             productFilter.setVisibility(View.VISIBLE);
         } else {
             productFilter.setVisibility(View.GONE);
@@ -120,7 +121,6 @@ public class ProductsListActivity extends AppCompatActivity {
         }
 
         // 初始化商品分类数据
-        //getDates();
         mCategoryAdapter = new ProductListAdapter(this, mDatas);
         mRecyclerView.setAdapter(mCategoryAdapter);
         // 垂直gridview
@@ -140,8 +140,8 @@ public class ProductsListActivity extends AppCompatActivity {
 
             @Override
             public void onItemLongClick(View view, int position) {
-                Toast.makeText(ProductsListActivity.this, position + " long click",
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ProductsListActivity.this, position + " long click",
+//                        Toast.LENGTH_SHORT).show();
             }
         });
         // 返回事件
@@ -198,6 +198,7 @@ public class ProductsListActivity extends AppCompatActivity {
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
+                Log.v("catgor: ", result);
                 CommonJsonList resultObj = CommonJsonList.fromJson(result, CateBean.class);
                 if (resultObj.getStatus() == 1 && resultObj.getData().size() > 0) {
                     mCatetags.clear();
@@ -360,7 +361,7 @@ public class ProductsListActivity extends AppCompatActivity {
                     tmpDatas.clear();
                     tmpDatas.addAll(resultObj.getData());
                 } else {
-                    startErrorActivity();
+                    // startErrorActivity();
                 }
 
             }
@@ -372,10 +373,10 @@ public class ProductsListActivity extends AppCompatActivity {
                     int responseCode = httpEx.getCode();
                     String responseMsg = httpEx.getMessage();
                     String errorResult = httpEx.getResult();
-                    startErrorActivity();
+                    //startErrorActivity();
                     // ...
                 } else { // 其他错误
-                    startErrorActivity();
+                    //   startErrorActivity();
                 }
 
             }
