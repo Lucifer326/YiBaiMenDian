@@ -68,6 +68,9 @@ public class ProductsListActivity extends AppCompatActivity {
     @ViewInject(R.id.search_btn)
     private ImageView searchBtn;
 
+    @ViewInject(R.id.cover_fail)
+    private ImageView coverFail;
+
 
     private List<ProductListBean> mDatas = new ArrayList<>();
     private List<ProductListBean> tmpDatas = new ArrayList<>();
@@ -281,16 +284,13 @@ public class ProductsListActivity extends AppCompatActivity {
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
 
-        if (catId2 == null && "".equals(catId2)) {
-            return;
+        if (catId2 != null) {
+            params.addBodyParameter("cat_id", catId2);
         }
 
-        if (brandId == null && "".equals(brandId)) {
-            return;
+        if (brandId != null) {
+            params.addBodyParameter("brand_id", brandId);
         }
-        params.addBodyParameter("cat_id", catId2);
-        params.addBodyParameter("brand_id", brandId);
-
 
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
@@ -303,10 +303,16 @@ public class ProductsListActivity extends AppCompatActivity {
                         mDatas.clear();
                         mDatas.addAll(datas);
                         mCategoryAdapter.notifyDataSetChanged();
+                        coverFail.setVisibility(View.GONE);
+                        mRecyclerView.setVisibility(View.VISIBLE);
 
+                    } else {
+                        coverFail.setVisibility(View.VISIBLE);
+                        mRecyclerView.setVisibility(View.GONE);
                     }
                 } else {
-                    Toast.makeText(x.app(), "暂无商品...", Toast.LENGTH_SHORT).show();
+                    coverFail.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.GONE);
                 }
             }
 
@@ -412,28 +418,42 @@ public class ProductsListActivity extends AppCompatActivity {
         filterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              /*  if (selectCatePos == 0 && -1 == selectBrandPos) {
+                Log.v("selectaaa", String.valueOf(selectCatePos));
+                Log.v("selectaaa", String.valueOf(selectBrandPos));
+                //no select
+                if (selectCatePos == -1 && selectBrandPos == -1) {
+                    return;
+                }
+                //select brandtag
+                if (selectCatePos == -1 && selectBrandPos != -1) {
+
+                    String catId2 = null;
+                    String brandId = tagBrandBeans.get(selectBrandPos).getId();
+                    getFilterData(catId2, brandId);
+                }
+                //select cattag all
+                if (selectCatePos == 0 && selectBrandPos == -1) {
                     mDatas.clear();
                     mDatas.addAll(tmpDatas);
                     mCategoryAdapter.notifyDataSetChanged();
-                } else if (selectCatePos == -1 && -1 == selectBrandPos) {
-
-                } else if (selectCatePos >= 0 && selectBrandPos != -1) {
-                    String catId2 = String.valueOf(mCatetags.get(selectCatePos).getCat_id());
-                    String brandId = tagBrandBeans.get(selectBrandPos).getId();
-                    getFilterData(catId2, brandId);
-                } else if (selectCatePos >= 0 && selectBrandPos == -1) {
+                }
+                //select catag
+                if (selectCatePos > 0 && selectBrandPos == -1) {
                     String catId2 = String.valueOf(mCatetags.get(selectCatePos).getCat_id());
                     String brandId = null;
                     getFilterData(catId2, brandId);
-                }*/
+                }
+                // cattag brandid select
                 if (selectCatePos > 0 && selectBrandPos >= 0) {
                     String catId2 = String.valueOf(mCatetags.get(selectCatePos).getCat_id());
                     String brandId = tagBrandBeans.get(selectBrandPos).getId();
                     getFilterData(catId2, brandId);
                 }
 
-
+                //reset select flag
+                selectCatePos = -1;
+                selectBrandPos = -1;
+                //close ppowindow
                 mPopupWindow.dismiss();
             }
         });
