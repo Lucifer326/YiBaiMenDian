@@ -103,15 +103,16 @@ public class ProductsListActivity extends AppCompatActivity {
         final Intent intent = getIntent();
 
         String tagId = intent.getStringExtra("tag_id");
-        String catId = intent.getStringExtra("cat_id");
+        final String catId = intent.getStringExtra("cat_id");
         String bannerId = intent.getStringExtra("banner_id");
 
         if (tagId != null) {
             getDates(CUSTOMTAG, tagId);
         }
         if (catId != null) {
-            getSenCate(catId);
-            getDates(CATIDTAG, catId);
+            getSenCate(catId); //获取分类tag
+            getALlBrand(catId); //获取品牌tag
+            getDates(CATIDTAG, catId); //获取所有商品
             productFilter.setVisibility(View.VISIBLE);
         } else {
             productFilter.setVisibility(View.GONE);
@@ -178,7 +179,6 @@ public class ProductsListActivity extends AppCompatActivity {
         productFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(x.app(), "商品筛选功能...", Toast.LENGTH_SHORT).show();
                 showProductFilterWindow(view);
             }
         });
@@ -204,10 +204,8 @@ public class ProductsListActivity extends AppCompatActivity {
                     mCatetags.clear();
                     for (int i = 0; i < resultObj.getData().size(); i++) {
                         CateBean cateBean = (CateBean) resultObj.getData().get(i);
-                        getDates(CATIDTAG, String.valueOf(cateBean.getCat_id()));
                         mCatetags.add(cateBean);
                     }
-
                 }
             }
 
@@ -276,13 +274,22 @@ public class ProductsListActivity extends AppCompatActivity {
     }
 
     //获取筛选数据
-    private void getFilterData() {
+    private void getFilterData(String catId2, String brandId) {
 
         //获取筛选商品
         RequestParams params = new RequestParams(HttpUtils.BASEURL + "vProduct/get_vlist");
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
-        params.addBodyParameter("brand_id", String.valueOf(tagBrandBeans.get(selectBrandPos).getId()));
+
+        if (catId2 == null && "".equals(catId2)) {
+            return;
+        }
+
+        if (brandId == null && "".equals(brandId)) {
+            return;
+        }
+        params.addBodyParameter("cat_id", catId2);
+        params.addBodyParameter("brand_id", brandId);
 
 
         x.http().post(params, new Callback.CommonCallback<String>() {
@@ -297,11 +304,7 @@ public class ProductsListActivity extends AppCompatActivity {
                         mDatas.addAll(datas);
                         mCategoryAdapter.notifyDataSetChanged();
 
-                    } else {
-                        Toast.makeText(x.app(), "暂无商品...", Toast.LENGTH_SHORT).show();
                     }
-
-
                 } else {
                     Toast.makeText(x.app(), "暂无商品...", Toast.LENGTH_SHORT).show();
                 }
@@ -336,7 +339,7 @@ public class ProductsListActivity extends AppCompatActivity {
 
         switch (flag) {
             case 0:
-                params.addBodyParameter("cat_id", id);
+                params.addBodyParameter("cat_id", id); //一级分类catID
                 break;
             case 1:
                 params.addBodyParameter("banner_id", id);
@@ -362,8 +365,6 @@ public class ProductsListActivity extends AppCompatActivity {
                     // 暂存
                     tmpDatas.clear();
                     tmpDatas.addAll(resultObj.getData());
-                } else {
-                    // startErrorActivity();
                 }
 
             }
@@ -375,10 +376,8 @@ public class ProductsListActivity extends AppCompatActivity {
                     int responseCode = httpEx.getCode();
                     String responseMsg = httpEx.getMessage();
                     String errorResult = httpEx.getResult();
-                    //startErrorActivity();
+                    startErrorActivity();
                     // ...
-                } else { // 其他错误
-                    //   startErrorActivity();
                 }
 
             }
@@ -397,13 +396,13 @@ public class ProductsListActivity extends AppCompatActivity {
     }
 
     //商品筛选popwindow
-    private void showProductFilterWindow(View parent) {
+    private void showProductFilterWindow(final View parent) {
 
         //加载全部分类标签
 
         //加载PopupWindow的布局文件
         final LayoutInflater mInflater = LayoutInflater.from(x.app());
-        View view = mInflater.inflate(R.layout.product_filter_window, null);
+        final View view = mInflater.inflate(R.layout.product_filter_window, null);
 
         final TagFlowLayout mFlowLayout = (TagFlowLayout) view.findViewById(R.id.id_cat_flowlayout); //一级分类
         mBrandFlowLayout = (TagFlowLayout) view.findViewById(R.id.id_brand_flowlayout); //品牌
@@ -413,23 +412,40 @@ public class ProductsListActivity extends AppCompatActivity {
         filterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (selectCatePos == 0 && -1 == selectBrandPos) {
+              /*  if (selectCatePos == 0 && -1 == selectBrandPos) {
                     mDatas.clear();
                     mDatas.addAll(tmpDatas);
                     mCategoryAdapter.notifyDataSetChanged();
                 } else if (selectCatePos == -1 && -1 == selectBrandPos) {
 
                 } else if (selectCatePos >= 0 && selectBrandPos != -1) {
-                    getFilterData();
+                    String catId2 = String.valueOf(mCatetags.get(selectCatePos).getCat_id());
+                    String brandId = tagBrandBeans.get(selectBrandPos).getId();
+                    getFilterData(catId2, brandId);
+                } else if (selectCatePos >= 0 && selectBrandPos == -1) {
+                    String catId2 = String.valueOf(mCatetags.get(selectCatePos).getCat_id());
+                    String brandId = null;
+                    getFilterData(catId2, brandId);
+                }*/
+                if (selectCatePos > 0 && selectBrandPos >= 0) {
+                    String catId2 = String.valueOf(mCatetags.get(selectCatePos).getCat_id());
+                    String brandId = tagBrandBeans.get(selectBrandPos).getId();
+                    getFilterData(catId2, brandId);
                 }
 
 
                 mPopupWindow.dismiss();
             }
         });
-        if (mCatetags.get(0).getCat_id() != 0) {
+
+        if (mCatetags.size() > 0) {
+            if (mCatetags.get(0).getCat_id() != 0) {
+                mCatetags.add(0, new CateBean(0, "全部", "全部"));
+            }
+        } else {
             mCatetags.add(0, new CateBean(0, "全部", "全部"));
         }
+
 
         //设置 分类标签
         mFlowLayout.setAdapter(new TagAdapter<CateBean>(mCatetags) {
@@ -447,7 +463,7 @@ public class ProductsListActivity extends AppCompatActivity {
                 return true;
             }
         });
-
+        //二级分类标签监听
         mFlowLayout.setOnSelectListener(new TagFlowLayout.OnSelectListener() {
 
             @Override
@@ -459,66 +475,9 @@ public class ProductsListActivity extends AppCompatActivity {
                 }
                 //重置标签选取位置
                 selectCatePos = pos;
-                //品牌重置标志位
-                selectBrandPos = -1;
-                // 取全部的品牌
-                if (pos == 0) {
-                    for (int i = 0; i < mCatetags.size(); i++) {
-                        if (mCatetags.get(i).getCat_id() != 0) {
-                            Log.v("getallbrand", mCatetags.get(i).getCat_name());
-                            tagBrandBeans.clear();
-                            getALlBrand(mCatetags.get(i).getCat_id());
-                        }
-                    }
-                } else {
-
-                    int id = mCatetags.get(pos).getCat_id();
-
-                    RequestParams params = new RequestParams(BRAND_URI);
-                    params.addBodyParameter("shop_id", String.valueOf(shopId));
-                    params.addBodyParameter("token", token);
-                    params.addBodyParameter("cat_id", String.valueOf(id));
-
-                    x.http().post(params, new Callback.CommonCallback<String>() {
-                        @Override
-                        public void onSuccess(String result) {
-                            Log.v("brands", result);
-                            CommonJsonList resultObj = CommonJsonList.fromJson(result, TagBrandBean.class);
-                            if (resultObj.getStatus() == 1) {
-                                // 判断是否有品牌存在
-
-                                List<TagBrandBean> obj = resultObj.getData();
-                                if (obj.size() > 0) {
-                                    tagBrandBeans.clear();
-                                    tagBrandBeans.addAll(obj);
-                                    mBrandFlowLayout.setVisibility(View.VISIBLE);
-                                    mBrandTagAdapter.notifyDataChanged();
-                                } else {
-                                    mBrandFlowLayout.setVisibility(View.INVISIBLE);
-                                }
+                Log.v("selectCatePos", String.valueOf(selectCatePos));
 
 
-                            } else {
-                                Toast.makeText(x.app(), "暂无品牌分类", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onError(Throwable ex, boolean isOnCallback) {
-
-                        }
-
-                        @Override
-                        public void onCancelled(CancelledException cex) {
-
-                        }
-
-                        @Override
-                        public void onFinished() {
-
-                        }
-                    });
-                }
             }
         });
         // 商品品牌标签
@@ -553,10 +512,10 @@ public class ProductsListActivity extends AppCompatActivity {
                     pos = id;
                 }
                 selectBrandPos = pos;
+                Log.v("selectBrandPos", String.valueOf(selectBrandPos));
 
             }
         });
-
         //声明并实例化PopupWindow
         mPopupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         //设置背景颜色
@@ -567,16 +526,16 @@ public class ProductsListActivity extends AppCompatActivity {
         mPopupWindow.setFocusable(true);
         //为PopupWindow设置弹出的位置
         mPopupWindow.showAtLocation(parent, Gravity.TOP, 0, 0);
-
-
     }
 
-    private void getALlBrand(int id) {
+    //获取所有品牌
+
+    private void getALlBrand(String catid) { //通过一级分类标签获取所有品牌
 
         RequestParams params = new RequestParams(BRAND_URI);
         params.addBodyParameter("shop_id", String.valueOf(shopId));
         params.addBodyParameter("token", token);
-        params.addBodyParameter("cat_id", String.valueOf(id));
+        params.addBodyParameter("cat_id", catid);
 
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
@@ -592,8 +551,6 @@ public class ProductsListActivity extends AppCompatActivity {
                     } else {
                         mBrandFlowLayout.setVisibility(View.INVISIBLE);
                     }
-                } else {
-                    startErrorActivity();
                 }
             }
 
@@ -614,9 +571,10 @@ public class ProductsListActivity extends AppCompatActivity {
         });
     }
 
+    //错误页面
     private void startErrorActivity() {
         Intent errorIntent = new Intent(x.app(), LoadErrorActivity.class);
         startActivity(errorIntent);
+
     }
 }
-
